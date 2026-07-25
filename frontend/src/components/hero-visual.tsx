@@ -1,14 +1,92 @@
 "use client";
-import { motion } from "framer-motion";
+
+import { useRef } from "react";
+import { Clock3, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import styles from "./hero-visual.module.css";
 
-export function HeroVisual(){
-  return <div className={styles.wrap} aria-label="Food sharing illustration">
-    <motion.div className={`${styles.card} ${styles.main}`} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.55}}>
-      <div className={styles.icon}>🍱</div><div className={styles.line}/><div className={`${styles.line} ${styles.short}`}/><div style={{display:"flex",gap:8,marginTop:18}}><span className="badge badgeFree">FREE</span><span className="badge badgeMuted">Dhanmondi</span></div>
-    </motion.div>
-    <motion.div className={`${styles.card} ${styles.side}`} initial={{opacity:0,x:30}} animate={{opacity:1,x:0}} transition={{duration:.55,delay:.15}}>
-      <strong>Food rescued today</strong><div style={{fontSize:42,fontWeight:900,marginTop:8}}>128</div><span className="muted">community portions</span>
-    </motion.div>
-  </div>
+gsap.registerPlugin(useGSAP);
+
+export function HeroVisual() {
+  const scope = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      gsap.to("[data-float='one']", {
+        y: -10,
+        rotation: -1.5,
+        duration: 2.6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+      gsap.to("[data-float='two']", {
+        y: 9,
+        rotation: 1.2,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+      gsap.to("[data-pulse]", {
+        scale: 1.08,
+        opacity: 0.72,
+        duration: 2.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    },
+    { scope },
+  );
+
+  return (
+    <div ref={scope} className={styles.wrap} aria-label="We Eat mobile listing preview" data-hero-item>
+      <div className={styles.orbOne} data-pulse />
+      <div className={styles.orbTwo} data-pulse />
+
+      <div className={styles.phone}>
+        <div className={styles.phoneTop}>
+          <div>
+            <span className={styles.micro}>Nearby now</span>
+            <strong>Fresh food around you</strong>
+          </div>
+          <span className={styles.avatar}>W</span>
+        </div>
+
+        <div className={styles.foodImage}>
+          <span className={styles.foodEmoji}>🍱</span>
+          <span className="badge badgeFree">FREE</span>
+        </div>
+
+        <div className={styles.foodBody}>
+          <div className={styles.titleRow}>
+            <div>
+              <h3>Homemade lunch box</h3>
+              <p><MapPin size={14} /> Dhanmondi, Dhaka</p>
+            </div>
+            <span className={styles.save}>♡</span>
+          </div>
+          <div className={styles.infoRow}>
+            <span><Clock3 size={14} /> Collect by 7:30 PM</span>
+            <span>2 portions</span>
+          </div>
+          <button type="button" tabIndex={-1}>Request food</button>
+        </div>
+      </div>
+
+      <div className={`${styles.floatCard} ${styles.safe}`} data-float="one">
+        <span className={styles.floatIcon}><ShieldCheck size={19} /></span>
+        <div><strong>Private pickup</strong><small>Shown after acceptance</small></div>
+      </div>
+
+      <div className={`${styles.floatCard} ${styles.types}`} data-float="two">
+        <span className={styles.floatIcon}><Sparkles size={19} /></span>
+        <div><strong>3 ways to share</strong><small>Free · Discount · Exchange</small></div>
+      </div>
+    </div>
+  );
 }
