@@ -1,3 +1,6 @@
+-- We Eat v1.0.0 Neon PostgreSQL schema
+-- Generated from SQLAlchemy metadata. Run once in a clean Neon database.
+
 CREATE TYPE user_role AS ENUM ('USER', 'MODERATOR', 'ADMIN');
 
 CREATE TYPE user_status AS ENUM ('ACTIVE', 'SUSPENDED', 'DELETED');
@@ -17,6 +20,7 @@ CREATE TYPE exchange_status AS ENUM ('PENDING', 'ACCEPTED', 'REJECTED', 'COMPLET
 CREATE TYPE report_target_type AS ENUM ('LISTING', 'USER', 'COMMENT');
 
 CREATE TYPE report_status AS ENUM ('OPEN', 'IN_REVIEW', 'RESOLVED', 'DISMISSED');
+
 
 CREATE TABLE users (
 	id UUID NOT NULL, 
