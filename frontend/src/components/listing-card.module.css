@@ -1,0 +1,12 @@
+.card { overflow: hidden; display: grid; min-height: 100%; transition: transform .2s ease, box-shadow .2s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 22px 65px rgba(42,61,105,.17); }
+.image { position: relative; aspect-ratio: 4 / 3; background: linear-gradient(135deg, var(--cream-soft), var(--blue)); overflow:hidden; }
+.image img { object-fit: cover; }
+.placeholder { width:100%; height:100%; display:grid; place-items:center; font-size:44px; }
+.type { position:absolute; top:14px; left:14px; z-index:2; }
+.body { padding: 18px; display:grid; gap:12px; }
+.title { font-size:1.1rem; margin:0; line-height:1.35; }
+.meta { display:flex; justify-content:space-between; gap:10px; color:var(--ink-soft); font-size:.88rem; }
+.owner { display:flex; align-items:center; gap:9px; color:var(--ink-soft); font-size:.88rem; }
+.avatar { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:var(--cream); font-weight:800; color:var(--ink); }
+.price { font-weight:850; color:var(--ink); }

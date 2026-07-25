@@ -1,0 +1,12 @@
+.gallery { display:grid; gap:12px; }
+.heroImage { position:relative; aspect-ratio:16/10; border-radius:26px; overflow:hidden; background:linear-gradient(135deg,var(--cream),var(--blue)); }
+.heroImage img { object-fit:cover; }
+.placeholder { height:100%; display:grid; place-items:center; font-size:80px; }
+.content { padding:30px; }
+.title { font-size:clamp(2.2rem,5vw,4rem); line-height:1; letter-spacing:-.05em; margin:16px 0; }
+.infoGrid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:22px 0; }
+.info { background:var(--cream-soft); border-radius:15px; padding:14px; }
+.sidebar { padding:24px; position:sticky; top:98px; }
+.owner { display:flex; gap:13px; align-items:center; }
+.avatar { width:48px;height:48px;border-radius:50%;background:var(--blue);display:grid;place-items:center;font-weight:900;font-size:20px; }
+@media(max-width:900px){.sidebar{position:static}}
