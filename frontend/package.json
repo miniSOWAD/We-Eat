@@ -1,6 +1,6 @@
 {
   "name": "we-eat-frontend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,7 +11,8 @@
     "check": "npm run typecheck && npm run lint"
   },
   "dependencies": {
-    "framer-motion": "^12.23.0",
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.544.0",
     "next": "16.2.9",
     "react": "19.2.4",
@@ -26,5 +27,7 @@
     "eslint-config-next": "16.2.9",
     "typescript": "^6.0.0"
   },
-  "engines": {"node": ">=22.0.0"}
+  "engines": {
+    "node": ">=22.0.0"
+  }
 }
