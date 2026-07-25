@@ -1,0 +1,84 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
+  align-items: start;
+}
+
+.intro {
+  margin-bottom: 26px;
+}
+
+.sidebar {
+  position: sticky;
+  top: 98px;
+  display: grid;
+  gap: 16px;
+}
+
+.tipCard {
+  padding: 22px;
+}
+
+.tipCard h2,
+.tipCard h3 {
+  margin: 0 0 10px;
+}
+
+.tipCard p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.62;
+}
+
+.steps {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.step span:first-child {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--blue);
+  font-size: .78rem;
+  font-weight: 900;
+}
+
+.step strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: .88rem;
+}
+
+.step small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+@media (max-width: 940px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    grid-template-columns: 1fr;
+  }
+}
