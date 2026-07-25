@@ -1,0 +1,41 @@
+[project]
+name = "we-eat-backend"
+version = "1.0.0"
+description = "Production-oriented FastAPI backend for the We Eat food sharing marketplace"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi[standard]>=0.139.2,<0.140",
+  "uvicorn[standard]>=0.35,<0.36",
+  "sqlalchemy[asyncio]>=2.0.51,<2.1",
+  "asyncpg>=0.31,<0.32",
+  "alembic>=1.16,<2",
+  "pydantic-settings>=2.10,<3",
+  "python-jose[cryptography]>=3.5,<4",
+  "argon2-cffi>=25.1,<26",
+  "python-multipart>=0.0.20,<0.1",
+  "email-validator>=2.2,<3",
+  "aiosmtplib>=5.0,<6",
+  "cloudinary>=1.44,<2",
+  "pillow>=11.3,<12",
+  "httpx>=0.28,<0.29"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<9",
+  "pytest-asyncio>=1.0,<2",
+  "aiosqlite>=0.21,<0.22",
+  "ruff>=0.12,<0.13"
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

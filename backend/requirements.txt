@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+asyncpg
+python-dotenv
+pydantic-settings
+python-jose[cryptography]
+passlib[argon2]
+python-multipart
+cloudinary
