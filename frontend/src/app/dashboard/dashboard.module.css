@@ -1,0 +1,130 @@
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.metric {
+  position: relative;
+  overflow: hidden;
+  padding: 21px;
+}
+
+.metric::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  right: -30px;
+  bottom: -30px;
+  border-radius: 50%;
+  background: rgba(170,196,245,.24);
+}
+
+.metricTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.metricIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--cream-soft);
+}
+
+.metric strong {
+  display: block;
+  margin-top: 20px;
+  font-size: 2.4rem;
+  letter-spacing: -.06em;
+}
+
+.metric p {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+
+.attention {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 22px;
+  align-items: center;
+  padding: 27px;
+  background: linear-gradient(145deg, rgba(255,248,222,.9), rgba(170,196,245,.32));
+}
+
+.attention h2 {
+  margin: 0 0 7px;
+}
+
+.attention p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.quickLinks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.quickLink {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.76);
+}
+
+.quickLink strong {
+  display: block;
+  margin: 12px 0 5px;
+}
+
+.quickLink span {
+  color: var(--ink-soft);
+  font-size: .8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 1050px) {
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .metricGrid,
+  .quickLinks {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .metric {
+    padding: 17px;
+  }
+
+  .metric strong {
+    margin-top: 14px;
+    font-size: 2rem;
+  }
+
+  .attention {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .attention a {
+    width: 100%;
+  }
+
+  .quickLink:last-child {
+    grid-column: 1 / -1;
+  }
+}
