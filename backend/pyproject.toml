@@ -40,8 +40,17 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 
-[tool.uv]
-package = false
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app", "app.*"]
+exclude = ["alembic", "alembic.*", "scripts", "scripts.*", "tests", "tests.*"]
 
 [tool.fastapi]
 entrypoint = "app.main:app"
