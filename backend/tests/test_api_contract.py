@@ -1,0 +1,36 @@
+from app.main import app
+
+
+REQUIRED_OPERATIONS = {
+    ("post", "/api/v1/auth/request-registration-otp"),
+    ("post", "/api/v1/auth/verify-otp"),
+    ("post", "/api/v1/auth/register"),
+    ("post", "/api/v1/auth/login"),
+    ("get", "/api/v1/auth/me"),
+    ("get", "/api/v1/listings"),
+    ("post", "/api/v1/listings"),
+    ("post", "/api/v1/listings/upload"),
+    ("get", "/api/v1/listings/mine"),
+    ("get", "/api/v1/favorites"),
+    ("post", "/api/v1/orders"),
+    ("get", "/api/v1/orders/mine"),
+    ("post", "/api/v1/exchanges"),
+    ("get", "/api/v1/exchanges/mine"),
+    ("post", "/api/v1/reviews"),
+    ("post", "/api/v1/reports"),
+    ("get", "/api/v1/reports/moderation"),
+    ("get", "/api/v1/admin/stats"),
+    ("get", "/api/v1/system/ready"),
+}
+
+
+def test_frontend_required_operations_exist() -> None:
+    document = app.openapi()
+    operations = {
+        (method.lower(), path)
+        for path, path_item in document["paths"].items()
+        for method in path_item
+        if method.lower() in {"get", "post", "patch", "delete", "put"}
+    }
+    missing = REQUIRED_OPERATIONS - operations
+    assert not missing, f"Missing API operations: {sorted(missing)}"

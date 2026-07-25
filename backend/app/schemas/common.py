@@ -3,13 +3,13 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 
 T = TypeVar("T")
 
 
 class ORMModel(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = {"from_attributes": True}
 
 
 class MessageResponse(BaseModel):
@@ -27,4 +27,11 @@ class PaginatedResponse(BaseModel, Generic[T]):
 class HealthResponse(BaseModel):
     status: str
     service: str
+    version: str
+    environment: str
     timestamp: datetime
+
+
+class ReadinessResponse(HealthResponse):
+    database: str
+    schema_status: str

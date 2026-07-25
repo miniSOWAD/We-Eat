@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 
 from fastapi import HTTPException, status
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -14,7 +14,8 @@ from app.services.email import send_otp_email
 
 async def issue_otp(session: AsyncSession, *, email: str, purpose: OtpPurpose) -> None:
     normalized = email.lower().strip()
-    window_start = datetime.now(UTC) - timedelta(minutes=15)
+    now = datetime.now(UTC)
+    window_start = now - timedelta(minutes=15)
     request_count = await session.scalar(
         select(func.count(OtpCode.id)).where(
             OtpCode.email == normalized,
@@ -28,20 +29,42 @@ async def issue_otp(session: AsyncSession, *, email: str, purpose: OtpPurpose) -
             detail="Too many OTP requests. Try again later.",
         )
 
+    # Invalidate previous unused codes so only the newest code can be accepted.
+    await session.execute(
+        update(OtpCode)
+        .where(
+            OtpCode.email == normalized,
+            OtpCode.purpose == purpose,
+            OtpCode.consumed_at.is_(None),
+        )
+        .values(consumed_at=now)
+    )
+
     code = generate_otp()
     record = OtpCode(
         email=normalized,
         purpose=purpose,
         code_hash=hash_otp(code),
-        expires_at=datetime.now(UTC) + timedelta(minutes=settings.otp_expire_minutes),
+        expires_at=now + timedelta(minutes=settings.otp_expire_minutes),
     )
     session.add(record)
-    await session.commit()
-    await send_otp_email(to_email=normalized, code=code, purpose=purpose.value)
+    await session.flush()
+
+    try:
+        await send_otp_email(to_email=normalized, code=code, purpose=purpose.value)
+        await session.commit()
+    except Exception:
+        await session.rollback()
+        raise
 
 
-async def consume_otp(
-    session: AsyncSession, *, email: str, purpose: OtpPurpose, code: str
+async def get_valid_otp(
+    session: AsyncSession,
+    *,
+    email: str,
+    purpose: OtpPurpose,
+    code: str,
+    consume: bool,
 ) -> OtpCode:
     normalized = email.lower().strip()
     record = await session.scalar(
@@ -56,6 +79,7 @@ async def consume_otp(
     )
     if not record:
         raise HTTPException(status_code=400, detail="No active verification code")
+
     now = datetime.now(UTC)
     if record.expires_at <= now:
         raise HTTPException(status_code=400, detail="Verification code has expired")
@@ -65,6 +89,20 @@ async def consume_otp(
         record.attempts += 1
         await session.commit()
         raise HTTPException(status_code=400, detail="Invalid verification code")
-    record.consumed_at = now
-    await session.flush()
+
+    if consume:
+        record.consumed_at = now
+        await session.flush()
     return record
+
+
+async def consume_otp(
+    session: AsyncSession, *, email: str, purpose: OtpPurpose, code: str
+) -> OtpCode:
+    return await get_valid_otp(
+        session,
+        email=email,
+        purpose=purpose,
+        code=code,
+        consume=True,
+    )

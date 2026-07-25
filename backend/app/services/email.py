@@ -36,4 +36,5 @@ async def send_otp_email(*, to_email: str, code: str, purpose: str) -> None:
         username=settings.smtp_username or None,
         password=settings.smtp_password or None,
         start_tls=settings.smtp_start_tls,
+        timeout=settings.smtp_timeout_seconds,
     )

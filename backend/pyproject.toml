@@ -1,6 +1,6 @@
 [project]
 name = "we-eat-backend"
-version = "1.0.0"
+version = "1.1.0"
 description = "Production-oriented FastAPI backend for the We Eat food sharing marketplace"
 readme = "README.md"
 requires-python = ">=3.12"
