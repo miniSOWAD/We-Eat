@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: we-eat-backend
+Version: 1.1.0
+Summary: Production-oriented FastAPI backend for the We Eat food sharing marketplace
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi[standard]<0.140,>=0.139.2
+Requires-Dist: uvicorn[standard]<0.36,>=0.35
+Requires-Dist: sqlalchemy[asyncio]<2.1,>=2.0.51
+Requires-Dist: asyncpg<0.32,>=0.31
+Requires-Dist: alembic<2,>=1.16
+Requires-Dist: pydantic-settings<3,>=2.10
+Requires-Dist: python-jose[cryptography]<4,>=3.5
+Requires-Dist: argon2-cffi<26,>=25.1
+Requires-Dist: python-multipart<0.1,>=0.0.20
+Requires-Dist: email-validator<3,>=2.2
+Requires-Dist: aiosmtplib<6,>=5.0
+Requires-Dist: cloudinary<2,>=1.44
+Requires-Dist: pillow<12,>=11.3
+Requires-Dist: httpx<0.29,>=0.28
+Provides-Extra: dev
+Requires-Dist: pytest<9,>=8.4; extra == "dev"
+Requires-Dist: pytest-asyncio<2,>=1.0; extra == "dev"
+Requires-Dist: aiosqlite<0.22,>=0.21; extra == "dev"
+Requires-Dist: ruff<0.13,>=0.12; extra == "dev"
+
+# We Eat FastAPI Cloud build fix v1.1.1
+
+Copy both files into the backend project root, replacing `pyproject.toml`.
+
+Files:
+- `pyproject.toml`
+- `.python-version`
+
+Then run:
+
+```powershell
+cd "D:\PROJ\We Eat\backend"
+fastapi deploy
+```
+
+This fix:
+1. Marks the flat-layout backend as a non-package uv application, so uv does not try to build `app` and `alembic` as one distributable package.
+2. Declares the FastAPI entrypoint as `app.main:app`.
+3. Pins cloud builds to Python 3.12.
