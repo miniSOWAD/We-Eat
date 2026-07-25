@@ -1,0 +1,30 @@
+{
+  "name": "we-eat-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.0",
+    "lucide-react": "^0.544.0",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sonner": "^2.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.2.9",
+    "typescript": "^6.0.0"
+  },
+  "engines": {"node": ">=22.0.0"}
+}
