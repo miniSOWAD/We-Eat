@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { ArrowUpRight, Clock3, MapPin } from "lucide-react";
 import type { Listing } from "@/types";
 import styles from "./listing-card.module.css";
 
@@ -17,16 +17,40 @@ function offer(listing: Listing) {
 
 export function ListingCard({ listing }: { listing: Listing }) {
   const image = listing.images?.[0]?.secure_url;
-  return <Link className={`card ${styles.card}`} href={`/listings/${listing.id}`}>
-    <div className={styles.image}>
-      <span className={styles.type}><ListingTypeBadge type={listing.listing_type}/></span>
-      {image ? <Image src={image} alt={listing.title} fill sizes="(max-width:640px) 100vw, (max-width:900px) 50vw, 33vw"/> : <div className={styles.placeholder}>🍲</div>}
-    </div>
-    <div className={styles.body}>
-      <div className={styles.meta}><span>{listing.category}</span><span>{listing.quantity} {listing.unit}</span></div>
-      <h3 className={styles.title}>{listing.title}</h3>
-      <div className={styles.meta}><span><MapPin size={14} style={{verticalAlign:"-2px"}}/> {listing.area}, {listing.city}</span><span className={styles.price}>{offer(listing)}</span></div>
-      <div className={styles.owner}><span className={styles.avatar}>{listing.owner.display_name.slice(0,1).toUpperCase()}</span><span>{listing.owner.display_name}</span></div>
-    </div>
-  </Link>;
+  const expires = new Date(listing.expires_at).toLocaleString("en-BD", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  return (
+    <Link className={`card ${styles.card}`} href={`/listings/${listing.id}`}>
+      <div className={styles.image}>
+        <span className={styles.type}><ListingTypeBadge type={listing.listing_type} /></span>
+        {image ? (
+          <Image src={image} alt={listing.title} fill sizes="(max-width:640px) 100vw, (max-width:900px) 50vw, 33vw" />
+        ) : (
+          <div className={styles.placeholder}>🍲</div>
+        )}
+        <span className={styles.openIcon}><ArrowUpRight size={17} /></span>
+      </div>
+      <div className={styles.body}>
+        <div className={styles.metaTop}>
+          <span>{listing.category}</span>
+          <span>{listing.quantity} {listing.unit}</span>
+        </div>
+        <h3 className={styles.title}>{listing.title}</h3>
+        <div className={styles.location}><MapPin size={15} /><span>{listing.area}, {listing.city}</span></div>
+        <div className={styles.offerRow}>
+          <span className={styles.expiry}><Clock3 size={14} /> {expires}</span>
+          <strong className={styles.price}>{offer(listing)}</strong>
+        </div>
+        <div className={styles.owner}>
+          <span className={styles.avatar}>{listing.owner.display_name.slice(0, 1).toUpperCase()}</span>
+          <span>Shared by {listing.owner.display_name}</span>
+        </div>
+      </div>
+    </Link>
+  );
 }
