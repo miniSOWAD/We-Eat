@@ -1,0 +1,7 @@
+.page { min-height:74vh; display:grid; place-items:center; padding:48px 0 80px; }
+.shell { width:min(980px,calc(100% - 24px)); display:grid; grid-template-columns:.9fr 1.1fr; overflow:hidden; }
+.visual { background:linear-gradient(155deg,var(--cream) 0 40%,var(--blue) 40% 72%,var(--blue-strong) 72%); padding:42px; min-height:570px; display:flex; flex-direction:column; justify-content:space-between; }
+.visual h2 { font-size:3rem; line-height:1; letter-spacing:-.05em; }
+.form { padding:42px; background:#fff; }
+.form h1 { font-size:2.35rem; letter-spacing:-.04em; margin-top:0; }
+@media(max-width:760px){.shell{grid-template-columns:1fr}.visual{display:none}.form{padding:28px 20px}}
