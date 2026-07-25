@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { MotionShell } from "@/components/motion-shell";
 
 export const metadata: Metadata = {
   title: { default: "We Eat — Share food, reduce waste", template: "%s | We Eat" },
@@ -15,8 +16,10 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en">
       <body>
         <SiteHeader />
-        {children}
-        <SiteFooter />
+        <MotionShell>
+          {children}
+          <SiteFooter />
+        </MotionShell>
         <Toaster richColors position="top-center" />
       </body>
     </html>
