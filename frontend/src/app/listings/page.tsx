@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LockKeyhole, Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { LockKeyhole, Search, SlidersHorizontal, PlusCircle } from "lucide-react";
 import { ListingCard } from "@/components/listing-card";
 import { backendFetch } from "@/lib/server-api";
 import type { ListingBrowse, ListingType } from "@/types";
@@ -75,7 +75,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
 
         <div className={styles.resultsBar} data-reveal>
           <div><strong>{data.total} listing{data.total === 1 ? "" : "s"}</strong><div className="help">Availability changes as providers accept requests.</div></div>
-          <Link className="button buttonCream" href="/share"><Sparkles size={17} />Share food</Link>
+          <Link className="button buttonCream" href="/share"><PlusCircle size={17} />Share food</Link>
         </div>
 
         {data.items.length ? (
