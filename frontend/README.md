@@ -1,26 +1,32 @@
-# We Eat Frontend
+# We Eat Frontend v1.2.1
 
-Next.js 16 frontend for the We Eat food-sharing marketplace.
+Next.js 16 frontend for the We Eat marketplace.
 
-## Version
+## v1.2.1 changes
 
-`1.1.0` — mobile-first UI upgrade.
+- Administration user and moderator tables no longer force a horizontal scrollbar on desktop.
+- The unnecessary password column was removed; passwords are never available to the frontend.
+- Management rows become responsive cards on small screens.
+- Action buttons use compact layouts that fit the available dashboard width.
+- Primary, cream and danger buttons now have dedicated dark-theme styles.
+- Dashboard sidebar highlights and header controls have improved dark-mode contrast.
+- Admin overview shows safe Email OTP and Cloudinary readiness information from the backend.
 
-## Run locally
+## Run
 
 ```powershell
 npm install
 Remove-Item .next -Recurse -Force -ErrorAction SilentlyContinue
+npm run check
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Set `.env.local`:
 
-The application still uses the same Next.js API routes, FastAPI paths, HTTP-only authentication cookie and backend data contracts as version 1.0.0.
+```env
+BACKEND_API_URL=https://your-fastapi-cloud-domain
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+SESSION_COOKIE_NAME=we_eat_session
+```
 
-## New UI dependencies
-
-- `gsap`
-- `@gsap/react`
-
-See `UI_UPGRADE.md` for the full handoff and mobile testing checklist.
+Do not append `/api/v1` to `BACKEND_API_URL`.
