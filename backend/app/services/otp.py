@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+import logging
 
 from fastapi import HTTPException, status
 from sqlalchemy import func, select, update
@@ -10,6 +11,8 @@ from app.core.config import settings
 from app.core.security import generate_otp, hash_otp, verify_otp
 from app.models.models import OtpCode, OtpPurpose
 from app.services.email import send_otp_email
+
+logger = logging.getLogger("we_eat.email")
 
 
 async def issue_otp(session: AsyncSession, *, email: str, purpose: OtpPurpose) -> None:
@@ -53,9 +56,16 @@ async def issue_otp(session: AsyncSession, *, email: str, purpose: OtpPurpose) -
     try:
         await send_otp_email(to_email=normalized, code=code, purpose=purpose.value)
         await session.commit()
-    except Exception:
+    except HTTPException:
         await session.rollback()
         raise
+    except Exception as exc:
+        await session.rollback()
+        logger.exception("Unable to deliver verification email", extra={"email": normalized})
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Verification email could not be delivered. Check the email provider configuration.",
+        ) from exc
 
 
 async def get_valid_otp(

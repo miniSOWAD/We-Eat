@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Clock3, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { Clock3, MapPin, ShieldCheck, HandHeart } from "lucide-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import styles from "./hero-visual.module.css";
@@ -84,7 +84,7 @@ export function HeroVisual() {
       </div>
 
       <div className={`${styles.floatCard} ${styles.types}`} data-float="two">
-        <span className={styles.floatIcon}><Sparkles size={19} /></span>
+        <span className={styles.floatIcon}><HandHeart size={19} /></span>
         <div><strong>3 ways to share</strong><small>Free · Discount · Exchange</small></div>
       </div>
     </div>

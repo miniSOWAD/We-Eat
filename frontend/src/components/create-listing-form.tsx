@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { ImagePlus, Loader2, LockKeyhole, PackageOpen, Sparkles } from "lucide-react";
+import { ImagePlus, Loader2, LockKeyhole, PackageOpen, HandHeart } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Listing, ListingImage, ListingType } from "@/types";
@@ -82,7 +82,7 @@ export function CreateListingForm() {
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <div><h2>1. Choose the arrangement</h2><p>Make the expectation clear before anyone sends a request.</p></div>
-          <span className="iconBox"><Sparkles size={20} /></span>
+          <span className="iconBox"><HandHeart size={20} /></span>
         </div>
         <div className={styles.typeGrid}>
           {(["FREE", "DISCOUNTED", "EXCHANGE"] as ListingType[]).map((value) => (

@@ -54,9 +54,9 @@
   height: 36px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
   border-radius: 13px;
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--surface);
   backdrop-filter: blur(10px);
 }
 
@@ -119,8 +119,8 @@
 
 .offerRow {
   padding: 11px 0;
-  border-top: 1px solid #edf1f6;
-  border-bottom: 1px solid #edf1f6;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .expiry {
