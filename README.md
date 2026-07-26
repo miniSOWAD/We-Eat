@@ -22,7 +22,7 @@ alt="Animated We Eat feature summary"
 />
 
 <p>
-  <a href="we-eat-live.netlify.app"><strong>Live Application</strong></a>
+  <a href="https://we-eat-live.netlify.app"><strong>Live Application</strong></a>
   ·
   <a href="#-local-development"><strong>Run Locally</strong></a>
 </p>
