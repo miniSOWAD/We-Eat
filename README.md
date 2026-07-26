@@ -48,46 +48,6 @@ alt="Animated We Eat feature summary"
 
 </div>
 
-Contents
-
-Overview
-
-The problem
-
-The solution
-
-Core capabilities
-
-Trust and fraud prevention
-
-Handover workflow
-
-User roles
-
-Architecture
-
-Technology stack
-
-Database
-
-Repository structure
-
-Local development
-
-Environment variables
-
-Deployment
-
-Security model
-
-Screenshots
-
-Roadmap
-
-Contributing
-
-License
-
 🌍 Overview
 
 We Eat is a mobile-first food-sharing marketplace that helps individuals, families, restaurants and community organizations redistribute usable food before it becomes waste.
