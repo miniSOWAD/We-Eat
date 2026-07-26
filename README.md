@@ -22,11 +22,7 @@ alt="Animated We Eat feature summary"
 />
 
 <p>
-  <a href="YOUR_NETLIFY_URL"><strong>Live Application</strong></a>
-  ·
-  <a href="YOUR_FASTAPI_URL/health"><strong>API Health</strong></a>
-  ·
-  <a href="YOUR_FASTAPI_URL/docs"><strong>API Documentation</strong></a>
+  <a href="we-eat-live.netlify.app"><strong>Live Application</strong></a>
   ·
   <a href="#-local-development"><strong>Run Locally</strong></a>
 </p>
@@ -48,321 +44,237 @@ alt="Animated We Eat feature summary"
 
 </div>
 
-🌍 Overview
+🌍 Project at a glance
+
+<table>
+  <tr>
+    <td align="center" width="25%">
+      <strong>3</strong><br />
+      <sub>listing models</sub>
+    </td>
+    <td align="center" width="25%">
+      <strong>2-party</strong><br />
+      <sub>completion confirmation</sub>
+    </td>
+    <td align="center" width="25%">
+      <strong>Private</strong><br />
+      <sub>pickup and proposals</sub>
+    </td>
+    <td align="center" width="25%">
+      <strong>Role-based</strong><br />
+      <sub>moderation</sub>
+    </td>
+  </tr>
+</table>
+
+We Eat is a mobile-first food-sharing marketplace that helps households, individuals, restaurants and community groups move usable surplus food to people nearby before it becomes waste.
+
+It supports:
+
+<p align="center">
+  <img src="https://img.shields.io/badge/FREE-Give%20without%20payment-52B788?style=for-the-badge" alt="Free listing" />
+  <img src="https://img.shields.io/badge/DISCOUNTED-Sell%20below%20original%20price-F4B942?style=for-the-badge" alt="Discounted listing" />
+  <img src="https://img.shields.io/badge/EXCHANGE-Trade%20food%20for%20food-8CA9FF?style=for-the-badge" alt="Exchange listing" />
+</p>
+
+We Eat is not just a listing board. It combines verified accounts, private proposals, scheduled handovers, reputation, cancellation accountability, reports and completion-based reviews.
+
+🎯 Why We Eat
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>❗ The problem</h3>
+      <ul>
+        <li>Usable food is discarded because nearby demand is invisible.</li>
+        <li>Informal handovers expose personal information.</li>
+        <li>Accepted participants may disappear without explanation.</li>
+        <li>Ordinary reviews are easy to manipulate.</li>
+        <li>Providers and receivers lack a shared accountability trail.</li>
+      </ul>
+    </td>
+    <td width="50%" valign="top">
+      <h3>💡 The response</h3>
+      <ul>
+        <li>Search by city, area, category and arrangement.</li>
+        <li>Keep exact pickup details private.</li>
+        <li>Let owners review proposals before accepting.</li>
+        <li>Require both parties to confirm completion.</li>
+        <li>Connect reputation and reviews to real handovers.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+⚡ What the platform offers
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>🔎 Local discovery</h3>
+      Search by keyword, city, area, food category and listing type.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🥘 Flexible sharing</h3>
+      Publish free, discounted or exchange listings with quantities and expiry details.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🗂 Private proposals</h3>
+      The provider sees full proposals; other visitors see only the proposal count.
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" valign="top">
+      <h3>📍 Controlled handover</h3>
+      Choose pickup or delivery, set a time and share protected instructions.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🟢 Reputation</h3>
+      Positive and negative point totals appear beside user identities.
+    </td>
+    <td width="33%" valign="top">
+      <h3>🛡 Moderation</h3>
+      Reports, suspension, listing review and administrative audit history.
+    </td>
+  </tr>
+</table>
+
+<details>
+<summary><strong>See the complete feature set</strong></summary>
+
+<br />
+
+Provider tools
 
-We Eat is a mobile-first food-sharing marketplace that helps individuals, families, restaurants and community organizations redistribute usable food before it becomes waste.
+Upload listing images through Cloudinary
 
-The platform supports three listing models:
+Add preparation time, expiry, quantity, allergens, city and area
 
-Listing type
+Store pickup details separately from public listing data
 
-Purpose
+Review private proposals
 
-Free
+Accept, reject or schedule a handover
 
-Give surplus food without payment
+Confirm delivery only after receiver confirmation
 
-Discounted
+Remove or complete listings
 
-Sell usable surplus below its original price
+Receiver tools
 
-Exchange
+Save listings
 
-Trade one food item for another
+Submit a free, discounted or exchange proposal
 
-We Eat is not a basic classified-ad board. It combines identity verification, private handover details, proposal tracking, reputation points, cancellation accountability, moderation and two-party completion confirmation.
+Follow proposal status through a floating status dock
 
-The platform cannot guarantee that fraud will never occur. Its purpose is to reduce abuse, preserve evidence, expose reliability signals and give the community practical tools to make safer decisions.
+View accepted handover time and instructions
 
-❗ The problem
+Confirm receipt
 
-Edible food is often discarded because:
+Review the provider after completion
 
-households prepare more than they can consume;
+Account tools
 
-restaurants and shops have safe surplus near closing time;
+Email OTP registration
 
-people nearby do not know that food is available;
+Username or email login
 
-ordinary marketplaces expose too much private information;
+Profile photo upload
 
-informal handovers lack structured accountability;
+Dark mode
 
-users may accept food and disappear without explanation;
+User, moderator and administrator dashboards
 
-reviews can be manipulated when they are not tied to completed transactions.
+Persistent reputation notifications
 
-At the same time, people facing financial pressure or temporary food insecurity may be only a short distance away.
+Report submission
 
-💡 The solution
+</details>
 
-We Eat creates a structured local marketplace where food can move from a potential waste stream to another table.
+🛡 Trust & fraud resistance
 
-The application combines:
+The platform does not claim that software can eliminate fraud. It reduces risk by creating friction, evidence and visible accountability.
 
-local discovery by city, area, category and arrangement;
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔐 Identity & access</h3>
+      <ul>
+        <li>Email OTP before registration</li>
+        <li>Argon2 password hashing</li>
+        <li>JWT in an HTTP-only cookie</li>
+        <li>Current database role and account-status checks</li>
+        <li>Session invalidation after role or status changes</li>
+      </ul>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🙈 Privacy by design</h3>
+      <ul>
+        <li>Exact pickup details are not public</li>
+        <li>Only owners see full proposal information</li>
+        <li>No direct browser-to-database access</li>
+        <li>Secrets remain in environment variables</li>
+        <li>Media is stored outside PostgreSQL</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🤝 Transaction accountability</h3>
+      <ul>
+        <li>Receiver confirms first</li>
+        <li>Provider confirms second</li>
+        <li>Reviews unlock after completion</li>
+        <li>Duplicate points and reviews are blocked</li>
+        <li>Accepted cancellation requires an explanation</li>
+      </ul>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🚨 Community protection</h3>
+      <ul>
+        <li>Visible reputation totals</li>
+        <li>Cancellation marking</li>
+        <li>Report investigation</li>
+        <li>User suspension</li>
+        <li>Recorded administrative actions</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
-email OTP registration;
+Important: reputation is a decision-support signal, not proof of identity, food safety or future behavior.
 
-username or email login;
-
-owner-controlled proposal lists;
-
-pickup or delivery scheduling;
-
-private pickup information;
-
-live proposal and handover status;
-
-provider and receiver confirmation;
-
-positive and negative reputation points;
-
-cancellation explanations;
-
-completion-based reviews;
-
-reporting, moderation and audit history.
-
-✨ Core capabilities
-
-Food discovery
-
-Users can narrow listings by:
-
-keyword;
-
-city;
-
-area;
-
-category;
-
-free, discounted or exchange arrangement.
-
-Exact pickup information remains private until the authorized workflow stage.
-
-Food listing management
-
-A provider can:
-
-upload images;
-
-create free, discounted or exchange listings;
-
-set quantity and unit;
-
-add preparation and expiry information;
-
-define city and area;
-
-identify allergens;
-
-add protected pickup details;
-
-update, reserve, complete or remove a listing.
-
-Private proposal list
-
-Only the listing owner can see requester identities, messages and offers.
-
-The owner can:
-
-inspect requester reputation;
-
-review requests or exchange offers;
-
-accept one proposal;
-
-reject proposals;
-
-choose pickup or delivery;
-
-schedule the handover;
-
-add handover notes.
-
-Other visitors see only the proposal count.
-
-Proposal status dock
-
-A requester receives a floating status control showing whether the proposal is:
-
-pending;
-
-waiting while another handover is active;
-
-accepted;
-
-rejected;
-
-cancelled;
-
-completed;
-
-delivered to someone else.
-
-Controlled completion
-
-A transaction cannot be completed by one party alone.
-
-Requester confirms received
-            ↓
-Provider confirms delivered
-            ↓
-Transaction completes
-            ↓
-Reviews and positive points unlock
-
-Reputation
-
-Every account exposes:
-
-+ Positive points
-- Negative points
-
-Positive points are awarded after a completed handover.
-
-Negative points may be applied when an accepted participant cancels and the affected party chooses to mark the cancellation after reading the required explanation.
-
-Role-specific dashboards
-
-User
-
-My listed food
-
-Completed deals
-
-Saved food
-
-Settings
-
-Submit a report
-
-Moderator
-
-Reports
-
-Users
-
-Listings
-
-Audit history
-
-Settings
-
-Suspend or restore basic users
-
-Administrator
-
-Users
-
-Moderators
-
-Reports
-
-Listings
-
-Audit history
-
-Role and account management
-
-🛡️ Trust and fraud prevention
-
-We Eat uses layered controls instead of relying on a single trust signal.
-
-Layer
-
-Protection
-
-Verified registration
-
-Email OTP is required before account creation
-
-Password protection
-
-Passwords are stored as Argon2 hashes
-
-Session protection
-
-JWT is stored in an HTTP-only cookie
-
-Live role validation
-
-Protected actions check current database role and account status
-
-Pickup privacy
-
-Exact pickup information is excluded from public listing responses
-
-Proposal privacy
-
-Only the provider can view the full proposal list
-
-Two-party completion
-
-Provider cannot finish a deal before receiver confirmation
-
-Transaction reviews
-
-Reviews unlock only after a completed order or exchange
-
-Reputation points
-
-Reliability is visible near user identities
-
-Cancellation accountability
-
-Accepted cancellations require an explanation
-
-Moderation
-
-Reports, suspension and listing removal are supported
-
-Audit trail
-
-Administrative actions are recorded
-
-Media validation
-
-Images are checked before Cloudinary upload
-
-🔄 Handover workflow
+🔄 How a handover works
 
 sequenceDiagram
-    actor Provider
-    actor Requester
-    participant Web as Next.js
-    participant API as FastAPI
-    participant DB as Neon PostgreSQL
+    actor P as Provider
+    actor R as Receiver
+    participant W as We Eat
+    participant D as Database
 
-    Provider->>Web: Publish food listing
-    Web->>API: Create listing
-    API->>DB: Save public and private details
+    P->>W: Publish food
+    W->>D: Save public + private details
+    R->>W: Submit proposal
+    W->>D: Save pending proposal
+    P->>W: Review and accept
+    W->>D: Reserve listing + schedule handover
+    R->>W: Confirm received
+    W->>D: Record receiver confirmation
+    P->>W: Confirm delivered
+    W->>D: Complete deal + award points
+    W-->>P: Review unlocked
+    W-->>R: Review unlocked
 
-    Requester->>Web: Submit proposal
-    Web->>API: Create order or exchange request
-    API->>DB: Save pending proposal
+<p align="center">
+  <strong>Request → Review → Accept → Schedule → Receive → Deliver → Review</strong>
+</p>
 
-    Provider->>Web: Review private proposal list
-    Provider->>Web: Accept and schedule handover
-    Web->>API: Accept selected proposal
-    API->>DB: Reserve listing
-
-    Requester->>Web: Open active handover
-    Requester->>API: Confirm received
-    API->>DB: Save receiver confirmation
-
-    Provider->>API: Confirm delivered
-    API->>DB: Complete transaction and award points
-
-    API-->>Web: Unlock review workflow
-
-👥 User roles
+👥 Role model
 
 Capability
 
-Anonymous
+Visitor
 
 User
 
@@ -370,7 +282,7 @@ Moderator
 
 Admin
 
-Browse food
+Browse listings
 
 ✅
 
@@ -380,19 +292,9 @@ Browse food
 
 ✅
 
-Create listings
+Create listings and proposals
 
-❌
-
-✅
-
-✅
-
-✅
-
-Submit proposals
-
-❌
+—
 
 ✅
 
@@ -400,19 +302,9 @@ Submit proposals
 
 ✅
 
-View full proposal list
+Manage own food and deals
 
-❌
-
-Owner only
-
-Owner only
-
-Owner only
-
-Manage own listings
-
-❌
+—
 
 ✅
 
@@ -422,7 +314,7 @@ Manage own listings
 
 Submit reports
 
-❌
+—
 
 ✅
 
@@ -432,261 +324,170 @@ Submit reports
 
 Suspend basic users
 
-❌
+—
 
-❌
-
-✅
-
-✅
-
-Manage reports
-
-❌
-
-❌
+—
 
 ✅
 
 ✅
 
-Promote moderators
+Review reports and listings
 
-❌
+—
 
-❌
-
-❌
-
-✅
-
-Revoke moderators
-
-❌
-
-❌
-
-❌
-
-✅
-
-View audit history
-
-❌
-
-❌
+—
 
 ✅
 
 ✅
 
-🏗️ Architecture
+Promote or revoke moderators
 
-flowchart TD
-    U[Mobile or Desktop Browser]
-    N[Next.js Frontend]
-    P[Next.js API Proxy]
-    F[FastAPI Backend]
-    D[(Neon PostgreSQL)]
-    C[Cloudinary]
-    E[SMTP Email Provider]
+—
 
-    U --> N
-    N --> P
-    P -->|HTTP-only session and API calls| F
-    F --> D
-    F --> C
-    F --> E
+—
 
-React component
-      ↓
-Next.js route handler
-      ↓
-HTTP-only session
-      ↓
-FastAPI route
-      ↓
-Pydantic validation
-      ↓
-Authorization and business rules
-      ↓
-SQLAlchemy async session
-      ↓
-Neon PostgreSQL
+—
 
-🧰 Technology stack
+✅
 
-Frontend
+View administrative audit history
 
-Next.js 16
+—
 
-React
+—
 
-TypeScript
+✅
 
-App Router
+✅
 
-CSS Modules
+🏗 System design
 
-GSAP
+flowchart LR
+    Browser["Mobile / Desktop Browser"]
+    Next["Next.js Frontend"]
+    Proxy["Next.js API Proxy"]
+    API["FastAPI Backend"]
+    DB[("Neon PostgreSQL")]
+    Media["Cloudinary"]
+    Mail["SMTP Email"]
 
-Framer Motion
+    Browser --> Next
+    Next --> Proxy
+    Proxy --> API
+    API --> DB
+    API --> Media
+    API --> Mail
 
-Lucide icons
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>Frontend</h3>
+      <code>Next.js 16</code><br />
+      <code>React</code><br />
+      <code>TypeScript</code><br />
+      <code>CSS Modules</code><br />
+      <code>GSAP</code><br />
+      <code>Framer Motion</code>
+    </td>
+    <td width="50%" valign="top">
+      <h3>Backend & cloud</h3>
+      <code>FastAPI</code><br />
+      <code>SQLAlchemy Async</code><br />
+      <code>asyncpg</code><br />
+      <code>Alembic</code><br />
+      <code>Neon PostgreSQL</code><br />
+      <code>Cloudinary</code>
+    </td>
+  </tr>
+</table>
 
-Mobile bottom navigation
+🗄 Data model
 
-Light and dark themes
+<p align="center">
+  <img src="https://img.shields.io/badge/13-Core%20Tables-14213D?style=for-the-badge" alt="Core tables" />
+  <img src="https://img.shields.io/badge/Alembic-Versioned-8CA9FF?style=for-the-badge" alt="Alembic migrations" />
+  <img src="https://img.shields.io/badge/Async-PostgreSQL-4169E1?style=for-the-badge" alt="Async PostgreSQL" />
+</p>
 
-Backend
+Domain
 
-FastAPI
+Main tables
 
-Pydantic
+Identity
 
-SQLAlchemy Async
+users, otp_codes
 
-asyncpg
+Food
 
-Alembic
+listings, listing_images, listing_private_details
 
-Argon2
+Community
 
-JWT
+favorites, comments, reports
 
-SMTP OTP delivery
+Transactions
 
-Cloudinary SDK
+orders, exchange_requests, reviews
 
-Infrastructure
+Accountability
 
-Neon PostgreSQL
+audit_logs, point_notifications
 
-Cloudinary media storage
+<details>
+<summary><strong>Database portability</strong></summary>
 
-FastAPI Cloud or compatible ASGI hosting
+<br />
 
-Netlify-compatible Next.js deployment
+The repository includes:
 
-🗄️ Database
+a complete schema for a brand-new Neon database;
 
-Current compatibility target:
+incremental Alembic migrations;
 
-We Eat backend v1.4.1+
-Alembic head: 20260726_0005
+verification SQL;
 
-Table
+indexes, foreign keys, enums and constraints.
 
-Purpose
+A fresh database can be prepared and connected by updating only the backend DATABASE_URL.
 
-users
+Schema initialization creates an empty compatible database. Existing records require a PostgreSQL data export and import.
 
-Accounts, roles, profiles and reputation
+</details>
 
-otp_codes
+📸 Product preview
 
-Registration and password-reset OTP
+Add final screenshots under docs/screenshots/ using these filenames.
 
-listings
+<table>
+  <tr>
+    <td align="center"><strong>Home</strong></td>
+    <td align="center"><strong>Find food</strong></td>
+  </tr>
+  <tr>
+    <td><img src="./docs/screenshots/home.png" alt="We Eat home page" /></td>
+    <td><img src="./docs/screenshots/find-food.png" alt="We Eat food discovery" /></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Proposal workflow</strong></td>
+    <td align="center"><strong>Dashboard</strong></td>
+  </tr>
+  <tr>
+    <td><img src="./docs/screenshots/proposals.png" alt="We Eat proposal workflow" /></td>
+    <td><img src="./docs/screenshots/dashboard.png" alt="We Eat dashboard" /></td>
+  </tr>
+</table>
 
-Public food listings
+🚀 Quick start
 
-listing_images
+<details open>
+<summary><strong>1. Clone and prepare the project</strong></summary>
 
-Cloudinary listing media
+git clone https://github.com/miniSOWAD/We-Eat.git
+cd We-Eat
 
-listing_private_details
-
-Protected pickup data
-
-favorites
-
-Saved listings
-
-comments
-
-Listing discussions
-
-orders
-
-Free and discounted proposals
-
-exchange_requests
-
-Exchange proposals
-
-reviews
-
-Completed-transaction reviews
-
-reports
-
-Community reports
-
-audit_logs
-
-Administrative history
-
-point_notifications
-
-Persistent reputation notices
-
-A portable complete Neon schema is included in the repository database folder.
-
-🔌 API areas
-
-/api/v1/auth
-/api/v1/users
-/api/v1/listings
-/api/v1/favorites
-/api/v1/comments
-/api/v1/orders
-/api/v1/exchanges
-/api/v1/reviews
-/api/v1/reports
-/api/v1/moderation
-/api/v1/admin
-/api/v1/notifications
-
-Health endpoints:
-
-GET /health
-GET /ready
-
-📁 Repository structure
-
-We Eat/
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── lib/
-│   │   └── types/
-│   ├── package.json
-│   └── next.config.ts
-│
-├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── db/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   └── services/
-│   ├── alembic/
-│   ├── scripts/
-│   ├── tests/
-│   ├── requirements.txt
-│   └── pyproject.toml
-│
-├── database/
-├── netlify.toml
-└── README.md
-
-🚀 Local development
-
-Requirements
+Requirements:
 
 Node.js 20.9+
 
@@ -700,21 +501,17 @@ Cloudinary
 
 SMTP account or Gmail App Password
 
-Clone
+</details>
 
-git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME.git
-cd YOUR_REPOSITORY_NAME
-
-Backend
+<details>
+<summary><strong>2. Start the FastAPI backend</strong></summary>
 
 cd backend
 
 py -3.13 -m venv .venv
 
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
-
 .\.venv\Scripts\python.exe -m pip install -e .
-
 .\.venv\Scripts\python.exe -m alembic upgrade head
 
 .\.venv\Scripts\python.exe -m uvicorn app.main:app `
@@ -722,39 +519,33 @@ py -3.13 -m venv .venv
   --host 127.0.0.1 `
   --port 8000
 
-Backend:
+API:   http://127.0.0.1:8000
+Docs:  http://127.0.0.1:8000/docs
+Ready: http://127.0.0.1:8000/ready
 
-http://127.0.0.1:8000/health
-http://127.0.0.1:8000/ready
-http://127.0.0.1:8000/docs
+</details>
 
-Frontend
+<details>
+<summary><strong>3. Start the Next.js frontend</strong></summary>
 
 cd frontend
 
 npm install
 npm run dev
 
-Frontend:
-
 http://localhost:3000
 
-Validation
-
-cd frontend
+Production validation:
 
 npm run check
 npm run build
 
-cd backend
+</details>
 
-.\.venv\Scripts\python.exe -m pytest
+🔐 Configuration
 
-🔐 Environment variables
-
-Never commit real .env files.
-
-Backend .env
+<details>
+<summary><strong>Backend environment</strong></summary>
 
 APP_ENV=development
 APP_DEBUG=false
@@ -781,7 +572,10 @@ SMTP_USE_TLS=false
 CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
 CLOUDINARY_FOLDER=we-eat
 
-Frontend .env.local
+</details>
+
+<details>
+<summary><strong>Frontend environment</strong></summary>
 
 BACKEND_API_URL=http://127.0.0.1:8000
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -789,187 +583,139 @@ SESSION_COOKIE_NAME=we_eat_session
 
 Do not append /api/v1 to BACKEND_API_URL.
 
+</details>
+
 ☁️ Deployment
 
-FastAPI backend
-
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-
-Verify:
-
-https://YOUR_FASTAPI_URL/health
-https://YOUR_FASTAPI_URL/ready
-
-Netlify frontend
-
-Root netlify.toml:
-
-[build]
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>FastAPI</h3>
+      <pre><code>uvicorn app.main:app --host 0.0.0.0 --port $PORT</code></pre>
+      Verify <code>/health</code> and <code>/ready</code>.
+    </td>
+    <td width="50%" valign="top">
+      <h3>Netlify</h3>
+      <pre><code>[build]
   base = "frontend"
   command = "npm run build"
-  publish = ".next"
+  publish = ".next"</code></pre>
+      Use Node.js 20 and the Next.js adapter.
+    </td>
+  </tr>
+</table>
 
-[build.environment]
-  NODE_VERSION = "20"
+📁 Repository map
 
-Netlify variables:
+<details>
+<summary><strong>Open project structure</strong></summary>
 
-BACKEND_API_URL=https://YOUR_FASTAPI_URL
-NEXT_PUBLIC_SITE_URL=https://YOUR_NETLIFY_URL
-SESSION_COOKIE_NAME=we_eat_session
+We Eat/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   ├── lib/
+│   │   └── types/
+│   ├── package.json
+│   └── next.config.ts
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   └── services/
+│   ├── alembic/
+│   ├── scripts/
+│   ├── tests/
+│   └── pyproject.toml
+│
+├── database/
+├── netlify.toml
+└── README.md
 
-🔒 Security model
+</details>
 
-Authentication
+🗺 Roadmap
 
-OTP-verified registration
+<table>
+  <tr>
+    <td>🔔 Push notifications</td>
+    <td>🗺 Map-based discovery</td>
+    <td>🌐 Bangla and English UI</td>
+  </tr>
+  <tr>
+    <td>🏪 Organization verification</td>
+    <td>⏳ Expiry reminders</td>
+    <td>♿ Accessibility audit</td>
+  </tr>
+  <tr>
+    <td>📱 Native app wrapper</td>
+    <td>📍 Trusted pickup points</td>
+    <td>🚦 Advanced anti-spam controls</td>
+  </tr>
+</table>
 
-username or email login
+⚠️ Responsible use
 
-Argon2 password hashing
+We Eat helps people coordinate food sharing, but software cannot independently certify food safety.
 
-signed JWT access token
-
-HTTP-only cookie
-
-account token versioning
-
-suspended-account blocking
-
-Authorization
-
-backend-enforced permissions
-
-live database role checks
-
-owner-only listing management
-
-private proposal endpoints
-
-moderator and administrator separation
-
-Abuse resistance
-
-proposal ownership checks
-
-completion sequencing
-
-duplicate review prevention
-
-duplicate reputation prevention
-
-one-time cancellation review
-
-report investigation
-
-account suspension
-
-role-change session invalidation
-
-📸 Screenshots
-
-Create docs/screenshots/ and add your final screenshots using these names.
-
-<div align="center">
-
-Home
-
-Find Food
-
-
-
-
-
-Listing and Proposals
-
-Dashboard
-
-
-
-
-
-Mobile Navigation
-
-Dark Mode
-
-
-
-
-
-</div>
-
-🗺️ Roadmap
-
-Push notifications
-
-Map-based local discovery
-
-Bangla and English interfaces
-
-Restaurant and organization verification
-
-Food-safety expiry reminders
-
-Moderation analytics
-
-Accessibility audit
-
-Android and iOS wrappers
-
-Trusted community pickup locations
-
-Advanced rate limiting and anti-spam controls
+Providers must describe food honestly. Receivers must use personal judgment. A public launch should include food-safety guidance, community rules, a privacy policy and terms of use.
 
 🤝 Contributing
 
-Fork the repository.
-
-Create a feature branch.
-
 git checkout -b feature/your-feature
-
-Commit and push.
-
 git commit -m "Add your feature"
 git push origin feature/your-feature
 
-Open a pull request.
+Please preserve the architecture:
 
-Preserve the architecture:
-
-Next.js frontend
-→ Next.js API proxy
-→ FastAPI backend
-→ Neon PostgreSQL and Cloudinary
+Next.js → Next.js API proxy → FastAPI → Neon PostgreSQL / Cloudinary
 
 Do not bypass backend authorization or expose private pickup data.
 
-⚠️ Responsible-use notice
+👨‍💻 Author
 
-We Eat helps communities coordinate food sharing, but software cannot independently certify food safety.
+<table>
+  <tr>
+    <td>
+      <strong>Md Mahruf Alam</strong><br />
+      Full-stack developer · System builder · Problem solver
+    </td>
+    <td>
+      <a href="https://github.com/miniSOWAD">GitHub</a><br />
+      <a href="https://www.linkedin.com/in/md-mahruf-alam-sowad-397aaa309/">LinkedIn</a><br />
+      <a href="mailto:baisakh2015@gmail.com">Email</a>
+    </td>
+  </tr>
+</table>
 
-Providers must describe food honestly. Receivers must use personal judgment. A public launch should include local food-safety guidance, community rules, a privacy policy and terms of use.
+⭐ Support the project
 
-📄 License
+If We Eat is useful:
 
-Add a license before public distribution.
+star the repository;
 
-Example:
+share the project;
 
-MIT License
-Copyright (c) 2026 YOUR_NAME
+report bugs responsibly;
 
-<div align="center">
+suggest practical features;
 
-Built to move good food—not waste—from one table to another.
+contribute improvements.
 
-<img
-src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=18&pause=1200&color=AAC4F5&center=true&vCenter=true&width=700&lines=Share+responsibly.;Coordinate+safely.;Build+community+trust."
-alt="Animated closing message"
-/>
+<p align="center">
+  <strong>Good food deserves a second table.</strong>
+</p>
 
-We Eat
+<p align="center">
+  <img
+    src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=18&pause=1100&color=8CA9FF&center=true&vCenter=true&width=680&lines=Share+responsibly.;Coordinate+safely.;Build+community+trust."
+    alt="Animated closing message"
+  />
+</p>
 
-<a href="YOUR_NETLIFY_URL">Live application</a>·<a href="mailto:YOUR_CONTACT_EMAIL">Contact</a>
-
-</div>
