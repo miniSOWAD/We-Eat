@@ -20,6 +20,13 @@ REQUIRED_OPERATIONS = {
     ("post", "/api/v1/reports"),
     ("get", "/api/v1/reports/moderation"),
     ("get", "/api/v1/admin/stats"),
+    ("get", "/api/v1/admin/users"),
+    ("get", "/api/v1/admin/moderators"),
+    ("post", "/api/v1/admin/users/{user_id}/make-moderator"),
+    ("post", "/api/v1/admin/users/{user_id}/revoke-moderator"),
+    ("post", "/api/v1/admin/users/{user_id}/suspend"),
+    ("post", "/api/v1/admin/users/{user_id}/unsuspend"),
+    ("post", "/api/v1/users/avatar"),
     ("get", "/api/v1/system/ready"),
 }
 
