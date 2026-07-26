@@ -17,26 +17,32 @@ def masked_database_url() -> str:
 
 def main() -> int:
     print("We Eat backend configuration")
-    print(f"  environment: {settings.app_env}")
-    print(f"  database:    {masked_database_url()}")
-    print(f"  CORS:        {', '.join(settings.cors_origin_list)}")
-    print(f"  email mode:  {settings.email_mode}")
-    print(
-        "  cloudinary:  "
-        + ("configured" if settings.cloudinary_cloud_name else "not configured")
-    )
+    print(f"  environment:       {settings.app_env}")
+    print(f"  database:          {masked_database_url()}")
+    print(f"  CORS:              {', '.join(settings.cors_origin_list)}")
+    print(f"  email requested:   {settings.email_mode}")
+    print(f"  email effective:   {settings.effective_email_mode}")
+    print(f"  email configured:  {settings.email_is_configured}")
+    print(f"  SMTP host:         {settings.effective_smtp_host or 'not set'}")
+    print(f"  email sender:      {settings.smtp_from_email}")
+    print(f"  cloudinary:        {settings.cloudinary_is_configured}")
+    print(f"  cloudinary source: {settings.cloudinary_configuration_source}")
 
     problems: list[str] = []
     if settings.jwt_secret.startswith("replace-"):
         problems.append("JWT_SECRET still uses the example value")
     if settings.otp_pepper.startswith("replace-"):
         problems.append("OTP_PEPPER still uses the example value")
-    if settings.email_mode == "smtp" and not settings.smtp_host:
-        problems.append("EMAIL_MODE is smtp but SMTP_HOST is empty")
+    if settings.effective_email_mode != "log" and not settings.email_is_configured:
+        problems.extend(settings.email_configuration_errors)
+    if not settings.cloudinary_is_configured:
+        problems.append(
+            "Set CLOUDINARY_URL or CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET"
+        )
 
     if problems:
         print("\nConfiguration problems:")
-        for problem in problems:
+        for problem in dict.fromkeys(problems):
             print(f"  - {problem}")
         return 1
 
