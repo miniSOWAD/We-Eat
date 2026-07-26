@@ -32,7 +32,7 @@
   border: 1px solid rgba(140, 169, 255, 0.18);
   border-radius: 999px;
   padding: 8px 12px;
-  background: rgba(255, 248, 222, 0.82);
+  background: color-mix(in srgb, var(--cream-soft) 82%, transparent);
   font-size: 0.8rem;
   font-weight: 850;
   letter-spacing: 0.02em;
@@ -92,7 +92,7 @@
   padding: 17px;
   border: 1px solid rgba(215, 224, 238, 0.86);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--surface);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(10px);
 }
@@ -161,7 +161,7 @@
 }
 
 .processSection {
-  background: linear-gradient(180deg, rgba(255, 248, 222, 0.65), rgba(255, 255, 255, 0));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cream-soft) 65%, transparent), transparent);
 }
 
 .processGrid {
@@ -175,7 +175,7 @@
   padding: 26px;
   border: 1px solid var(--line);
   border-radius: 22px;
-  background: rgba(255,255,255,.78);
+  background: var(--surface);
 }
 
 .processNumber {
@@ -224,7 +224,7 @@
   gap: 11px;
   padding: 13px;
   border-radius: 16px;
-  background: rgba(255,255,255,.58);
+  background: color-mix(in srgb, var(--surface-strong) 66%, transparent);
   line-height: 1.5;
 }
 
@@ -360,4 +360,9 @@
   .ctaActions {
     display: grid;
   }
+}
+
+:global(html[data-theme="dark"]) .hero::before { background: rgba(104,83,32,.25); }
+:global(html[data-theme="dark"]) .safetyBand {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--blue) 82%, #0d1421), var(--cream-soft));
 }
