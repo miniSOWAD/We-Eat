@@ -7,8 +7,8 @@
   border: 1px solid rgba(140, 169, 255, 0.18);
   border-radius: 32px;
   background:
-    radial-gradient(circle at 90% 10%, rgba(255,255,255,.7), transparent 30%),
-    linear-gradient(145deg, rgba(255,248,222,.9), rgba(170,196,245,.38));
+    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--surface-strong) 70%, transparent), transparent 30%),
+    linear-gradient(145deg, color-mix(in srgb, var(--cream-soft) 88%, transparent), color-mix(in srgb, var(--blue) 45%, transparent));
   box-shadow: var(--shadow);
 }
 
@@ -17,8 +17,8 @@
   display: grid;
   place-items: center;
   border-radius: 26px;
-  background: rgba(255,255,255,.62);
-  border: 1px solid rgba(255,255,255,.76);
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
 .heroVisualInner {
@@ -35,7 +35,7 @@
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 15px;
-  background: #fff;
+  background: var(--surface-strong);
   box-shadow: var(--shadow-sm);
   font-size: .83rem;
   font-weight: 760;
@@ -106,7 +106,7 @@
   padding: 18px 20px;
   border: 1px solid var(--line);
   border-radius: 17px;
-  background: rgba(255,255,255,.82);
+  background: var(--surface);
 }
 
 .faq summary {
@@ -169,7 +169,7 @@
   gap: 10px;
   padding: 12px;
   border-radius: 14px;
-  background: rgba(255,255,255,.65);
+  background: var(--surface);
   line-height: 1.55;
 }
 
@@ -209,4 +209,9 @@
   .rule {
     padding: 21px;
   }
+}
+
+:global(html[data-theme="dark"]) .warning {
+  border-color: rgba(255,154,145,.28);
+  background: linear-gradient(145deg, #321f20, #271d26);
 }
