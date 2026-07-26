@@ -56,7 +56,7 @@
   gap: 22px;
   align-items: center;
   padding: 27px;
-  background: linear-gradient(145deg, rgba(255,248,222,.9), rgba(170,196,245,.32));
+  background: linear-gradient(145deg, color-mix(in srgb, var(--cream-soft) 90%, transparent), color-mix(in srgb, var(--blue) 42%, transparent));
 }
 
 .attention h2 {
@@ -79,7 +79,7 @@
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(255,255,255,.76);
+  background: var(--surface);
 }
 
 .quickLink strong {
@@ -126,5 +126,50 @@
 
   .quickLink:last-child {
     grid-column: 1 / -1;
+  }
+}
+
+.integrationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.integrationCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 19px;
+}
+
+.integrationIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--blue-deep);
+  background: var(--surface-muted);
+}
+
+.integrationTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.integrationCard p {
+  margin: 7px 0 0;
+  color: var(--ink-soft);
+  font-size: .8rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .integrationGrid {
+    grid-template-columns: 1fr;
   }
 }
