@@ -12,17 +12,17 @@
 
 <img src="./frontend/public/logo.svg" alt="We Eat logo" width="190" />
 
-We Eat
+# We Eat
 
-Share surplus food. Rescue good meals. Build local trust.
+### Share surplus food. Rescue good meals. Build local trust.
 
 <img
-src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=22&pause=1000&color=8CA9FF&center=true&vCenter=true&width=800&lines=Free%2C+discounted+and+exchange+food+sharing;Private+pickup+and+controlled+handover+workflows;Reputation%2C+moderation+and+completion-based+reviews;A+mobile-first+community+marketplace"
-alt="Animated We Eat feature summary"
+  src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=22&pause=1000&color=8CA9FF&center=true&vCenter=true&width=800&lines=Free%2C+discounted+and+exchange+food+sharing;Private+pickup+and+controlled+handover+workflows;Reputation%2C+moderation+and+completion-based+reviews;A+mobile-first+community+marketplace"
+  alt="Animated We Eat feature summary"
 />
 
 <p>
-  <a href="https://we-eat-live.netlify.app"><strong>Live Application</strong></a>
+  <a href="https://we-eat-live.netlify.app/"><strong>Live Application</strong></a>
   ·
   <a href="#-local-development"><strong>Run Locally</strong></a>
 </p>
@@ -44,7 +44,9 @@ alt="Animated We Eat feature summary"
 
 </div>
 
-🌍 Project at a glance
+---
+
+## 🌍 Project at a glance
 
 <table>
   <tr>
@@ -67,7 +69,7 @@ alt="Animated We Eat feature summary"
   </tr>
 </table>
 
-We Eat is a mobile-first food-sharing marketplace that helps households, individuals, restaurants and community groups move usable surplus food to people nearby before it becomes waste.
+**We Eat** is a mobile-first food-sharing marketplace that helps households, individuals, restaurants and community groups move usable surplus food to people nearby before it becomes waste.
 
 It supports:
 
@@ -77,9 +79,11 @@ It supports:
   <img src="https://img.shields.io/badge/EXCHANGE-Trade%20food%20for%20food-8CA9FF?style=for-the-badge" alt="Exchange listing" />
 </p>
 
-We Eat is not just a listing board. It combines verified accounts, private proposals, scheduled handovers, reputation, cancellation accountability, reports and completion-based reviews.
+> We Eat is not just a listing board. It combines verified accounts, private proposals, scheduled handovers, reputation, cancellation accountability, reports and completion-based reviews.
 
-🎯 Why We Eat
+---
+
+## 🎯 Why We Eat
 
 <table>
   <tr>
@@ -106,7 +110,9 @@ We Eat is not just a listing board. It combines verified accounts, private propo
   </tr>
 </table>
 
-⚡ What the platform offers
+---
+
+## ⚡ What the platform offers
 
 <table>
   <tr>
@@ -144,57 +150,42 @@ We Eat is not just a listing board. It combines verified accounts, private propo
 
 <br />
 
-Provider tools
+### Provider tools
 
-Upload listing images through Cloudinary
+- Upload listing images through Cloudinary
+- Add preparation time, expiry, quantity, allergens, city and area
+- Store pickup details separately from public listing data
+- Review private proposals
+- Accept, reject or schedule a handover
+- Confirm delivery only after receiver confirmation
+- Remove or complete listings
 
-Add preparation time, expiry, quantity, allergens, city and area
+### Receiver tools
 
-Store pickup details separately from public listing data
+- Save listings
+- Submit a free, discounted or exchange proposal
+- Follow proposal status through a floating status dock
+- View accepted handover time and instructions
+- Confirm receipt
+- Review the provider after completion
 
-Review private proposals
+### Account tools
 
-Accept, reject or schedule a handover
-
-Confirm delivery only after receiver confirmation
-
-Remove or complete listings
-
-Receiver tools
-
-Save listings
-
-Submit a free, discounted or exchange proposal
-
-Follow proposal status through a floating status dock
-
-View accepted handover time and instructions
-
-Confirm receipt
-
-Review the provider after completion
-
-Account tools
-
-Email OTP registration
-
-Username or email login
-
-Profile photo upload
-
-Dark mode
-
-User, moderator and administrator dashboards
-
-Persistent reputation notifications
-
-Report submission
+- Email OTP registration
+- Username or email login
+- Profile photo upload
+- Dark mode
+- User, moderator and administrator dashboards
+- Persistent reputation notifications
+- Report submission
 
 </details>
 
-🛡 Trust & fraud resistance
+---
 
-The platform does not claim that software can eliminate fraud. It reduces risk by creating friction, evidence and visible accountability.
+## 🛡 Trust & fraud resistance
+
+The platform does not claim that software can eliminate fraud. It reduces risk by creating **friction, evidence and visible accountability**.
 
 <table>
   <tr>
@@ -243,10 +234,13 @@ The platform does not claim that software can eliminate fraud. It reduces risk b
   </tr>
 </table>
 
-Important: reputation is a decision-support signal, not proof of identity, food safety or future behavior.
+> **Important:** reputation is a decision-support signal, not proof of identity, food safety or future behavior.
 
-🔄 How a handover works
+---
 
+## 🔄 How a handover works
+
+```mermaid
 sequenceDiagram
     actor P as Provider
     actor R as Receiver
@@ -265,105 +259,32 @@ sequenceDiagram
     W->>D: Complete deal + award points
     W-->>P: Review unlocked
     W-->>R: Review unlocked
+```
 
 <p align="center">
   <strong>Request → Review → Accept → Schedule → Receive → Deliver → Review</strong>
 </p>
 
-👥 Role model
+---
 
-Capability
+## 👥 Role model
 
-Visitor
+| Capability | Visitor | User | Moderator | Admin |
+|---|:---:|:---:|:---:|:---:|
+| Browse listings | ✅ | ✅ | ✅ | ✅ |
+| Create listings and proposals | — | ✅ | ✅ | ✅ |
+| Manage own food and deals | — | ✅ | ✅ | ✅ |
+| Submit reports | — | ✅ | ✅ | ✅ |
+| Suspend basic users | — | — | ✅ | ✅ |
+| Review reports and listings | — | — | ✅ | ✅ |
+| Promote or revoke moderators | — | — | — | ✅ |
+| View administrative audit history | — | — | ✅ | ✅ |
 
-User
+---
 
-Moderator
+## 🏗 System design
 
-Admin
-
-Browse listings
-
-✅
-
-✅
-
-✅
-
-✅
-
-Create listings and proposals
-
-—
-
-✅
-
-✅
-
-✅
-
-Manage own food and deals
-
-—
-
-✅
-
-✅
-
-✅
-
-Submit reports
-
-—
-
-✅
-
-✅
-
-✅
-
-Suspend basic users
-
-—
-
-—
-
-✅
-
-✅
-
-Review reports and listings
-
-—
-
-—
-
-✅
-
-✅
-
-Promote or revoke moderators
-
-—
-
-—
-
-—
-
-✅
-
-View administrative audit history
-
-—
-
-—
-
-✅
-
-✅
-
-🏗 System design
-
+```mermaid
 flowchart LR
     Browser["Mobile / Desktop Browser"]
     Next["Next.js Frontend"]
@@ -379,6 +300,7 @@ flowchart LR
     API --> DB
     API --> Media
     API --> Mail
+```
 
 <table>
   <tr>
@@ -403,7 +325,9 @@ flowchart LR
   </tr>
 </table>
 
-🗄 Data model
+---
+
+## 🗄 Data model
 
 <p align="center">
   <img src="https://img.shields.io/badge/13-Core%20Tables-14213D?style=for-the-badge" alt="Core tables" />
@@ -411,29 +335,13 @@ flowchart LR
   <img src="https://img.shields.io/badge/Async-PostgreSQL-4169E1?style=for-the-badge" alt="Async PostgreSQL" />
 </p>
 
-Domain
-
-Main tables
-
-Identity
-
-users, otp_codes
-
-Food
-
-listings, listing_images, listing_private_details
-
-Community
-
-favorites, comments, reports
-
-Transactions
-
-orders, exchange_requests, reviews
-
-Accountability
-
-audit_logs, point_notifications
+| Domain | Main tables |
+|---|---|
+| Identity | `users`, `otp_codes` |
+| Food | `listings`, `listing_images`, `listing_private_details` |
+| Community | `favorites`, `comments`, `reports` |
+| Transactions | `orders`, `exchange_requests`, `reviews` |
+| Accountability | `audit_logs`, `point_notifications` |
 
 <details>
 <summary><strong>Database portability</strong></summary>
@@ -442,23 +350,22 @@ audit_logs, point_notifications
 
 The repository includes:
 
-a complete schema for a brand-new Neon database;
+- a complete schema for a brand-new Neon database;
+- incremental Alembic migrations;
+- verification SQL;
+- indexes, foreign keys, enums and constraints.
 
-incremental Alembic migrations;
+A fresh database can be prepared and connected by updating only the backend `DATABASE_URL`.
 
-verification SQL;
-
-indexes, foreign keys, enums and constraints.
-
-A fresh database can be prepared and connected by updating only the backend DATABASE_URL.
-
-Schema initialization creates an empty compatible database. Existing records require a PostgreSQL data export and import.
+> Schema initialization creates an empty compatible database. Existing records require a PostgreSQL data export and import.
 
 </details>
 
-📸 Product preview
+---
 
-Add final screenshots under docs/screenshots/ using these filenames.
+## 📸 Product preview
+
+Add final screenshots under `docs/screenshots/` using these filenames.
 
 <table>
   <tr>
@@ -479,33 +386,33 @@ Add final screenshots under docs/screenshots/ using these filenames.
   </tr>
 </table>
 
-🚀 Quick start
+---
+
+## 🚀 Quick start
 
 <details open>
 <summary><strong>1. Clone and prepare the project</strong></summary>
 
+```bash
 git clone https://github.com/miniSOWAD/We-Eat.git
 cd We-Eat
+```
 
 Requirements:
 
-Node.js 20.9+
-
-npm
-
-Python 3.12+
-
-Neon PostgreSQL
-
-Cloudinary
-
-SMTP account or Gmail App Password
+- Node.js 20.9+
+- npm
+- Python 3.12+
+- Neon PostgreSQL
+- Cloudinary
+- SMTP account or Gmail App Password
 
 </details>
 
 <details>
 <summary><strong>2. Start the FastAPI backend</strong></summary>
 
+```powershell
 cd backend
 
 py -3.13 -m venv .venv
@@ -518,35 +425,47 @@ py -3.13 -m venv .venv
   --reload `
   --host 127.0.0.1 `
   --port 8000
+```
 
+```text
 API:   http://127.0.0.1:8000
 Docs:  http://127.0.0.1:8000/docs
 Ready: http://127.0.0.1:8000/ready
+```
 
 </details>
 
 <details>
 <summary><strong>3. Start the Next.js frontend</strong></summary>
 
+```powershell
 cd frontend
 
 npm install
 npm run dev
+```
 
+```text
 http://localhost:3000
+```
 
 Production validation:
 
+```powershell
 npm run check
 npm run build
+```
 
 </details>
 
-🔐 Configuration
+---
+
+## 🔐 Configuration
 
 <details>
 <summary><strong>Backend environment</strong></summary>
 
+```env
 APP_ENV=development
 APP_DEBUG=false
 
@@ -571,21 +490,26 @@ SMTP_USE_TLS=false
 
 CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
 CLOUDINARY_FOLDER=we-eat
+```
 
 </details>
 
 <details>
 <summary><strong>Frontend environment</strong></summary>
 
+```env
 BACKEND_API_URL=http://127.0.0.1:8000
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 SESSION_COOKIE_NAME=we_eat_session
+```
 
-Do not append /api/v1 to BACKEND_API_URL.
+Do not append `/api/v1` to `BACKEND_API_URL`.
 
 </details>
 
-☁️ Deployment
+---
+
+## ☁️ Deployment
 
 <table>
   <tr>
@@ -605,11 +529,14 @@ Do not append /api/v1 to BACKEND_API_URL.
   </tr>
 </table>
 
-📁 Repository map
+---
+
+## 📁 Repository map
 
 <details>
 <summary><strong>Open project structure</strong></summary>
 
+```text
 We Eat/
 ├── frontend/
 │   ├── public/
@@ -637,10 +564,13 @@ We Eat/
 ├── database/
 ├── netlify.toml
 └── README.md
+```
 
 </details>
 
-🗺 Roadmap
+---
+
+## 🗺 Roadmap
 
 <table>
   <tr>
@@ -660,25 +590,35 @@ We Eat/
   </tr>
 </table>
 
-⚠️ Responsible use
+---
+
+## ⚠️ Responsible use
 
 We Eat helps people coordinate food sharing, but software cannot independently certify food safety.
 
 Providers must describe food honestly. Receivers must use personal judgment. A public launch should include food-safety guidance, community rules, a privacy policy and terms of use.
 
-🤝 Contributing
+---
 
+## 🤝 Contributing
+
+```bash
 git checkout -b feature/your-feature
 git commit -m "Add your feature"
 git push origin feature/your-feature
+```
 
 Please preserve the architecture:
 
+```text
 Next.js → Next.js API proxy → FastAPI → Neon PostgreSQL / Cloudinary
+```
 
 Do not bypass backend authorization or expose private pickup data.
 
-👨‍💻 Author
+---
+
+## 👨‍💻 Author
 
 <table>
   <tr>
@@ -694,19 +634,17 @@ Do not bypass backend authorization or expose private pickup data.
   </tr>
 </table>
 
-⭐ Support the project
+---
+
+## ⭐ Support the project
 
 If We Eat is useful:
 
-star the repository;
-
-share the project;
-
-report bugs responsibly;
-
-suggest practical features;
-
-contribute improvements.
+- star the repository;
+- share the project;
+- report bugs responsibly;
+- suggest practical features;
+- contribute improvements.
 
 <p align="center">
   <strong>Good food deserves a second table.</strong>
@@ -719,3 +657,4 @@ contribute improvements.
   />
 </p>
 
+![We Eat footer](https://capsule-render.vercel.app/api?type=waving&height=140&color=0:8CA9FF,55:AAC4F5,100:FFF2C6&section=footer)
