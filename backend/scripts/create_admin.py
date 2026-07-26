@@ -14,8 +14,10 @@ from app.models.models import User, UserRole, UserStatus
 async def main() -> None:
     async with SessionLocal() as session:
         email = settings.admin_email.lower().strip()
+        username = settings.admin_username.lower().strip()
         user = await session.scalar(select(User).where(User.email == email))
         if user:
+            user.username = username
             user.role = UserRole.ADMIN
             user.status = UserStatus.ACTIVE
             user.password_hash = hash_password(settings.admin_password)
@@ -24,6 +26,7 @@ async def main() -> None:
         else:
             user = User(
                 email=email,
+                username=username,
                 password_hash=hash_password(settings.admin_password),
                 display_name=settings.admin_name,
                 role=UserRole.ADMIN,
