@@ -124,7 +124,7 @@ export function CreateListingForm() {
 
       <section className={`${styles.section} ${styles.privateSection}`}>
         <div className={styles.sectionHeader}>
-          <div><h2>4. Private collection details</h2><p>These fields are not returned by the public listing API.</p></div>
+          <div><h2>4. Private collection details</h2><p>Only accepted participants can view these collection details.</p></div>
           <span className="iconBox"><LockKeyhole size={20} /></span>
         </div>
         <div className="field"><label>Exact pickup address</label><textarea className="textarea" name="pickup_address" required /></div>

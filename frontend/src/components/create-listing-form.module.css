@@ -108,3 +108,13 @@
     flex-direction: column;
   }
 }
+
+:global(html[data-theme="dark"]) .section {
+  border-color: var(--line);
+}
+:global(html[data-theme="dark"]) .checkbox {
+  color: #d8e1f2;
+}
+:global(html[data-theme="dark"]) .privateSection {
+  background: linear-gradient(145deg, #272719, #223758);
+}

@@ -111,12 +111,12 @@ export default async function HomePage() {
           <div className={styles.safetyList}>
             <div><CheckCircle2 size={20} /><span><strong>Public:</strong> food, general area, quantity and expiry time.</span></div>
             <div><CheckCircle2 size={20} /><span><strong>Private:</strong> exact pickup address and direct contact information.</span></div>
-            <div><CheckCircle2 size={20} /><span><strong>Accountable:</strong> database-backed requests, reports and completion records.</span></div>
+            <div><CheckCircle2 size={20} /><span><strong>Accountable:</strong> clear requests, reports and completion history.</span></div>
           </div>
         </div>
       </section>
 
-      <section className="section" style={{ background: "rgba(255,248,222,.68)" }} data-reveal>
+      <section className={`section ${styles.feedSection}`} data-reveal>
         <div className="container">
           <div className={styles.sectionHead}>
             <div><span className="kicker">Community feed</span><h2 className="sectionTitle" style={{ marginTop: 14 }}>Recently shared</h2><p className="sectionLead">Fresh listings from the community.</p></div>

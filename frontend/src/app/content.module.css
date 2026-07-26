@@ -215,3 +215,18 @@
   border-color: rgba(255,154,145,.28);
   background: linear-gradient(145deg, #321f20, #271d26);
 }
+
+:global(html[data-theme="dark"]) .hero {
+  border-color: rgba(111,146,246,.2);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(111,146,246,.12), transparent 32%),
+    linear-gradient(145deg, #182235, #1e2d47);
+}
+:global(html[data-theme="dark"]) .stepNumber {
+  color: #f6f8ff;
+  background: linear-gradient(145deg, #3a3423, #3c5f9f);
+}
+:global(html[data-theme="dark"]) .ruleIcon {
+  color: #f3e6b2;
+  background: #3b3526;
+}

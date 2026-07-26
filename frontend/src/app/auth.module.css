@@ -168,3 +168,17 @@
 :global(html[data-theme="dark"]) .page::before { background: rgba(104,83,32,.27); }
 :global(html[data-theme="dark"]) .page::after { background: rgba(71,101,169,.25); }
 :global(html[data-theme="dark"]) .form :global(form a) { color: var(--blue-deep); }
+
+:global(html[data-theme="dark"]) .visual {
+  background:
+    radial-gradient(circle at 85% 12%, rgba(111,146,246,.16), transparent 28%),
+    linear-gradient(155deg, #2f2b1e 0 36%, #243a63 36% 70%, #365a99 70%);
+}
+:global(html[data-theme="dark"]) .benefits div {
+  border-color: rgba(170,196,245,.2);
+  background: rgba(18,27,43,.56);
+}
+:global(html[data-theme="dark"]) .mobileTrust {
+  border: 1px solid rgba(111,146,246,.18);
+  background: linear-gradient(145deg, #202b3e, #243a61);
+}

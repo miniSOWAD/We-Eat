@@ -756,3 +756,122 @@ html[data-theme="dark"] .managementTable tbody tr:hover {
     width: 100%;
   }
 }
+
+
+/* v1.2.2 polished dark theme and motion surfaces */
+.motionShell {
+  transform-origin: 50% 0;
+}
+
+[data-hero-item],
+[data-reveal],
+[data-stagger-grid] > *,
+[data-gsap-hover] {
+  will-change: transform, opacity;
+}
+
+.quickLink,
+.card {
+  transition: border-color .28s ease, box-shadow .32s ease, background-color .28s ease;
+}
+
+html[data-theme="dark"] ::selection {
+  color: #f8fbff;
+  background: #385b9c;
+}
+
+html[data-theme="dark"] .kicker {
+  color: #c4d3ff;
+  border-color: rgba(111, 146, 246, .28);
+  background: rgba(46, 73, 121, .42);
+}
+
+html[data-theme="dark"] .field label {
+  color: #dfe7f7;
+}
+
+html[data-theme="dark"] .badgeFree {
+  color: #f3e6b2;
+  background: #3b3526;
+}
+
+html[data-theme="dark"] .badgeDiscounted {
+  color: #dbe6ff;
+  background: #2b416c;
+}
+
+html[data-theme="dark"] .badgeExchange {
+  color: #f4f7ff;
+  background: #385b9c;
+}
+
+html[data-theme="dark"] .badgeMuted {
+  color: #b9c5da;
+  background: #222e42;
+}
+
+html[data-theme="dark"] .iconBox {
+  color: #eef3ff;
+  border: 1px solid rgba(111, 146, 246, .18);
+  background: linear-gradient(145deg, #2d3441, #2d4778);
+}
+
+html[data-theme="dark"] .statusPill {
+  border: 1px solid rgba(111, 146, 246, .14);
+  background: #202b3e;
+}
+
+html[data-theme="dark"] .dataTableWrap {
+  background: #121c2c;
+  border-color: #2d3b52;
+}
+
+html[data-theme="dark"] .dataTable th {
+  color: #bcc8dc;
+  background: #1d293c;
+}
+
+html[data-theme="dark"] .dataTable tbody tr:hover {
+  background: rgba(111, 146, 246, .055);
+}
+
+html[data-theme="dark"] .empty {
+  color: var(--ink);
+  background: linear-gradient(145deg, rgba(22, 31, 47, .96), rgba(28, 39, 58, .96));
+}
+
+html[data-theme="dark"] .softPanel {
+  color: var(--ink);
+  background: linear-gradient(145deg, rgba(29, 38, 55, .96), rgba(31, 48, 78, .82));
+}
+
+html[data-theme="dark"] .buttonGhost {
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .22);
+}
+
+html[data-theme="dark"] .buttonGhost:hover {
+  border-color: #4a5e7e;
+  background: #223048;
+}
+
+html[data-theme="dark"] .help {
+  color: #aeb9cd;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #77849a;
+}
+
+html[data-theme="dark"] select option {
+  color: #f1f5ff;
+  background: #151e2e;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover,
+  .quickLink:hover {
+    border-color: color-mix(in srgb, var(--blue-strong) 45%, var(--line));
+    box-shadow: var(--shadow-lg);
+  }
+}

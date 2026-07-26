@@ -12,7 +12,7 @@ export default function Page() {
         <aside className={styles.visual}>
           <span className="badge badgeDiscounted">Create an account</span>
           <div><h2>Share locally. Waste less.</h2><p>Your public profile shows only community-safe information. Exact pickup addresses remain private.</p></div>
-          <div className={styles.benefits}><div><MailCheck size={17} /> Email OTP verification</div><div><LockKeyhole size={17} /> Private collection details</div><div><ShieldCheck size={17} /> Role-based protection</div></div>
+          <div className={styles.benefits}><div><MailCheck size={17} /> Verified email</div><div><LockKeyhole size={17} /> Private collection details</div><div><ShieldCheck size={17} /> Community moderation</div></div>
         </aside>
         <section className={styles.form}>
           <h1>Join We Eat</h1>

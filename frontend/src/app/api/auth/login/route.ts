@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     });
     const data = await readUpstreamPayload(response);
     if (!response.ok) return NextResponse.json(data, { status: response.status });
-    if (typeof data.access_token !== "string" || !data.user) return NextResponse.json({ detail: "Backend login response is incomplete." }, { status: 502 });
+    if (typeof data.access_token !== "string" || !data.user) return NextResponse.json({ detail: "Sign-in could not be completed. Please try again." }, { status: 502 });
     const result = NextResponse.json({ user: data.user });
     result.cookies.set(env.cookieName, data.access_token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7 });
     return result;

@@ -31,10 +31,20 @@ export function MotionShell({ children }: { children: ReactNode }) {
         return;
       }
 
-      gsap.fromTo(
+      gsap.defaults({ overwrite: "auto" });
+
+      const routeTimeline = gsap.timeline();
+      routeTimeline.fromTo(
         root,
-        { opacity: 0.72 },
-        { opacity: 1, duration: 0.32, ease: "power2.out" },
+        { autoAlpha: 0, y: 10, filter: "blur(7px)" },
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.62,
+          ease: "power3.out",
+          clearProps: "transform,filter,opacity,visibility",
+        },
       );
 
       const heroItems = gsap.utils.toArray<HTMLElement>(
@@ -44,13 +54,21 @@ export function MotionShell({ children }: { children: ReactNode }) {
       if (heroItems.length) {
         gsap.fromTo(
           heroItems,
-          { autoAlpha: 0, y: 28 },
+          {
+            autoAlpha: 0,
+            y: 42,
+            scale: 0.975,
+            rotateX: 4,
+            transformOrigin: "50% 100%",
+          },
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.72,
-            stagger: 0.09,
-            ease: "power3.out",
+            scale: 1,
+            rotateX: 0,
+            duration: 0.92,
+            stagger: 0.1,
+            ease: "power4.out",
             clearProps: "transform,opacity,visibility",
           },
         );
@@ -61,51 +79,120 @@ export function MotionShell({ children }: { children: ReactNode }) {
         root,
       );
 
-      revealItems.forEach((element) => {
-        gsap.fromTo(
-          element,
-          { autoAlpha: 0, y: 30, scale: 0.985 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.66,
-            ease: "power3.out",
-            clearProps: "transform,opacity,visibility",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 91%",
-              once: true,
+      ScrollTrigger.batch(revealItems, {
+        start: "top 90%",
+        once: true,
+        interval: 0.08,
+        batchMax: 4,
+        onEnter: (batch) =>
+          gsap.fromTo(
+            batch,
+            {
+              autoAlpha: 0,
+              y: 54,
+              scale: 0.975,
+              filter: "blur(8px)",
             },
-          },
-        );
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              duration: 0.9,
+              stagger: 0.1,
+              ease: "power4.out",
+              clearProps: "transform,filter,opacity,visibility",
+            },
+          ),
       });
 
       const cards = gsap.utils.toArray<HTMLElement>(
-        "[data-stagger-grid] > .card, [data-stagger-grid] > a.card",
+        "[data-stagger-grid] > .card, [data-stagger-grid] > a, [data-stagger-grid] > article",
         root,
       );
       if (cards.length) {
         ScrollTrigger.batch(cards, {
           start: "top 92%",
           once: true,
+          interval: 0.08,
+          batchMax: 6,
           onEnter: (batch) =>
             gsap.fromTo(
               batch,
-              { autoAlpha: 0, y: 24 },
+              { autoAlpha: 0, y: 38, scale: 0.96, rotateX: 3 },
               {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.58,
-                stagger: 0.07,
-                ease: "power3.out",
+                scale: 1,
+                rotateX: 0,
+                duration: 0.82,
+                stagger: 0.085,
+                ease: "back.out(1.25)",
                 clearProps: "transform,opacity,visibility",
               },
             ),
         });
       }
 
+      const hoverTargets = gsap.utils.toArray<HTMLElement>(
+        ".button, .quickLink, [data-gsap-hover]",
+        root,
+      );
+      const cleanups: Array<() => void> = [];
+
+      hoverTargets.forEach((element) => {
+        const onEnter = () =>
+          gsap.to(element, {
+            y: -4,
+            scale: 1.012,
+            duration: 0.28,
+            ease: "power2.out",
+          });
+        const onLeave = () =>
+          gsap.to(element, {
+            y: 0,
+            scale: 1,
+            duration: 0.38,
+            ease: "elastic.out(1, 0.55)",
+            clearProps: "transform",
+          });
+        const onDown = () =>
+          gsap.to(element, { scale: 0.975, duration: 0.12, ease: "power2.out" });
+        const onUp = () =>
+          gsap.to(element, { scale: 1.012, duration: 0.2, ease: "power2.out" });
+
+        element.addEventListener("pointerenter", onEnter);
+        element.addEventListener("pointerleave", onLeave);
+        element.addEventListener("pointerdown", onDown);
+        element.addEventListener("pointerup", onUp);
+
+        cleanups.push(() => {
+          element.removeEventListener("pointerenter", onEnter);
+          element.removeEventListener("pointerleave", onLeave);
+          element.removeEventListener("pointerdown", onDown);
+          element.removeEventListener("pointerup", onUp);
+        });
+      });
+
+      const parallaxItems = gsap.utils.toArray<HTMLElement>(
+        "[data-parallax]",
+        root,
+      );
+      parallaxItems.forEach((element) => {
+        gsap.to(element, {
+          yPercent: -8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: element,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.7,
+          },
+        });
+      });
+
       requestAnimationFrame(() => ScrollTrigger.refresh());
+      return () => cleanups.forEach((cleanup) => cleanup());
     },
     { scope, dependencies: [pathname], revertOnUpdate: true },
   );

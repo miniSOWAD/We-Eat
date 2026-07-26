@@ -2,25 +2,15 @@ import Link from "next/link";
 import {
   Bookmark,
   CheckCircle2,
-  Cloud,
   FileWarning,
   History,
-  MailCheck,
-  MailWarning,
   ShieldCheck,
   Soup,
   UserCog,
   UsersRound,
 } from "lucide-react";
 import { backendFetch, getSession, getToken } from "@/lib/server-api";
-import type {
-  AdminStats,
-  Exchange,
-  Favorite,
-  IntegrationStatus,
-  Listing,
-  Order,
-} from "@/types";
+import type { AdminStats, Exchange, Favorite, Listing, Order } from "@/types";
 import styles from "./dashboard.module.css";
 
 async function safeList<T>(path: string, token?: string): Promise<T[]> {
@@ -46,22 +36,12 @@ export default async function Page() {
       completed_exchanges: 0,
       rescued_items: 0,
     };
-    let integrations: IntegrationStatus | null = null;
+
     try {
       stats = await backendFetch<AdminStats>("/admin/stats", {}, token);
     } catch {}
 
     const isAdmin = user.role === "ADMIN";
-    if (isAdmin) {
-      try {
-        integrations = await backendFetch<IntegrationStatus>(
-          "/admin/integrations/status",
-          {},
-          token,
-        );
-      } catch {}
-    }
-
     const cards = [
       { label: "Basic users", value: stats.users, icon: UsersRound },
       { label: "Moderators", value: stats.moderators, icon: UserCog },
@@ -77,13 +57,13 @@ export default async function Page() {
           </span>
           <h1 className="sectionTitle">Community operations</h1>
           <p className="sectionLead">
-            Review accounts, reports, listings and recorded actions from one persistent dashboard.
+            Manage members, review reports and keep community activity moving smoothly.
           </p>
         </div>
 
-        <div className={styles.metricGrid}>
+        <div className={styles.metricGrid} data-stagger-grid>
           {cards.map(({ label, value, icon: Icon }) => (
-            <div className={`card ${styles.metric}`} key={label}>
+            <div className={`card ${styles.metric}`} key={label} data-gsap-hover>
               <div className={styles.metricTop}>
                 <span className={styles.metricIcon}>
                   <Icon size={18} />
@@ -96,61 +76,14 @@ export default async function Page() {
           ))}
         </div>
 
-        {isAdmin && integrations && (
-          <div className={styles.integrationGrid}>
-            <div className={`card ${styles.integrationCard}`}>
-              <span className={styles.integrationIcon}>
-                {integrations.email.configured ? <MailCheck size={20} /> : <MailWarning size={20} />}
-              </span>
-              <div>
-                <div className={styles.integrationTitleRow}>
-                  <strong>Email OTP</strong>
-                  <span
-                    className="statusPill"
-                    data-status={integrations.email.configured ? "ACTIVE" : "SUSPENDED"}
-                  >
-                    {integrations.email.configured ? "READY" : "SETUP NEEDED"}
-                  </span>
-                </div>
-                <p>
-                  {integrations.email.configured
-                    ? `${integrations.email.mode.toUpperCase()} via ${integrations.email.smtp_host || "provider"}`
-                    : integrations.email.missing_settings.join(", ") || "Email provider is incomplete"}
-                </p>
-              </div>
-            </div>
-            <div className={`card ${styles.integrationCard}`}>
-              <span className={styles.integrationIcon}>
-                <Cloud size={20} />
-              </span>
-              <div>
-                <div className={styles.integrationTitleRow}>
-                  <strong>Cloudinary</strong>
-                  <span
-                    className="statusPill"
-                    data-status={integrations.cloudinary.configured ? "ACTIVE" : "SUSPENDED"}
-                  >
-                    {integrations.cloudinary.configured ? "READY" : "SETUP NEEDED"}
-                  </span>
-                </div>
-                <p>
-                  {integrations.cloudinary.configured
-                    ? `${integrations.cloudinary.cloud_name} · ${integrations.cloudinary.configuration_source}`
-                    : "Set CLOUDINARY_URL or the three Cloudinary credential variables"}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className={`card ${styles.attention}`}>
+        <div className={`card ${styles.attention}`} data-reveal>
           <div>
             <h2>
               {stats.open_reports
                 ? `${stats.open_reports} reports need attention`
                 : "The report queue is clear"}
             </h2>
-            <p>Investigate consistently and record a clear resolution note for every action.</p>
+            <p>Review each concern carefully and leave a clear, fair outcome.</p>
           </div>
           <Link
             className="button buttonPrimary"
@@ -160,20 +93,20 @@ export default async function Page() {
           </Link>
         </div>
 
-        <div className={styles.quickLinks}>
+        <div className={styles.quickLinks} data-stagger-grid>
           <Link
             className={styles.quickLink}
             href={isAdmin ? "/dashboard/admin/users" : "/dashboard/moderator/users"}
           >
             <UsersRound size={20} />
             <strong>Manage users</strong>
-            <span>Search accounts and control suspension status.</span>
+            <span>Search members and manage account access.</span>
           </Link>
           {isAdmin && (
             <Link className={styles.quickLink} href="/dashboard/admin/moderators">
               <UserCog size={20} />
               <strong>Manage moderators</strong>
-              <span>Promote or revoke moderator access.</span>
+              <span>Promote trusted members or update moderator access.</span>
             </Link>
           )}
           <Link
@@ -181,8 +114,8 @@ export default async function Page() {
             href={isAdmin ? "/dashboard/admin/audit-logs" : "/dashboard/moderator/audit-logs"}
           >
             <History size={20} />
-            <strong>Audit history</strong>
-            <span>Review recorded moderation activity.</span>
+            <strong>Activity history</strong>
+            <span>Review recent moderation decisions and account changes.</span>
           </Link>
         </div>
       </div>
@@ -213,9 +146,9 @@ export default async function Page() {
           Manage the food you listed, completed deals, saved items and account settings.
         </p>
       </div>
-      <div className={styles.metricGrid}>
+      <div className={styles.metricGrid} data-stagger-grid>
         {cards.map(({ label, value, icon: Icon }) => (
-          <div className={`card ${styles.metric}`} key={label}>
+          <div className={`card ${styles.metric}`} key={label} data-gsap-hover>
             <div className={styles.metricTop}>
               <span className={styles.metricIcon}>
                 <Icon size={18} />
@@ -227,7 +160,7 @@ export default async function Page() {
           </div>
         ))}
       </div>
-      <div className={`card ${styles.attention}`}>
+      <div className={`card ${styles.attention}`} data-reveal>
         <div>
           <h2>Keep your listings accurate</h2>
           <p>Remove unavailable food promptly and confirm a deal only after handover.</p>
@@ -236,7 +169,7 @@ export default async function Page() {
           Share food
         </Link>
       </div>
-      <div className={styles.quickLinks}>
+      <div className={styles.quickLinks} data-stagger-grid>
         <Link className={styles.quickLink} href="/dashboard/listings">
           <Soup size={20} />
           <strong>My listed food</strong>

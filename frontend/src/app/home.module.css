@@ -366,3 +366,39 @@
 :global(html[data-theme="dark"]) .safetyBand {
   background: linear-gradient(140deg, color-mix(in srgb, var(--blue) 82%, #0d1421), var(--cream-soft));
 }
+
+
+.feedSection {
+  border-block: 1px solid color-mix(in srgb, var(--line) 74%, transparent);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(170, 196, 245, .24), transparent 28rem),
+    linear-gradient(180deg, rgba(255, 248, 222, .74), rgba(247, 249, 255, .72));
+}
+
+:global(html[data-theme="dark"]) .feedSection {
+  border-color: rgba(111, 146, 246, .14);
+  background:
+    radial-gradient(circle at 14% 8%, rgba(66, 101, 168, .18), transparent 30rem),
+    linear-gradient(180deg, #111a29 0%, #0e1726 100%);
+}
+
+:global(html[data-theme="dark"]) .processSection {
+  background: linear-gradient(180deg, rgba(28, 42, 65, .72), rgba(13, 20, 33, 0));
+}
+
+:global(html[data-theme="dark"]) .safetyBand {
+  border: 1px solid rgba(111, 146, 246, .2);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(111, 146, 246, .14), transparent 32%),
+    linear-gradient(140deg, #18263b, #202b3d);
+}
+
+:global(html[data-theme="dark"]) .safetyList div {
+  border: 1px solid rgba(111, 146, 246, .14);
+  background: rgba(15, 24, 39, .62);
+}
+
+:global(html[data-theme="dark"]) .cta {
+  border: 1px solid rgba(111, 146, 246, .18);
+  background: linear-gradient(145deg, #121d2e, #17253b);
+}

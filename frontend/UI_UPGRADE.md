@@ -1,25 +1,12 @@
-# We Eat UI Upgrade v1.2.0
+# We Eat UI upgrade v1.2.2
 
-## Identity and account UI
+This release focuses on presentation only:
 
-- Username registration and username/email login.
-- Header account action shows only the profile avatar.
-- Avatar fallback uses the first two alphanumeric characters of the display name.
-- Account dropdown contains Dashboard, Settings and Logout.
-- Pointer exit uses a 200 ms close delay.
-- Profile Settings supports authenticated Cloudinary image upload.
+- cleaner public-facing wording
+- consistent dark-mode surfaces and contrast
+- smoother GSAP route and scroll animation
+- subtle button and dashboard-card microinteractions
+- dark homepage community-feed section
+- improved dark hero, auth, form, badge, table and empty-state styling
 
-## Dashboard UI
-
-- The dashboard shell is defined at `app/dashboard/layout.tsx`, so its navigation persists across every dashboard subpage.
-- Navigation is role-aware.
-- Desktop uses a sticky sidebar.
-- Narrow screens use a horizontally scrollable dashboard menu above the page content.
-- Administration tables remain horizontally scrollable instead of widening the viewport.
-
-## Theme
-
-- Night mode appears beside the We Eat brand.
-- The preference is saved in `localStorage`.
-- A boot script applies the stored/system theme before hydration.
-- Sparkles icons were removed.
+No backend contract was changed.

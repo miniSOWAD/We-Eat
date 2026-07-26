@@ -170,3 +170,13 @@
     font-size: 1.08rem;
   }
 }
+
+:global(html[data-theme="dark"]) .image {
+  background:
+    radial-gradient(circle at 25% 20%, rgba(111,146,246,.12), transparent 25%),
+    linear-gradient(135deg, #2c291b, #263e68);
+}
+:global(html[data-theme="dark"]) .avatar {
+  color: #f4f7ff;
+  background: linear-gradient(145deg, #3a3423, #365a99);
+}

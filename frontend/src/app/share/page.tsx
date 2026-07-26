@@ -33,7 +33,7 @@ export default async function Page() {
               </div>
             </section>
 
-            <section className={`card ${styles.tipCard}`} style={{ background: "linear-gradient(145deg,var(--cream-soft),rgba(170,196,245,.45))" }}>
+            <section className={`card ${styles.tipCard} ${styles.privacyCard}`}>
               <span className="iconBox"><LockKeyhole size={21} /></span>
               <h3 style={{ marginTop: 14 }}>Privacy boundary</h3>
               <p>Do not put a precise address or phone number in the public title, description, images or comments.</p>

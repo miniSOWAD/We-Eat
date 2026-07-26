@@ -162,3 +162,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+:global(html[data-theme="dark"]) .heroImage {
+  background:
+    radial-gradient(circle at 25% 20%, rgba(111,146,246,.12), transparent 24%),
+    linear-gradient(135deg, #2d2a1d, #263f6a);
+}
+:global(html[data-theme="dark"]) .info {
+  border-color: rgba(111,146,246,.14);
+  background: linear-gradient(145deg, #202b3e, #223656);
+}
+:global(html[data-theme="dark"]) .trustNote {
+  color: #b9c5da;
+  background: #202b3e;
+}

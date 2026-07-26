@@ -265,3 +265,48 @@
     display: none;
   }
 }
+
+
+:global(html[data-theme="dark"]) .wrap {
+  background:
+    radial-gradient(circle at 18% 15%, rgba(88, 75, 39, .2), transparent 30%),
+    linear-gradient(145deg, #182235 0 34%, #1d283b 34% 56%, #253b64 56% 78%, #31558f 78%);
+}
+
+:global(html[data-theme="dark"]) .wrap::after {
+  background-image: radial-gradient(rgba(219, 229, 250, .11) .7px, transparent .7px);
+}
+
+:global(html[data-theme="dark"]) .orbOne { background: rgba(111, 146, 246, .2); }
+:global(html[data-theme="dark"]) .orbTwo { background: rgba(98, 82, 40, .24); }
+
+:global(html[data-theme="dark"]) .phone {
+  border-color: #26344b;
+  background: #131d2c;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+}
+
+:global(html[data-theme="dark"]) .foodImage {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(111, 146, 246, .14), transparent 24%),
+    linear-gradient(145deg, #292719, #263d67);
+}
+
+:global(html[data-theme="dark"]) .infoRow {
+  background: #202b3e;
+}
+
+:global(html[data-theme="dark"]) .foodBody button {
+  color: #f7f9ff;
+  background: #3c5f9f;
+}
+
+:global(html[data-theme="dark"]) .floatCard {
+  background: rgba(20, 29, 44, .9);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .36);
+}
+
+:global(html[data-theme="dark"]) .floatIcon {
+  color: #f4e7b6;
+  background: #3b3526;
+}

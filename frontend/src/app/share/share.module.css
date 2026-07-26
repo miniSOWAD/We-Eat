@@ -82,3 +82,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+.privacyCard {
+  background: linear-gradient(145deg, var(--cream-soft), rgba(170,196,245,.45));
+}
+:global(html[data-theme="dark"]) .privacyCard {
+  background: linear-gradient(145deg, #292719, #243a61);
+}

@@ -15,26 +15,41 @@ export function HeroVisual() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      const entrance = gsap.timeline({ defaults: { ease: "power4.out" } });
+      entrance
+        .from("[data-phone]", { y: 34, scale: 0.93, rotation: -5, autoAlpha: 0, duration: 1 })
+        .from("[data-float]", { scale: 0.72, autoAlpha: 0, duration: 0.68, stagger: 0.14 }, "-=0.48");
+
+      gsap.to("[data-phone]", {
+        y: -7,
+        rotation: 0.8,
+        duration: 4.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
       gsap.to("[data-float='one']", {
-        y: -10,
-        rotation: -1.5,
-        duration: 2.6,
+        y: -12,
+        x: 4,
+        rotation: -1.8,
+        duration: 3.2,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
       gsap.to("[data-float='two']", {
-        y: 9,
-        rotation: 1.2,
-        duration: 3,
+        y: 10,
+        x: -3,
+        rotation: 1.4,
+        duration: 3.8,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
       gsap.to("[data-pulse]", {
-        scale: 1.08,
-        opacity: 0.72,
-        duration: 2.2,
+        scale: 1.12,
+        opacity: 0.62,
+        duration: 3,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -44,11 +59,11 @@ export function HeroVisual() {
   );
 
   return (
-    <div ref={scope} className={styles.wrap} aria-label="We Eat mobile listing preview" data-hero-item>
+    <div ref={scope} className={styles.wrap} aria-label="We Eat mobile listing preview" data-hero-item data-parallax>
       <div className={styles.orbOne} data-pulse />
       <div className={styles.orbTwo} data-pulse />
 
-      <div className={styles.phone}>
+      <div className={styles.phone} data-phone>
         <div className={styles.phoneTop}>
           <div>
             <span className={styles.micro}>Nearby now</span>

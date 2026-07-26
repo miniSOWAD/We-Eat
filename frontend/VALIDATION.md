@@ -1,17 +1,13 @@
-# Frontend validation v1.2.0
+# We Eat frontend v1.2.2 validation
 
 Completed in the handoff environment:
 
-- TypeScript/TSX syntax transpilation with `tsc --noEmit --noCheck`.
-- Source import-path review for new components and pages.
-- Dashboard-route inventory and persistent layout review.
-- Sparkles scan: zero matches.
-- Backend URL normalization and upstream error handling reviewed.
+- TypeScript and TSX syntax transpilation across `src/`
+- CSS parser validation for every stylesheet
+- JSON parsing for `package.json` and `package-lock.json`
+- Local `@/` import resolution check
+- Technical-copy scan for public implementation wording
+- ZIP integrity validation
+- Sensitive-file exclusion check
 
-Run locally before production deployment:
-
-```powershell
-npm install
-npm run check
-npm run build
-```
+The optimized Next.js build still needs to be run on the destination computer because the handoff environment could not install npm dependencies.

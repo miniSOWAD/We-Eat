@@ -14,7 +14,7 @@ export async function backendFetch<T>(path: string, init: RequestInit = {}, toke
     cache: init.cache ?? "no-store",
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail ?? "Backend request failed");
+  if (!response.ok) throw new Error(data.detail ?? "Request failed");
   return data as T;
 }
 

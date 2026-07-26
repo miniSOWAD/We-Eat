@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "How it works" };
 
 const steps = [
   ["1", "Create or find a listing", "Choose free, discounted or exchange. Public listings show the food, general area, quantity and expiry time."],
-  ["2", "Send a structured request", "Orders and exchanges are stored in the database, so the provider can accept or reject a clear request."],
+  ["2", "Send a structured request", "The provider receives a clear request and can accept or decline it with confidence."],
   ["3", "Collect or deliver safely", "Exact pickup details become available only to authorized participants after acceptance."],
   ["4", "Confirm completion", "Both parties confirm the handover. Only then does the review system unlock."],
 ];
