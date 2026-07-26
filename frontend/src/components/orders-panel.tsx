@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Order } from "@/types";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 
 function futureTime(): string {
   return new Date(Date.now() + 60 * 60 * 1000).toISOString();
@@ -65,7 +65,7 @@ export function OrdersPanel({ initial, userId }: { initial: Order[]; userId: str
     const active = ["ACCEPTED", "READY"].includes(order.status);
     return <article key={order.id} className="card" style={{ padding: 22 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div><span className="badge badgeMuted">{active ? "BID IN PROGRESS" : order.status}</span><h3>{order.listing.title}</h3><div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}><ReputationPoints user={party} compact/><p className="muted" style={{margin:0}}>{provider ? "Proposed by" : "Provided by"} {party.display_name} · {order.quantity} {order.listing.unit}</p></div>{order.scheduled_for && <p className="muted">{order.fulfillment_method} · {new Date(order.scheduled_for).toLocaleString("en-BD")}</p>}{order.message && <p>{order.message}</p>}</div>
+        <div><span className="badge badgeMuted">{active ? "BID IN PROGRESS" : order.status}</span><h3>{order.listing.title}</h3><UserTrustIdentity user={party} size="sm" subtitle={`${provider ? "Proposed by" : "Provided by"} · ${order.quantity} ${order.listing.unit}`} className="transactionIdentity" />{order.scheduled_for && <p className="muted">{order.fulfillment_method} · {new Date(order.scheduled_for).toLocaleString("en-BD")}</p>}{order.message && <p>{order.message}</p>}</div>
         <strong>{Number(order.agreed_price).toLocaleString("en-BD")} BDT</strong>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

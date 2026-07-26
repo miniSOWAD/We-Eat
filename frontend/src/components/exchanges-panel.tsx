@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Exchange } from "@/types";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 
 function futureTime(): string { return new Date(Date.now() + 60 * 60 * 1000).toISOString(); }
 
@@ -62,7 +62,7 @@ export function ExchangesPanel({ initial, userId }: { initial: Exchange[]; userI
       <span className="badge badgeExchange">{active ? "BID IN PROGRESS" : exchange.status}</span>
       <h3>{exchange.listing.title}</h3>
       <p><strong>Offer:</strong> {exchange.offered_listing?.title || exchange.offered_description}</p>
-      <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}><ReputationPoints user={provider ? exchange.requester : exchange.provider} compact/><p className="muted" style={{margin:0}}>{provider ? `From ${exchange.requester.display_name}` : `To ${exchange.provider.display_name}`}</p></div>
+      <UserTrustIdentity user={provider ? exchange.requester : exchange.provider} size="sm" subtitle={provider ? "Proposal maker" : "Food provider"} className="transactionIdentity" />
       {exchange.scheduled_for && <p className="muted">{exchange.fulfillment_method} · {new Date(exchange.scheduled_for).toLocaleString("en-BD")}</p>}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {provider && exchange.status === "PENDING" && <><button className="button buttonPrimary" onClick={() => action(exchange, "accept")}>Accept</button><button className="button buttonDanger" onClick={() => action(exchange, "reject")}>Reject</button></>}

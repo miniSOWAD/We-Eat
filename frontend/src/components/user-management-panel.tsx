@@ -5,8 +5,7 @@ import { Search, ShieldCheck, ShieldOff, UserCog } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { AdminUser } from "@/types";
-import { UserAvatar } from "@/components/user-avatar";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 
 export function UserManagementPanel({
   initial,
@@ -100,14 +99,11 @@ export function UserManagementPanel({
               {users.map((user) => (
                 <tr key={user.id}>
                   <td data-label="User">
-                    <div className="avatarRow">
-                      <ReputationPoints user={user} compact />
-                      <UserAvatar user={user} />
-                      <div className="tableIdentityText">
-                        <strong>{user.display_name}</strong>
-                        <div className="muted">@{user.username}</div>
-                      </div>
-                    </div>
+                    <UserTrustIdentity
+                      user={user}
+                      subtitle={`@${user.username}`}
+                      className="managementIdentity"
+                    />
                   </td>
                   <td data-label="Email" className="tableEmail">
                     {user.email}

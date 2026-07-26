@@ -11,7 +11,7 @@ from app.db.session import engine
 from app.schemas.common import HealthResponse, ReadinessResponse
 
 router = APIRouter(prefix="/system", tags=["System"])
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -53,6 +53,9 @@ async def api_readiness() -> ReadinessResponse:
                     """
                 )
             )
+            notification_table = await connection.scalar(
+                text("SELECT to_regclass('public.point_notifications')")
+            )
     except SQLAlchemyError as exc:
         raise HTTPException(status_code=503, detail="Database is unavailable") from exc
 
@@ -61,10 +64,10 @@ async def api_readiness() -> ReadinessResponse:
             status_code=503,
             detail="Database is connected but the schema is missing. Run: alembic upgrade head",
         )
-    if int(required_columns or 0) < 12:
+    if int(required_columns or 0) < 12 or not notification_table:
         raise HTTPException(
             status_code=503,
-            detail="Database needs the v1.4 reputation and proposal migration. Run: alembic upgrade head",
+            detail="Database needs the latest reputation migration. Run: alembic upgrade head",
         )
 
     return ReadinessResponse(

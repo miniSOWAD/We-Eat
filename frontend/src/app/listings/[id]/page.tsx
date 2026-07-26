@@ -6,8 +6,7 @@ import { ArrowLeft, Clock3, Leaf, MapPin, PackageCheck, ShieldCheck, UsersRound 
 import { ListingTypeBadge } from "@/components/listing-card";
 import { ListingActions } from "@/components/listing-actions";
 import { ProposalList } from "@/components/proposal-list";
-import { UserAvatar } from "@/components/user-avatar";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 import { Comments } from "@/components/comments";
 import { backendFetch, getSession, getToken } from "@/lib/server-api";
 import type { Comment, Listing, Proposal } from "@/types";
@@ -85,9 +84,10 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
           <aside className={styles.asideStack} data-hero-item>
             <div className={`card ${styles.sidebar}`}>
               <div className={styles.owner}>
-                <ReputationPoints user={listing.owner} />
-                <UserAvatar user={listing.owner} />
-                <div><strong>{listing.owner.display_name}</strong><div className="muted">Community provider</div></div>
+                <UserTrustIdentity
+                  user={listing.owner}
+                  subtitle="Community provider"
+                />
               </div>
               <hr className="divider" />
               <div className={styles.offer}>

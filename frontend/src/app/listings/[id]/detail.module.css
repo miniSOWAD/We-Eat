@@ -187,3 +187,5 @@
 .asideStack .sidebar { position:static; }
 .owner { flex-wrap:wrap; }
 .owner > div:last-child { min-width:0; flex:1 1 130px; }
+
+.owner { width: 100%; }

@@ -4,6 +4,7 @@ import { HeaderActions } from "@/components/header-actions";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
 import { ActiveHandoffDock } from "@/components/active-handoff-dock";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { PointNotificationCenter } from "@/components/point-notification-center";
 import styles from "./site-header.module.css";
 
 export async function SiteHeader() {
@@ -42,6 +43,7 @@ export async function SiteHeader() {
 
       <MobileBottomNav user={user} />
       <ActiveHandoffDock user={user} />
+      <PointNotificationCenter user={user} />
     </>
   );
 }

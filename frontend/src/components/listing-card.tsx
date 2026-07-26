@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Clock3, MapPin, UsersRound } from "lucide-react";
-import { UserAvatar } from "@/components/user-avatar";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 import type { Listing } from "@/types";
 import styles from "./listing-card.module.css";
 
@@ -50,10 +49,17 @@ export function ListingCard({ listing }: { listing: Listing }) {
           <strong className={styles.price}>{offer(listing)}</strong>
         </div>
         <div className={styles.owner}>
-          <ReputationPoints user={listing.owner} compact />
-          <UserAvatar user={listing.owner} size="sm" />
-          <span>Shared by {listing.owner.display_name}</span>
-          {["ACTIVE", "RESERVED"].includes(listing.status) && <span className={styles.proposals}><UsersRound size={14} /> {listing.proposal_count}</span>}
+          <UserTrustIdentity
+            user={listing.owner}
+            size="sm"
+            subtitle="Food provider"
+            className={styles.ownerIdentity}
+          />
+          {["ACTIVE", "RESERVED"].includes(listing.status) && (
+            <span className={styles.proposals}>
+              <UsersRound size={14} /> {listing.proposal_count}
+            </span>
+          )}
         </div>
       </div>
     </Link>

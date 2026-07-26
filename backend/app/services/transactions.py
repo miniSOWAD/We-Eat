@@ -15,6 +15,7 @@ from app.models.models import (
     ListingStatus,
     Order,
     OrderStatus,
+    PointNotification,
     User,
 )
 
@@ -33,6 +34,33 @@ def cleaned_cancellation_note(note: str | None, *, required: bool) -> str | None
     return value or None
 
 
+
+def transaction_source(transaction: Order | ExchangeRequest) -> tuple[str, str]:
+    if isinstance(transaction, Order):
+        return "ORDER", str(transaction.id)
+    return "EXCHANGE", str(transaction.id)
+
+
+def point_notification(
+    *,
+    user_id: UUID,
+    point_kind: Literal["POSITIVE", "NEGATIVE"],
+    message: str,
+    event_key: str,
+    source_type: str,
+    source_id: UUID,
+) -> PointNotification:
+    return PointNotification(
+        user_id=user_id,
+        point_kind=point_kind,
+        amount=1,
+        message=message,
+        event_key=event_key,
+        source_type=source_type,
+        source_id=source_id,
+    )
+
+
 async def award_completion_points(
     session: AsyncSession,
     transaction: Order | ExchangeRequest,
@@ -41,11 +69,24 @@ async def award_completion_points(
     if transaction.points_awarded_at:
         return
     now = datetime.now(UTC)
+    recipients = tuple(dict.fromkeys(user_ids))
     await session.execute(
         update(User)
-        .where(User.id.in_(set(user_ids)))
+        .where(User.id.in_(set(recipients)))
         .values(positive_points=User.positive_points + 1)
     )
+    source_type, source_id_text = transaction_source(transaction)
+    for user_id in recipients:
+        session.add(
+            point_notification(
+                user_id=user_id,
+                point_kind="POSITIVE",
+                message="You earned +1 green point for completing a food handover.",
+                event_key=f"{source_type}:{source_id_text}:POSITIVE:{user_id}",
+                source_type=source_type,
+                source_id=transaction.id,
+            )
+        )
     transaction.points_awarded_at = now
 
 
@@ -189,6 +230,17 @@ async def review_cancellation(
             update(User)
             .where(User.id == transaction.cancelled_by_id)
             .values(negative_points=User.negative_points + 1)
+        )
+        source_type, source_id_text = transaction_source(transaction)
+        session.add(
+            point_notification(
+                user_id=transaction.cancelled_by_id,
+                point_kind="NEGATIVE",
+                message="You received -1 red point after a cancelled handover was marked.",
+                event_key=f"{source_type}:{source_id_text}:NEGATIVE:{transaction.cancelled_by_id}",
+                source_type=source_type,
+                source_id=transaction.id,
+            )
         )
         transaction.cancellation_marked_at = now
     transaction.cancellation_reviewed_at = now

@@ -19,6 +19,8 @@ REQUIRED_OPERATIONS = {
     ("get", "/api/v1/proposals/listing/{listing_id}"),
     ("get", "/api/v1/proposals/active"),
     ("get", "/api/v1/proposals/mine"),
+    ("get", "/api/v1/reputation/notifications"),
+    ("post", "/api/v1/reputation/notifications/{notification_id}/acknowledge"),
     ("post", "/api/v1/proposals/{kind}/{proposal_id}/review-cancellation"),
     ("post", "/api/v1/proposals/{kind}/{proposal_id}/dismiss"),
     ("post", "/api/v1/listings/{listing_id}/remove"),

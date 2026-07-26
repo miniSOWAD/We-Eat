@@ -131,3 +131,12 @@ export interface IntegrationStatus {
     configuration_source: string;
   };
 }
+
+
+export interface PointNotification {
+  id: string;
+  point_kind: "POSITIVE" | "NEGATIVE";
+  amount: number;
+  message: string;
+  created_at: string;
+}

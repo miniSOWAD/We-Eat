@@ -131,6 +131,42 @@ class User(TimestampMixin, Base):
     listings: Mapped[list[Listing]] = relationship(back_populates="owner")
 
 
+
+class PointNotification(Base):
+    __tablename__ = "point_notifications"
+    __table_args__ = (
+        CheckConstraint(
+            "point_kind IN ('POSITIVE', 'NEGATIVE')",
+            name="ck_point_notification_kind",
+        ),
+        CheckConstraint("amount > 0", name="ck_point_notification_amount"),
+        UniqueConstraint("event_key", name="uq_point_notification_event_key"),
+        Index(
+            "ix_point_notifications_user_unseen",
+            "user_id",
+            "seen_at",
+            "created_at",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    point_kind: Mapped[str] = mapped_column(String(16), nullable=False)
+    amount: Mapped[int] = mapped_column(Integer, default=1, server_default="1", nullable=False)
+    message: Mapped[str] = mapped_column(String(220), nullable=False)
+    event_key: Mapped[str] = mapped_column(String(180), nullable=False)
+    source_type: Mapped[str | None] = mapped_column(String(40))
+    source_id: Mapped[uuid.UUID | None] = mapped_column(Uuid)
+    seen_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+    user: Mapped[User] = relationship()
+
+
 class OtpCode(Base):
     __tablename__ = "otp_codes"
     __table_args__ = (

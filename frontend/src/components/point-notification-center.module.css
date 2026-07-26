@@ -1,0 +1,133 @@
+.notice {
+  position: fixed;
+  top: 88px;
+  right: 22px;
+  z-index: 96;
+  width: min(360px, calc(100vw - 28px));
+  display: grid;
+  gap: 7px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 19px;
+  color: var(--ink);
+  background: var(--surface-strong);
+  box-shadow: 0 22px 62px rgba(23, 37, 66, .24);
+  backdrop-filter: blur(18px) saturate(145%);
+  animation: pointNoticeIn .42s cubic-bezier(.2, .85, .25, 1) both;
+}
+
+.positive {
+  border-color: rgba(26, 157, 96, .38);
+  box-shadow: 0 22px 62px rgba(24, 112, 72, .18);
+}
+
+.negative {
+  border-color: rgba(211, 71, 71, .38);
+  box-shadow: 0 22px 62px rgba(133, 40, 40, .18);
+}
+
+.heading {
+  font-size: .98rem;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.positive .heading {
+  color: #138a55;
+}
+
+.negative .heading {
+  color: #c93f3f;
+}
+
+.notice p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 3px;
+}
+
+.footer span {
+  color: var(--ink-soft);
+  font-size: .7rem;
+  font-weight: 720;
+}
+
+.footer button {
+  min-width: 54px;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #345da8;
+  font-weight: 850;
+}
+
+.positive .footer button {
+  background: #16845a;
+}
+
+.negative .footer button {
+  background: #b63d45;
+}
+
+.footer button:disabled {
+  opacity: .55;
+}
+
+@keyframes pointNoticeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+:global(html[data-theme="dark"]) .notice {
+  border-color: #354761;
+  background: rgba(16, 25, 41, .96);
+  box-shadow: 0 22px 62px rgba(0, 0, 0, .48);
+}
+
+:global(html[data-theme="dark"]) .positive {
+  border-color: #2f7658;
+}
+
+:global(html[data-theme="dark"]) .negative {
+  border-color: #79414a;
+}
+
+:global(html[data-theme="dark"]) .positive .heading {
+  color: #58dda0;
+}
+
+:global(html[data-theme="dark"]) .negative .heading {
+  color: #ff858b;
+}
+
+@media (max-width: 640px) {
+  .notice {
+    top: 72px;
+    right: 14px;
+    left: 14px;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice {
+    animation: none;
+  }
+}

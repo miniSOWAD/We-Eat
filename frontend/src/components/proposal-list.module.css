@@ -40,3 +40,27 @@
 :global(html[data-theme="dark"]) .pendingNotice { border-color:#725d25; color:#f2cd70; background:#2a2518; }
 :global(html[data-theme="dark"]) .cancellationBox { border-color:#713b43; background:#2a171e; }
 :global(html[data-theme="dark"]) .cancellationBox strong { color:#ff8f98; }
+
+
+.personRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+}
+
+.personIdentity {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .personRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .personRow > :global(.badge) {
+    margin-left: 0;
+    justify-self: start;
+  }
+}

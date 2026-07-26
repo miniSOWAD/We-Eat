@@ -875,3 +875,22 @@ html[data-theme="dark"] select option {
     box-shadow: var(--shadow-lg);
   }
 }
+
+
+/* v1.4.1 reputation layout hardening */
+.managementIdentity {
+  min-width: 0;
+}
+
+.transactionIdentity {
+  width: min(100%, 430px);
+  margin: 9px 0;
+}
+
+@media (max-width: 720px) {
+  .managementTable .managementIdentity {
+    width: 100%;
+    text-align: left;
+  }
+}
+

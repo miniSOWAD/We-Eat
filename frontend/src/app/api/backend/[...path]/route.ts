@@ -5,7 +5,7 @@ import { backendUnavailable } from "@/lib/upstream";
 
 const allowedPrefixes = [
   "auth/request-registration-otp", "auth/verify-otp", "auth/request-password-reset", "auth/reset-password", "auth/change-password",
-  "users", "listings", "favorites", "orders", "exchanges", "proposals", "reviews", "reports", "admin",
+  "users", "listings", "favorites", "orders", "exchanges", "proposals", "reputation", "reviews", "reports", "admin",
 ];
 
 function isAllowed(path: string): boolean {

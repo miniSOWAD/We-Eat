@@ -1,23 +1,135 @@
-.shell { display:grid; grid-template-columns:250px minmax(0,1fr); gap:30px; align-items:start; }
-.sidebar { position:sticky; top:96px; align-self:start; display:grid; gap:14px; padding:17px; background:var(--surface); }
-.user { display:flex; align-items:center; gap:12px; padding:14px; border-radius:17px; background:linear-gradient(135deg,var(--cream-soft),var(--blue)); }
-.user>div { min-width:0; display:grid; gap:3px; }
-.user strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.user span { color:var(--ink-soft); font-size:.7rem; font-weight:760; letter-spacing:.04em; }
-.nav { display:grid; gap:5px; }
-.nav a { min-height:45px; display:flex; align-items:center; gap:10px; padding:11px 13px; border-radius:13px; color:var(--ink-soft); font-weight:720; transition:color .18s ease,background .18s ease,transform .18s ease; }
-.nav a:hover { color:var(--ink); background:var(--surface-muted); transform:translateX(2px); }
-.nav a.active { color:var(--ink); background:linear-gradient(135deg,var(--cream-soft),rgba(170,196,245,.42)); box-shadow:inset 3px 0 0 var(--blue-strong); }
-.sidebarNote { padding:13px; border-radius:14px; color:var(--ink-soft); background:var(--surface-muted); font-size:.75rem; line-height:1.55; }
-.content { min-width:0; }
-@media(max-width:880px){.shell{grid-template-columns:1fr;gap:20px}.sidebar{position:static;padding:12px;overflow:hidden}.user,.sidebarNote{display:none}.nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{min-width:max-content;flex:0 0 auto;border:1px solid var(--line);background:var(--surface)}.nav a.active{box-shadow:inset 0 -3px 0 var(--blue-strong)}}
-@media(max-width:640px){.shell{width:min(100% - 16px,1180px)}.sidebar{border-radius:18px}.nav a{min-height:42px;padding:9px 11px;font-size:.78rem}}
+.shell {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 30px;
+  align-items: start;
+}
 
-:global(html[data-theme="dark"]) .user {
+.sidebar {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: grid;
+  gap: 14px;
+  padding: 17px;
+  background: var(--surface);
+}
+
+.userCard {
+  min-width: 0;
+  padding: 14px;
+  border-radius: 17px;
+  background: linear-gradient(135deg, var(--cream-soft), var(--blue));
+}
+
+.userIdentity {
+  width: 100%;
+}
+
+.nav {
+  display: grid;
+  gap: 5px;
+}
+
+.nav a {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  border-radius: 13px;
+  color: var(--ink-soft);
+  font-weight: 720;
+  transition: color .18s ease, background .18s ease, transform .18s ease;
+}
+
+.nav a:hover {
+  color: var(--ink);
+  background: var(--surface-muted);
+  transform: translateX(2px);
+}
+
+.nav a.active {
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--cream-soft), rgba(170, 196, 245, .42));
+  box-shadow: inset 3px 0 0 var(--blue-strong);
+}
+
+.sidebarNote {
+  padding: 13px;
+  border-radius: 14px;
+  color: var(--ink-soft);
+  background: var(--surface-muted);
+  font-size: .75rem;
+  line-height: 1.55;
+}
+
+.content {
+  min-width: 0;
+}
+
+:global(html[data-theme="dark"]) .userCard {
   background: linear-gradient(135deg, #202b3e, #2b416f);
 }
 
 :global(html[data-theme="dark"]) .nav a.active {
   color: #f4f7ff;
   background: linear-gradient(135deg, #292d2a, #2a3d64);
+}
+
+@media (max-width: 880px) {
+  .shell {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .sidebar {
+    position: static;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .userCard,
+  .sidebarNote {
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav a {
+    min-width: max-content;
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .nav a.active {
+    box-shadow: inset 0 -3px 0 var(--blue-strong);
+  }
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 16px, 1180px);
+  }
+
+  .sidebar {
+    border-radius: 18px;
+  }
+
+  .nav a {
+    min-height: 42px;
+    padding: 9px 11px;
+    font-size: .78rem;
+  }
 }

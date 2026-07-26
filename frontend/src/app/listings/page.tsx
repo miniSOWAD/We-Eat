@@ -14,7 +14,7 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
   const sp = await searchParams;
   const get = (key: string) => typeof sp[key] === "string" ? String(sp[key]) : "";
   const params = new URLSearchParams();
-  ["search", "city", "category", "listing_type"].forEach((key) => {
+  ["search", "city", "area", "category", "listing_type"].forEach((key) => {
     const value = get(key);
     if (value) params.set(key, value);
   });
@@ -55,9 +55,10 @@ export default async function ListingsPage({ searchParams }: { searchParams: Pro
             <h2><SlidersHorizontal size={18} style={{ verticalAlign: "-3px", marginRight: 8 }} />Filter listings</h2>
             <span className="help">Use one filter or combine several.</span>
           </div>
-          <div className="formGrid">
+          <div className={styles.filterGrid}>
             <div className="field"><label htmlFor="search">Search</label><input className="input" id="search" name="search" defaultValue={get("search")} placeholder="Rice, cake, vegetables…" /></div>
             <div className="field"><label htmlFor="city">City</label><input className="input" id="city" name="city" defaultValue={get("city")} placeholder="Dhaka" /></div>
+            <div className="field"><label htmlFor="area">Area</label><input className="input" id="area" name="area" defaultValue={get("area")} placeholder="Dhanmondi" /></div>
             <div className="field"><label htmlFor="category">Category</label><input className="input" id="category" name="category" defaultValue={get("category")} placeholder="Cooked meal" /></div>
             <div className="field"><label htmlFor="listing_type">Arrangement</label><select className="select" id="listing_type" name="listing_type" defaultValue={get("listing_type") as ListingType | ""}><option value="">All types</option><option value="FREE">Free</option><option value="DISCOUNTED">Discounted</option><option value="EXCHANGE">Exchange</option></select></div>
           </div>

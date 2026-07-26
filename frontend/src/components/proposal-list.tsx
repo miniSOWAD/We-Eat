@@ -14,8 +14,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Proposal } from "@/types";
-import { UserAvatar } from "@/components/user-avatar";
-import { ReputationPoints } from "@/components/reputation-points";
+import { UserTrustIdentity } from "@/components/user-trust-identity";
 import styles from "./proposal-list.module.css";
 
 function localDateTimeValue(date: Date): string {
@@ -190,12 +189,11 @@ export function ProposalList({
                 key={`${proposal.kind}-${proposal.id}`}
               >
                 <div className={styles.personRow}>
-                  <ReputationPoints user={proposal.requester} compact />
-                  <UserAvatar user={proposal.requester} size="sm" />
-                  <div className={styles.personText}>
-                    <strong>{proposal.requester.display_name}</strong>
-                    <span>@{proposal.requester.username}</span>
-                  </div>
+                  <UserTrustIdentity
+                    user={proposal.requester}
+                    size="sm"
+                    className={styles.personIdentity}
+                  />
                   <span className={`badge ${accepted ? "badgeDiscounted" : cancelledReview ? "badgeMuted" : "badgeExchange"}`}>
                     {accepted ? "Bid in progress" : cancelledReview ? "Cancelled" : "Pending proposal"}
                   </span>

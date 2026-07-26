@@ -9,6 +9,7 @@ from app.api.routes import (
     listings,
     orders,
     proposals,
+    reputation,
     reports,
     reviews,
     system,
@@ -24,6 +25,7 @@ api_router.include_router(favorites.router)
 api_router.include_router(comments.router)
 api_router.include_router(orders.router)
 api_router.include_router(proposals.router)
+api_router.include_router(reputation.router)
 api_router.include_router(exchanges.router)
 api_router.include_router(reviews.router)
 api_router.include_router(reports.router)

@@ -187,3 +187,31 @@
 
 .owner { flex-wrap:wrap; }
 .owner > span:nth-last-child(2) { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+
+.owner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding-top: 2px;
+}
+
+.ownerIdentity {
+  min-width: 0;
+}
+
+.proposals {
+  margin-left: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .owner {
+    grid-template-columns: 1fr;
+  }
+
+  .proposals {
+    justify-self: start;
+  }
+}

@@ -118,6 +118,7 @@ async def browse_listings(
     listing_type: ListingType | None = None,
     category: str | None = Query(None, max_length=80),
     city: str | None = Query(None, max_length=100),
+    area: str | None = Query(None, max_length=100),
     search: str | None = Query(None, max_length=120),
     vegetarian: bool | None = None,
     session: AsyncSession = Depends(get_db),
@@ -131,7 +132,9 @@ async def browse_listings(
     if category:
         conditions.append(func.lower(Listing.category) == category.lower())
     if city:
-        conditions.append(func.lower(Listing.city) == city.lower())
+        conditions.append(func.lower(Listing.city) == city.strip().lower())
+    if area:
+        conditions.append(func.lower(Listing.area) == area.strip().lower())
     if vegetarian is not None:
         conditions.append(Listing.is_vegetarian == vegetarian)
     if search:

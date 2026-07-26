@@ -23,7 +23,7 @@ export function HeaderActions({ user }: { user: UserMe | null }) {
     <div className={styles.actions}>
       <div className={styles.profileMenu} onMouseEnter={keepOpen} onMouseLeave={delayedClose}>
         <div className={styles.profileIdentity}>
-          <ReputationPoints user={user} />
+          <ReputationPoints user={user} compact />
           <button type="button" className={styles.profileTrigger} onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Open account menu">
             <UserAvatar user={user} />
           </button>

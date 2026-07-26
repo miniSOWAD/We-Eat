@@ -4,7 +4,7 @@ import pytest
 from fastapi import HTTPException
 from pydantic import ValidationError
 
-from app.models.models import ExchangeRequest, Order, User
+from app.models.models import ExchangeRequest, Order, PointNotification, User
 from app.schemas.transactions import CancellationReviewRequest
 from app.schemas.users import UserPublic
 from app.services.transactions import cleaned_cancellation_note
@@ -13,6 +13,7 @@ from app.services.transactions import cleaned_cancellation_note
 def test_reputation_columns_exist() -> None:
     assert hasattr(User, "positive_points")
     assert hasattr(User, "negative_points")
+    assert PointNotification.__tablename__ == "point_notifications"
 
 
 def test_transaction_notice_columns_exist() -> None:

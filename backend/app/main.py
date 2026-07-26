@@ -16,7 +16,7 @@ from app.core.config import settings
 from app.db.session import engine
 from app.schemas.common import HealthResponse, ReadinessResponse
 
-VERSION = "1.3.0"
+VERSION = "1.4.1"
 logger = logging.getLogger("we_eat")
 
 
@@ -41,7 +41,10 @@ async def check_database(*, require_schema: bool) -> bool:
                     """
                 )
             )
-            return bool(required_columns)
+            point_notifications = await connection.scalar(
+                text("SELECT to_regclass('public.point_notifications')")
+            )
+            return bool(required_columns and point_notifications)
     return True
 
 

@@ -1,0 +1,45 @@
+.identity {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.visual {
+  min-width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.copy {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.copy strong,
+.copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy span {
+  color: var(--ink-soft);
+  font-size: .72rem;
+  font-weight: 720;
+  letter-spacing: .02em;
+}
+
+@media (max-width: 430px) {
+  .identity {
+    gap: 8px;
+  }
+
+  .visual {
+    gap: 5px;
+  }
+}
