@@ -11,16 +11,16 @@ export const metadata: Metadata = {
   description: "Share, discount, exchange and rescue surplus food in your community.",
 };
 
+const themeBoot = `(function(){try{var saved=localStorage.getItem('we-eat-theme');var system=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=saved||system;}catch(e){document.documentElement.dataset.theme='light';}})();`;
+
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: themeBoot }} /></head>
       <body>
         <SiteHeader />
-        <MotionShell>
-          {children}
-          <SiteFooter />
-        </MotionShell>
-        <Toaster richColors position="top-center" />
+        <MotionShell>{children}<SiteFooter /></MotionShell>
+        <Toaster richColors position="top-center" theme="system" />
       </body>
     </html>
   );
