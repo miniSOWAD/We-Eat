@@ -5,7 +5,7 @@ from decimal import Decimal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_, select, update
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -21,7 +21,13 @@ from app.models.models import (
     User,
 )
 from app.schemas.common import MessageResponse
-from app.schemas.transactions import HandoffDecision, OrderCreate, OrderView
+from app.schemas.transactions import CancellationRequest, HandoffDecision, OrderCreate, OrderView
+from app.services.transactions import (
+    REJECTION_PROVIDER,
+    award_completion_points,
+    cancel_order_record,
+    reject_competing_orders,
+)
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -76,6 +82,16 @@ async def mark_delivered(order: Order, user: User, session: AsyncSession) -> Ord
     )
     if listing:
         listing.status = ListingStatus.COMPLETED
+    await award_completion_points(
+        session,
+        order,
+        (order.requester_id, order.provider_id),
+    )
+    await reject_competing_orders(
+        session,
+        listing_id=order.listing_id,
+        selected_id=order.id,
+    )
     await session.commit()
     return OrderView.model_validate(await load_order(session, order.id))
 
@@ -162,7 +178,10 @@ async def accept_order(
         select(Listing).where(Listing.id == order.listing_id).with_for_update()
     )
     if not listing or listing.status != ListingStatus.ACTIVE:
-        raise HTTPException(status_code=409, detail="Listing is no longer available")
+        raise HTTPException(
+            status_code=409,
+            detail="Another proposal is already in progress for this listing",
+        )
     if listing.expires_at <= datetime.now(UTC):
         listing.status = ListingStatus.EXPIRED
         await session.commit()
@@ -181,15 +200,6 @@ async def accept_order(
     order.status = OrderStatus.ACCEPTED
     order.accepted_at = datetime.now(UTC)
     listing.status = ListingStatus.RESERVED
-    await session.execute(
-        update(Order)
-        .where(
-            Order.listing_id == order.listing_id,
-            Order.id != order.id,
-            Order.status == OrderStatus.REQUESTED,
-        )
-        .values(status=OrderStatus.REJECTED)
-    )
     await session.commit()
     return OrderView.model_validate(await load_order(session, order_id))
 
@@ -206,6 +216,9 @@ async def reject_order(
     if order.status != OrderStatus.REQUESTED:
         raise HTTPException(status_code=409, detail="Proposal cannot be rejected")
     order.status = OrderStatus.REJECTED
+    order.rejected_at = datetime.now(UTC)
+    order.rejection_reason = REJECTION_PROVIDER
+    order.requester_notice_seen_at = None
     await session.commit()
     return MessageResponse(message="Proposal rejected")
 
@@ -261,21 +274,18 @@ async def confirm_completion(
 @router.post("/{order_id}/cancel", response_model=MessageResponse)
 async def cancel_order(
     order_id: UUID,
+    payload: CancellationRequest | None = None,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> MessageResponse:
     order = await load_order(session, order_id, lock=True)
     if user.id not in (order.requester_id, order.provider_id):
         raise HTTPException(status_code=403, detail="You are not part of this order")
-    if order.status not in (OrderStatus.REQUESTED, OrderStatus.ACCEPTED, OrderStatus.READY):
-        raise HTTPException(status_code=409, detail="Order cannot be cancelled")
-    was_reserved = order.status in (OrderStatus.ACCEPTED, OrderStatus.READY)
-    order.status = OrderStatus.CANCELLED
-    if was_reserved:
-        listing = await session.scalar(
-            select(Listing).where(Listing.id == order.listing_id).with_for_update()
-        )
-        if listing and listing.expires_at > datetime.now(UTC):
-            listing.status = ListingStatus.ACTIVE
+    await cancel_order_record(
+        session,
+        order,
+        actor_id=user.id,
+        note=payload.note if payload else None,
+    )
     await session.commit()
     return MessageResponse(message="Order cancelled")

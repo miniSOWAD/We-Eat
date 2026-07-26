@@ -103,6 +103,7 @@ export function ListingActions({
           },
         });
         toast.success("Exchange proposal sent");
+        window.dispatchEvent(new Event("we-eat:proposal-updated"));
         setOffer("");
         setOfferedListingId("");
         setMessage("");
@@ -118,6 +119,7 @@ export function ListingActions({
           },
         });
         toast.success("Food proposal sent");
+        window.dispatchEvent(new Event("we-eat:proposal-updated"));
         setMessage("");
       }
     } catch (error) {

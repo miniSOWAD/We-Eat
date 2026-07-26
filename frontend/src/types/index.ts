@@ -11,6 +11,8 @@ export interface UserPublic {
   bio?: string | null;
   city?: string | null;
   area?: string | null;
+  positive_points: number;
+  negative_points: number;
   created_at: string;
 }
 
@@ -62,7 +64,11 @@ export interface Order {
   quantity: number; agreed_price: string; fulfillment_method: "PICKUP" | "DELIVERY";
   message?: string | null; delivery_address?: string | null;
   scheduled_for?: string | null; handoff_note?: string | null;
-  requester_confirmed_at?: string | null; provider_confirmed_at?: string | null; created_at: string;
+  requester_confirmed_at?: string | null; provider_confirmed_at?: string | null;
+  cancelled_by_id?: string | null; cancelled_at?: string | null; cancellation_note?: string | null;
+  cancellation_reviewed_at?: string | null; cancellation_marked_at?: string | null;
+  rejected_at?: string | null; rejection_reason?: string | null; requester_notice_seen_at?: string | null;
+  created_at: string;
 }
 
 export interface Exchange {
@@ -71,7 +77,11 @@ export interface Exchange {
   offered_description?: string | null; message?: string | null;
   fulfillment_method?: "PICKUP" | "DELIVERY" | null;
   scheduled_for?: string | null; handoff_note?: string | null;
-  requester_confirmed_at?: string | null; provider_confirmed_at?: string | null; created_at: string;
+  requester_confirmed_at?: string | null; provider_confirmed_at?: string | null;
+  cancelled_by_id?: string | null; cancelled_at?: string | null; cancellation_note?: string | null;
+  cancellation_reviewed_at?: string | null; cancellation_marked_at?: string | null;
+  rejected_at?: string | null; rejection_reason?: string | null; requester_notice_seen_at?: string | null;
+  created_at: string;
 }
 
 export interface Proposal {
@@ -91,6 +101,13 @@ export interface Proposal {
   handoff_note?: string | null;
   received_at?: string | null;
   delivered_at?: string | null;
+  cancelled_by_id?: string | null;
+  cancelled_at?: string | null;
+  cancellation_note?: string | null;
+  cancellation_requires_review: boolean;
+  cancellation_marked: boolean;
+  rejection_reason?: string | null;
+  requester_notice_seen_at?: string | null;
   created_at: string;
 }
 

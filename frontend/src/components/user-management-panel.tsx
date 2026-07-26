@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { AdminUser } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
+import { ReputationPoints } from "@/components/reputation-points";
 
 export function UserManagementPanel({
   initial,
@@ -100,6 +101,7 @@ export function UserManagementPanel({
                 <tr key={user.id}>
                   <td data-label="User">
                     <div className="avatarRow">
+                      <ReputationPoints user={user} compact />
                       <UserAvatar user={user} />
                       <div className="tableIdentityText">
                         <strong>{user.display_name}</strong>

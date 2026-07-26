@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import type { UserMe } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
+import { ReputationPoints } from "@/components/reputation-points";
 import styles from "./site-header.module.css";
 
 export function HeaderActions({ user }: { user: UserMe | null }) {
@@ -21,9 +22,12 @@ export function HeaderActions({ user }: { user: UserMe | null }) {
   return (
     <div className={styles.actions}>
       <div className={styles.profileMenu} onMouseEnter={keepOpen} onMouseLeave={delayedClose}>
-        <button type="button" className={styles.profileTrigger} onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Open account menu">
-          <UserAvatar user={user} />
-        </button>
+        <div className={styles.profileIdentity}>
+          <ReputationPoints user={user} />
+          <button type="button" className={styles.profileTrigger} onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Open account menu">
+            <UserAvatar user={user} />
+          </button>
+        </div>
         {open && <div className={styles.dropdown} role="menu" onMouseEnter={keepOpen} onMouseLeave={delayedClose}>
           <div className={styles.dropdownIdentity}><strong>{user.display_name}</strong><span>@{user.username} · {user.role}</span></div>
           <Link href="/dashboard" role="menuitem" onClick={() => setOpen(false)}><LayoutDashboard size={17}/>Dashboard</Link>

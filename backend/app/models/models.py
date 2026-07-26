@@ -125,6 +125,8 @@ class User(TimestampMixin, Base):
     token_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     email_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    positive_points: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
+    negative_points: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
 
     listings: Mapped[list[Listing]] = relationship(back_populates="owner")
 
@@ -294,10 +296,22 @@ class Order(TimestampMixin, Base):
     provider_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    points_awarded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    rejected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    rejection_reason: Mapped[str | None] = mapped_column(String(80))
+    requester_notice_seen_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancelled_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid, ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
+    cancelled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancellation_note: Mapped[str | None] = mapped_column(String(800))
+    cancellation_reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancellation_marked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     listing: Mapped[Listing] = relationship()
     requester: Mapped[User] = relationship(foreign_keys=[requester_id])
     provider: Mapped[User] = relationship(foreign_keys=[provider_id])
+    cancelled_by: Mapped[User | None] = relationship(foreign_keys=[cancelled_by_id])
 
 
 class ExchangeRequest(TimestampMixin, Base):
@@ -338,11 +352,23 @@ class ExchangeRequest(TimestampMixin, Base):
     provider_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    points_awarded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    rejected_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    rejection_reason: Mapped[str | None] = mapped_column(String(80))
+    requester_notice_seen_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancelled_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid, ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
+    cancelled_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancellation_note: Mapped[str | None] = mapped_column(String(800))
+    cancellation_reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    cancellation_marked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     listing: Mapped[Listing] = relationship(foreign_keys=[listing_id])
     offered_listing: Mapped[Listing | None] = relationship(foreign_keys=[offered_listing_id])
     requester: Mapped[User] = relationship(foreign_keys=[requester_id])
     provider: Mapped[User] = relationship(foreign_keys=[provider_id])
+    cancelled_by: Mapped[User | None] = relationship(foreign_keys=[cancelled_by_id])
 
 
 class Review(TimestampMixin, Base):

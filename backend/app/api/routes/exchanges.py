@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_, select, update
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -19,7 +19,13 @@ from app.models.models import (
     User,
 )
 from app.schemas.common import MessageResponse
-from app.schemas.transactions import ExchangeCreate, ExchangeView, HandoffDecision
+from app.schemas.transactions import CancellationRequest, ExchangeCreate, ExchangeView, HandoffDecision
+from app.services.transactions import (
+    REJECTION_PROVIDER,
+    award_completion_points,
+    cancel_exchange_record,
+    reject_competing_exchanges,
+)
 
 router = APIRouter(prefix="/exchanges", tags=["Exchanges"])
 
@@ -88,6 +94,16 @@ async def mark_delivered(
         )
         if offered:
             offered.status = ListingStatus.COMPLETED
+    await award_completion_points(
+        session,
+        row,
+        (row.requester_id, row.provider_id),
+    )
+    await reject_competing_exchanges(
+        session,
+        listing_id=row.listing_id,
+        selected_id=row.id,
+    )
     await session.commit()
     return ExchangeView.model_validate(await load_exchange(session, row.id))
 
@@ -179,7 +195,10 @@ async def accept_exchange(
         select(Listing).where(Listing.id == row.listing_id).with_for_update()
     )
     if not target or target.status != ListingStatus.ACTIVE:
-        raise HTTPException(status_code=409, detail="Target listing is unavailable")
+        raise HTTPException(
+            status_code=409,
+            detail="Another proposal is already in progress for this listing",
+        )
     if target.expires_at <= datetime.now(UTC):
         target.status = ListingStatus.EXPIRED
         await session.commit()
@@ -208,15 +227,6 @@ async def accept_exchange(
     target.status = ListingStatus.RESERVED
     if offered:
         offered.status = ListingStatus.RESERVED
-    await session.execute(
-        update(ExchangeRequest)
-        .where(
-            ExchangeRequest.listing_id == row.listing_id,
-            ExchangeRequest.id != row.id,
-            ExchangeRequest.status == ExchangeStatus.PENDING,
-        )
-        .values(status=ExchangeStatus.REJECTED)
-    )
     await session.commit()
     return ExchangeView.model_validate(await load_exchange(session, exchange_id))
 
@@ -233,6 +243,9 @@ async def reject_exchange(
     if row.status != ExchangeStatus.PENDING:
         raise HTTPException(status_code=409, detail="Proposal cannot be rejected")
     row.status = ExchangeStatus.REJECTED
+    row.rejected_at = datetime.now(UTC)
+    row.rejection_reason = REJECTION_PROVIDER
+    row.requester_notice_seen_at = None
     await session.commit()
     return MessageResponse(message="Proposal rejected")
 
@@ -272,27 +285,18 @@ async def confirm_exchange_completion(
 @router.post("/{exchange_id}/cancel", response_model=MessageResponse)
 async def cancel_exchange(
     exchange_id: UUID,
+    payload: CancellationRequest | None = None,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> MessageResponse:
     row = await load_exchange(session, exchange_id, lock=True)
     if user.id not in (row.requester_id, row.provider_id):
         raise HTTPException(status_code=403, detail="You are not part of this exchange")
-    if row.status not in (ExchangeStatus.PENDING, ExchangeStatus.ACCEPTED):
-        raise HTTPException(status_code=409, detail="Exchange cannot be cancelled")
-    was_accepted = row.status == ExchangeStatus.ACCEPTED
-    row.status = ExchangeStatus.CANCELLED
-    if was_accepted:
-        ids = [row.listing_id]
-        if row.offered_listing_id:
-            ids.append(row.offered_listing_id)
-        listings = (
-            await session.scalars(
-                select(Listing).where(Listing.id.in_(ids)).with_for_update()
-            )
-        ).all()
-        for listing in listings:
-            if listing.expires_at > datetime.now(UTC):
-                listing.status = ListingStatus.ACTIVE
+    await cancel_exchange_record(
+        session,
+        row,
+        actor_id=user.id,
+        note=payload.note if payload else None,
+    )
     await session.commit()
     return MessageResponse(message="Exchange cancelled")

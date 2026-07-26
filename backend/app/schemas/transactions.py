@@ -42,6 +42,14 @@ class HandoffDecision(BaseModel):
         return self
 
 
+class CancellationRequest(BaseModel):
+    note: str | None = Field(default=None, max_length=800)
+
+
+class CancellationReviewRequest(BaseModel):
+    action: Literal["MARK", "OK"]
+
+
 class OrderView(ORMModel):
     id: UUID
     listing: ListingCard
@@ -59,6 +67,14 @@ class OrderView(ORMModel):
     provider_confirmed_at: datetime | None = None
     accepted_at: datetime | None = None
     completed_at: datetime | None = None
+    cancelled_by_id: UUID | None = None
+    cancelled_at: datetime | None = None
+    cancellation_note: str | None = None
+    cancellation_reviewed_at: datetime | None = None
+    cancellation_marked_at: datetime | None = None
+    rejected_at: datetime | None = None
+    rejection_reason: str | None = None
+    requester_notice_seen_at: datetime | None = None
     created_at: datetime
     updated_at: datetime
 
@@ -92,6 +108,14 @@ class ExchangeView(ORMModel):
     provider_confirmed_at: datetime | None = None
     accepted_at: datetime | None = None
     completed_at: datetime | None = None
+    cancelled_by_id: UUID | None = None
+    cancelled_at: datetime | None = None
+    cancellation_note: str | None = None
+    cancellation_reviewed_at: datetime | None = None
+    cancellation_marked_at: datetime | None = None
+    rejected_at: datetime | None = None
+    rejection_reason: str | None = None
+    requester_notice_seen_at: datetime | None = None
     created_at: datetime
     updated_at: datetime
 
@@ -113,4 +137,11 @@ class ProposalView(BaseModel):
     handoff_note: str | None = None
     received_at: datetime | None = None
     delivered_at: datetime | None = None
+    cancelled_by_id: UUID | None = None
+    cancelled_at: datetime | None = None
+    cancellation_note: str | None = None
+    cancellation_requires_review: bool = False
+    cancellation_marked: bool = False
+    rejection_reason: str | None = None
+    requester_notice_seen_at: datetime | None = None
     created_at: datetime

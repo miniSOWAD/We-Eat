@@ -38,7 +38,7 @@
 
 .logoViewport {
   width: 48px;
-  height: 58px;
+  height: 48px;
   flex: 0 0 48px;
   overflow: hidden;
   border-radius: 15px;
@@ -47,7 +47,7 @@
 .brandImage {
   display: block;
   width: 180px;
-  height: 58px;
+  height: 48px;
   max-width: none;
   object-fit: contain;
   object-position: left center;
@@ -67,3 +67,5 @@
   .brandImage { width: 150px; height: 40px; }
   .brandName { font-size: 1.08rem; }
 }
+.profileIdentity { display:flex; align-items:center; gap:8px; }
+@media (max-width:640px){ .profileIdentity{gap:5px} }

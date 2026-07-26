@@ -6,6 +6,8 @@ import { ArrowLeft, Clock3, Leaf, MapPin, PackageCheck, ShieldCheck, UsersRound 
 import { ListingTypeBadge } from "@/components/listing-card";
 import { ListingActions } from "@/components/listing-actions";
 import { ProposalList } from "@/components/proposal-list";
+import { UserAvatar } from "@/components/user-avatar";
+import { ReputationPoints } from "@/components/reputation-points";
 import { Comments } from "@/components/comments";
 import { backendFetch, getSession, getToken } from "@/lib/server-api";
 import type { Comment, Listing, Proposal } from "@/types";
@@ -83,7 +85,8 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
           <aside className={styles.asideStack} data-hero-item>
             <div className={`card ${styles.sidebar}`}>
               <div className={styles.owner}>
-                <div className={styles.avatar}>{listing.owner.avatar_url ? <Image src={listing.owner.avatar_url} alt="" fill sizes="50px" /> : listing.owner.display_name.slice(0,2).toUpperCase()}</div>
+                <ReputationPoints user={listing.owner} />
+                <UserAvatar user={listing.owner} />
                 <div><strong>{listing.owner.display_name}</strong><div className="muted">Community provider</div></div>
               </div>
               <hr className="divider" />
@@ -91,7 +94,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
                 <strong>{offer}</strong>
                 <div className={styles.statusLine}>
                   <span className={`badge ${listing.status === "RESERVED" ? "badgeDiscounted" : "badgeMuted"}`}>{statusLabel(listing.status)}</span>
-                  {!own && listing.status === "ACTIVE" && <span className={styles.proposalCount}><UsersRound size={15} /> {listing.proposal_count} proposal{listing.proposal_count === 1 ? "" : "s"}</span>}
+                  {!own && ["ACTIVE", "RESERVED"].includes(listing.status) && <span className={styles.proposalCount}><UsersRound size={15} /> {listing.proposal_count} proposal{listing.proposal_count === 1 ? "" : "s"}</span>}
                 </div>
               </div>
               <hr className="divider" />

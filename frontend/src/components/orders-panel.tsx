@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Order } from "@/types";
+import { ReputationPoints } from "@/components/reputation-points";
 
 function futureTime(): string {
   return new Date(Date.now() + 60 * 60 * 1000).toISOString();
@@ -32,6 +33,18 @@ export function OrdersPanel({ initial, userId }: { initial: Order[]; userId: str
         const result = await api<Order>(`/orders/${order.id}/accept`, { method: "POST", body: { fulfillment_method: method, scheduled_for: new Date(time).toISOString(), handoff_note: note } });
         replace(result); toast.success("Proposal accepted"); return;
       }
+      if (name === "cancel") {
+        const accepted = ["ACCEPTED", "READY"].includes(order.status);
+        const note = accepted ? window.prompt("Explain why you are cancelling this accepted handover") : null;
+        if (accepted && (note === null || note.trim().length < 8)) {
+          if (note !== null) toast.error("Give a short reason of at least 8 characters.");
+          return;
+        }
+        const result = await api<Order | { message: string }>(`/orders/${order.id}/cancel`, { method: "POST", body: { note: note?.trim() || null } });
+        if ("id" in result) replace(result);
+        toast.success("Order cancelled");
+        return;
+      }
       const result = await api<Order | { message: string }>(`/orders/${order.id}/${name}`, { method: "POST" });
       if ("id" in result) replace(result);
       toast.success("Order updated");
@@ -52,7 +65,7 @@ export function OrdersPanel({ initial, userId }: { initial: Order[]; userId: str
     const active = ["ACCEPTED", "READY"].includes(order.status);
     return <article key={order.id} className="card" style={{ padding: 22 }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div><span className="badge badgeMuted">{active ? "BID IN PROGRESS" : order.status}</span><h3>{order.listing.title}</h3><p className="muted">{provider ? "Proposed by" : "Provided by"} {party.display_name} · {order.quantity} {order.listing.unit}</p>{order.scheduled_for && <p className="muted">{order.fulfillment_method} · {new Date(order.scheduled_for).toLocaleString("en-BD")}</p>}{order.message && <p>{order.message}</p>}</div>
+        <div><span className="badge badgeMuted">{active ? "BID IN PROGRESS" : order.status}</span><h3>{order.listing.title}</h3><div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}><ReputationPoints user={party} compact/><p className="muted" style={{margin:0}}>{provider ? "Proposed by" : "Provided by"} {party.display_name} · {order.quantity} {order.listing.unit}</p></div>{order.scheduled_for && <p className="muted">{order.fulfillment_method} · {new Date(order.scheduled_for).toLocaleString("en-BD")}</p>}{order.message && <p>{order.message}</p>}</div>
         <strong>{Number(order.agreed_price).toLocaleString("en-BD")} BDT</strong>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>

@@ -1,26 +1,44 @@
 .dock { position:fixed; right:22px; bottom:22px; z-index:80; }
-.trigger { position:relative; width:66px; height:66px; display:grid; place-items:center; padding:4px; border:1px solid rgba(255,255,255,.72); border-radius:22px; color:var(--ink); background:rgba(255,255,255,.76); box-shadow:0 18px 52px rgba(34,50,84,.28); backdrop-filter:blur(18px) saturate(150%); cursor:pointer; }
-.triggerImage { position:relative; width:56px; height:56px; display:grid; place-items:center; overflow:hidden; border-radius:18px; background:linear-gradient(145deg,var(--cream),var(--blue)); }
+.trigger { position:relative; min-width:188px; height:66px; display:flex; align-items:center; gap:10px; padding:5px 14px 5px 5px; border:1px solid rgba(255,255,255,.72); border-radius:22px; color:var(--ink); background:rgba(255,255,255,.82); box-shadow:0 18px 52px rgba(34,50,84,.28); backdrop-filter:blur(18px) saturate(150%); cursor:pointer; }
+.triggerImage { position:relative; width:56px; height:56px; flex:0 0 auto; display:grid; place-items:center; overflow:hidden; border-radius:18px; background:linear-gradient(145deg,var(--cream),var(--blue)); }
 .triggerImage img,.foodImage img { object-fit:cover; }
+.triggerText { font-size:.77rem; font-weight:900; white-space:nowrap; }
+.trigger_pending { border-color:rgba(220,173,54,.55); background:rgba(255,244,204,.9); }
+.trigger_accepted { border-color:rgba(79,128,242,.55); background:rgba(225,235,255,.92); }
+.trigger_alert { border-color:rgba(217,74,74,.5); background:rgba(255,230,230,.94); }
 .pulse { position:absolute; inset:-6px; z-index:-1; border:2px solid rgba(140,169,255,.64); border-radius:27px; animation:pulse 2.1s ease-out infinite; }
 .number { position:absolute; top:-6px; right:-6px; min-width:23px; height:23px; display:grid; place-items:center; padding:0 6px; border-radius:999px; color:#fff; background:#456fe1; font-size:.72rem; font-weight:900; }
-.panel { position:absolute; right:0; bottom:78px; width:min(390px,calc(100vw - 28px)); max-height:min(560px,70vh); overflow:auto; padding:15px; border:1px solid var(--line); border-radius:24px; color:var(--ink); background:var(--surface-strong); box-shadow:0 26px 80px rgba(21,33,58,.32); backdrop-filter:blur(22px); }
+.panel { position:absolute; right:0; bottom:78px; width:min(430px,calc(100vw - 28px)); max-height:min(620px,74vh); overflow:auto; padding:15px; border:1px solid var(--line); border-radius:24px; color:var(--ink); background:var(--surface-strong); box-shadow:0 26px 80px rgba(21,33,58,.32); backdrop-filter:blur(22px); }
 .panelHead { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:3px 3px 13px; }
 .panelHead>div { display:grid; gap:2px; }
 .panelHead span { color:var(--ink-soft); font-size:.76rem; }
 .panelHead button { width:34px; height:34px; display:grid; place-items:center; border:0; border-radius:11px; color:var(--ink); background:var(--surface-muted); cursor:pointer; }
 .list { display:grid; gap:10px; }
 .item { display:grid; grid-template-columns:58px minmax(0,1fr); gap:12px; padding:12px; border:1px solid var(--line); border-radius:18px; background:var(--surface-muted); }
+.item.pending { border-color:rgba(216,170,53,.36); }
+.item.accepted { border-color:rgba(87,132,238,.4); }
+.item.rejected,.item.cancelled { border-color:rgba(215,74,74,.34); }
 .foodImage { position:relative; width:58px; height:58px; display:grid; place-items:center; overflow:hidden; border-radius:15px; background:linear-gradient(145deg,var(--cream),var(--blue)); }
 .details { min-width:0; display:grid; gap:5px; }
-.details strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.details span { display:flex; align-items:center; gap:6px; color:var(--ink-soft); font-size:.74rem; }
+.statusRow { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.statusRow strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.statusText { flex:0 0 auto; padding:4px 7px; border-radius:999px; color:var(--ink-soft); background:var(--surface); font-size:.64rem!important; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+.details>span { display:flex; align-items:center; gap:6px; color:var(--ink-soft); font-size:.74rem; }
 .details p { margin:2px 0 0; color:var(--ink-soft); font-size:.76rem; line-height:1.45; }
+.message { color:var(--ink)!important; font-weight:750; }
+.cancelNote { padding:9px 10px; border-radius:11px; background:rgba(216,71,71,.08); }
 .itemActions { grid-column:1/-1; display:flex; flex-wrap:wrap; gap:8px; }
-.itemActions :global(.button),.waiting { flex:1 1 140px; }
+.itemActions :global(.button),.waiting { flex:1 1 130px; }
 .waiting { display:flex; align-items:center; justify-content:center; gap:7px; padding:10px; border-radius:13px; color:#16825c; background:rgba(46,190,132,.1); font-size:.78rem; font-weight:780; }
-@keyframes pulse { 0%{transform:scale(.92);opacity:.75} 70%,100%{transform:scale(1.16);opacity:0} }
-@media(max-width:640px){ .dock{right:15px;bottom:96px}.trigger{width:61px;height:61px;border-radius:20px}.triggerImage{width:51px;height:51px;border-radius:16px}.panel{bottom:72px} }
-:global(html[data-theme="dark"]) .trigger { border-color:rgba(123,153,218,.34); background:rgba(17,26,42,.82); box-shadow:0 18px 52px rgba(0,0,0,.42); }
-:global(html[data-theme="dark"]) .panel { background:rgba(16,24,39,.96); }
+.cancelForm { grid-column:1/-1; display:grid; gap:9px; padding:12px; border:1px solid rgba(216,71,71,.3); border-radius:15px; background:rgba(216,71,71,.07); }
+.cancelForm label { font-size:.78rem; font-weight:800; }
+@keyframes pulse { 0%{transform:scale(.92);opacity:.75} 70%,100%{transform:scale(1.12);opacity:0} }
+@media(max-width:640px){ .dock{right:15px;bottom:96px}.trigger{min-width:61px;width:61px;height:61px;padding:4px;border-radius:20px}.triggerImage{width:51px;height:51px;border-radius:16px}.triggerText{display:none}.panel{bottom:72px}.item{grid-template-columns:52px minmax(0,1fr)}.foodImage{width:52px;height:52px} }
+:global(html[data-theme="dark"]) .trigger { border-color:rgba(123,153,218,.34); background:rgba(17,26,42,.92); box-shadow:0 18px 52px rgba(0,0,0,.42); }
+:global(html[data-theme="dark"]) .trigger_pending { border-color:#6d5928; background:#282315; }
+:global(html[data-theme="dark"]) .trigger_accepted { border-color:#35558f; background:#172440; }
+:global(html[data-theme="dark"]) .trigger_alert { border-color:#713a43; background:#2b171d; }
+:global(html[data-theme="dark"]) .panel { background:rgba(16,24,39,.98); }
 :global(html[data-theme="dark"]) .item { background:#151f30; }
+:global(html[data-theme="dark"]) .statusText { background:#0f1827; }
+:global(html[data-theme="dark"]) .cancelNote,:global(html[data-theme="dark"]) .cancelForm { background:#29171d; }

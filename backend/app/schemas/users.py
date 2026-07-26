@@ -29,6 +29,8 @@ class UserPublic(ORMModel):
     bio: str | None = None
     city: str | None = None
     area: str | None = None
+    positive_points: int = 0
+    negative_points: int = 0
     created_at: datetime
 
 

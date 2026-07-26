@@ -85,6 +85,10 @@ class ListingUpdate(BaseModel):
     private_details: ListingPrivateInput | None = None
 
 
+class ListingRemovalRequest(BaseModel):
+    note: str | None = Field(default=None, max_length=800)
+
+
 class ListingCard(ORMModel):
     id: UUID
     listing_type: ListingType

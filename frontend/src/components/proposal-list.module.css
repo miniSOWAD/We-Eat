@@ -32,3 +32,11 @@
 :global(html[data-theme="dark"]) .acceptForm { background:#101827; }
 :global(html[data-theme="dark"]) .handoff { border-color:#344b78; background:#192743; }
 :global(html[data-theme="dark"]) .count { color:#f4f7ff; background:linear-gradient(145deg,#584b24,#365c9c); }
+.pendingNotice { margin:0; padding:10px 12px; border:1px solid rgba(219,165,32,.35); border-radius:14px; color:#7a5a0b; background:rgba(255,216,102,.16); font-size:.8rem; line-height:1.5; }
+.cancelledProposal { border-color:rgba(216,71,71,.35); }
+.cancellationBox { display:grid; gap:9px; padding:14px; border:1px solid rgba(216,71,71,.32); border-radius:16px; background:rgba(216,71,71,.08); }
+.cancellationBox strong { color:#b73333; }
+.cancellationBox p { margin:0; color:var(--ink-soft); font-size:.84rem; line-height:1.55; }
+:global(html[data-theme="dark"]) .pendingNotice { border-color:#725d25; color:#f2cd70; background:#2a2518; }
+:global(html[data-theme="dark"]) .cancellationBox { border-color:#713b43; background:#2a171e; }
+:global(html[data-theme="dark"]) .cancellationBox strong { color:#ff8f98; }

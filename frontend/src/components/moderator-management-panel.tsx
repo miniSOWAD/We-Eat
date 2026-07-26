@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { AdminUser } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
+import { ReputationPoints } from "@/components/reputation-points";
 
 export function ModeratorManagementPanel({ initial }: { initial: AdminUser[] }) {
   const [items, setItems] = useState(initial);
@@ -97,6 +98,7 @@ export function ModeratorManagementPanel({ initial }: { initial: AdminUser[] }) 
                 <tr key={user.id}>
                   <td data-label="Moderator">
                     <div className="avatarRow">
+                      <ReputationPoints user={user} compact />
                       <UserAvatar user={user} />
                       <div className="tableIdentityText">
                         <strong>{user.display_name}</strong>

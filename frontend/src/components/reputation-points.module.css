@@ -1,0 +1,58 @@
+.points {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  box-shadow: 0 8px 22px rgba(26, 43, 76, 0.08);
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: help;
+  outline: none;
+}
+.compact { padding: 4px 6px; font-size: 0.67rem; }
+.positive { color: #138a55; }
+.negative { color: #d54747; }
+.tooltip {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 9px);
+  z-index: 120;
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  max-width: 230px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  color: var(--ink);
+  background: var(--surface-strong);
+  box-shadow: 0 14px 36px rgba(18, 30, 53, 0.2);
+  font-size: 0.69rem;
+  font-weight: 750;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.tooltip span:first-child { color: #138a55; }
+.tooltip span:last-child { color: #d54747; }
+.points:hover .tooltip,
+.points:focus-visible .tooltip { opacity: 1; transform: translateY(0); }
+:global(html[data-theme="dark"]) .points,
+:global(html[data-theme="dark"]) .tooltip {
+  border-color: #33445f;
+  background: #121d2f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+}
+:global(html[data-theme="dark"]) .positive { color: #56d99a; }
+:global(html[data-theme="dark"]) .negative { color: #ff7b7b; }
+@media (max-width: 640px) {
+  .points { padding: 4px 6px; font-size: 0.65rem; }
+  .tooltip { right: -6px; }
+}

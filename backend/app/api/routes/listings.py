@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -34,11 +34,18 @@ from app.schemas.listings import (
     ListingDetail,
     ListingOwnerDetail,
     ListingPrivateView,
+    ListingRemovalRequest,
     ListingUpdate,
     UploadResponse,
 )
 from app.services.audit import write_audit
 from app.services.cloudinary import upload_image
+from app.services.transactions import (
+    REJECTION_LISTING_REMOVED,
+    cancel_exchange_record,
+    cancel_order_record,
+    cleaned_cancellation_note,
+)
 
 router = APIRouter(prefix="/listings", tags=["Listings"])
 
@@ -59,7 +66,7 @@ async def proposal_counts(
             select(Order.listing_id, func.count(Order.id))
             .where(
                 Order.listing_id.in_(listing_ids),
-                Order.status == OrderStatus.REQUESTED,
+                Order.status.in_([OrderStatus.REQUESTED, OrderStatus.ACCEPTED, OrderStatus.READY]),
             )
             .group_by(Order.listing_id)
         )
@@ -69,7 +76,7 @@ async def proposal_counts(
             select(ExchangeRequest.listing_id, func.count(ExchangeRequest.id))
             .where(
                 ExchangeRequest.listing_id.in_(listing_ids),
-                ExchangeRequest.status == ExchangeStatus.PENDING,
+                ExchangeRequest.status.in_([ExchangeStatus.PENDING, ExchangeStatus.ACCEPTED]),
             )
             .group_by(ExchangeRequest.listing_id)
         )
@@ -304,6 +311,137 @@ async def update_listing(
     return to_owner_detail(listing, count)
 
 
+async def remove_listing_with_reason(
+    listing: Listing,
+    user: User,
+    session: AsyncSession,
+    note: str | None,
+) -> None:
+    now = datetime.now(UTC)
+    owner_action = user.id == listing.owner_id
+
+    accepted_orders = (
+        await session.scalars(
+            select(Order)
+            .where(
+                Order.listing_id == listing.id,
+                Order.status.in_([OrderStatus.ACCEPTED, OrderStatus.READY]),
+            )
+            .with_for_update()
+        )
+    ).all()
+    accepted_exchanges = (
+        await session.scalars(
+            select(ExchangeRequest)
+            .where(
+                or_(
+                    ExchangeRequest.listing_id == listing.id,
+                    ExchangeRequest.offered_listing_id == listing.id,
+                ),
+                ExchangeRequest.status == ExchangeStatus.ACCEPTED,
+            )
+            .with_for_update()
+        )
+    ).all()
+
+    has_accepted_handoff = bool(accepted_orders or accepted_exchanges)
+    reason = cleaned_cancellation_note(note, required=owner_action and has_accepted_handoff)
+
+    if owner_action:
+        for order in accepted_orders:
+            await cancel_order_record(
+                session,
+                order,
+                actor_id=user.id,
+                note=reason,
+                reactivate_listing=False,
+            )
+        for row in accepted_exchanges:
+            await cancel_exchange_record(
+                session,
+                row,
+                actor_id=user.id,
+                note=reason,
+                reactivate_listings=False,
+            )
+            counterpart_ids = [row.listing_id, row.offered_listing_id]
+            counterpart_ids = [item for item in counterpart_ids if item and item != listing.id]
+            if counterpart_ids:
+                counterparts = (
+                    await session.scalars(
+                        select(Listing).where(Listing.id.in_(counterpart_ids)).with_for_update()
+                    )
+                ).all()
+                for counterpart in counterparts:
+                    if counterpart.status == ListingStatus.RESERVED and counterpart.expires_at > now:
+                        counterpart.status = ListingStatus.ACTIVE
+    else:
+        for order in accepted_orders:
+            order.status = OrderStatus.CANCELLED
+            order.cancelled_at = now
+            order.cancellation_note = "This handover was cancelled because the listing was removed by moderation."
+            order.cancellation_reviewed_at = now
+            order.requester_notice_seen_at = None
+        for row in accepted_exchanges:
+            row.status = ExchangeStatus.CANCELLED
+            row.cancelled_at = now
+            row.cancellation_note = "This handover was cancelled because the listing was removed by moderation."
+            row.cancellation_reviewed_at = now
+            row.requester_notice_seen_at = None
+
+    await session.execute(
+        update(Order)
+        .where(Order.listing_id == listing.id, Order.status == OrderStatus.REQUESTED)
+        .values(
+            status=OrderStatus.REJECTED,
+            rejected_at=now,
+            rejection_reason=REJECTION_LISTING_REMOVED,
+            requester_notice_seen_at=None,
+        )
+    )
+    await session.execute(
+        update(ExchangeRequest)
+        .where(
+            ExchangeRequest.listing_id == listing.id,
+            ExchangeRequest.status == ExchangeStatus.PENDING,
+        )
+        .values(
+            status=ExchangeStatus.REJECTED,
+            rejected_at=now,
+            rejection_reason=REJECTION_LISTING_REMOVED,
+            requester_notice_seen_at=None,
+        )
+    )
+    listing.status = ListingStatus.REMOVED
+
+
+@router.post("/{listing_id}/remove", response_model=MessageResponse)
+async def remove_listing_with_note(
+    listing_id: UUID,
+    payload: ListingRemovalRequest,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db),
+) -> MessageResponse:
+    listing = await session.scalar(select(Listing).where(Listing.id == listing_id).with_for_update())
+    if not listing:
+        raise HTTPException(status_code=404, detail="Listing not found")
+    if user.id != listing.owner_id and user.role not in (UserRole.MODERATOR, UserRole.ADMIN):
+        raise HTTPException(status_code=403, detail="You cannot remove this listing")
+    if listing.status == ListingStatus.COMPLETED:
+        raise HTTPException(status_code=409, detail="Completed listings cannot be removed")
+    await remove_listing_with_reason(listing, user, session, payload.note)
+    if user.id != listing.owner_id:
+        await write_audit(
+            session,
+            actor_id=user.id,
+            action="LISTING_REMOVED",
+            target_type="LISTING",
+            target_id=listing.id,
+        )
+    await session.commit()
+    return MessageResponse(message="Listing removed")
+
+
 @router.delete("/{listing_id}", response_model=MessageResponse)
 async def remove_listing(
     listing_id: UUID,
@@ -315,7 +453,9 @@ async def remove_listing(
         raise HTTPException(status_code=404, detail="Listing not found")
     if user.id != listing.owner_id and user.role not in (UserRole.MODERATOR, UserRole.ADMIN):
         raise HTTPException(status_code=403, detail="You cannot remove this listing")
-    listing.status = ListingStatus.REMOVED
+    if listing.status == ListingStatus.COMPLETED:
+        raise HTTPException(status_code=409, detail="Completed listings cannot be removed")
+    await remove_listing_with_reason(listing, user, session, None)
     if user.id != listing.owner_id:
         await write_audit(
             session,

@@ -185,3 +185,5 @@
 .avatar img { object-fit:cover; }
 @media (max-width:900px){ .asideStack{order:-1}.sidebar{position:static} }
 .asideStack .sidebar { position:static; }
+.owner { flex-wrap:wrap; }
+.owner > div:last-child { min-width:0; flex:1 1 130px; }
