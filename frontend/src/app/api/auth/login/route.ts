@@ -14,5 +14,5 @@ export async function POST(request: NextRequest) {
     const result = NextResponse.json({ user: data.user });
     result.cookies.set(env.cookieName, data.access_token, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7 });
     return result;
-  } catch (error) { return backendUnavailable(error); }
+  } catch { return backendUnavailable(); }
 }

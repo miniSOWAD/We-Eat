@@ -31,7 +31,7 @@ async function proxy(request: NextRequest, context: { params: Promise<{ path: st
     const upstream = await fetch(`${env.backendUrl}/api/v1/${path}${request.nextUrl.search}`, { method, headers, body, cache: "no-store", redirect: "manual" });
     const responseBody = await upstream.arrayBuffer();
     return new NextResponse(responseBody, { status: upstream.status, headers: { "content-type": upstream.headers.get("content-type") ?? "application/json", "x-upstream-status": String(upstream.status) } });
-  } catch (error) { return backendUnavailable(error); }
+  } catch { return backendUnavailable(); }
 }
 
 export const GET = proxy;
