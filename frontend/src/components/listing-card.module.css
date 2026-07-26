@@ -180,3 +180,7 @@
   color: #f4f7ff;
   background: linear-gradient(145deg, #3a3423, #365a99);
 }
+
+.bidStatus { position:absolute; z-index:2; left:13px; bottom:13px; padding:7px 10px; border:1px solid rgba(170,122,12,.24); border-radius:999px; color:#694a00; background:rgba(255,223,116,.92); box-shadow:0 8px 22px rgba(91,68,12,.14); font-size:.7rem; font-weight:900; text-transform:uppercase; }
+.proposals { margin-left:auto; display:inline-flex; align-items:center; gap:5px; color:var(--ink-soft); font-size:.72rem; font-weight:800; }
+:global(html[data-theme="dark"]) .bidStatus { color:#ffe9a8; background:rgba(110,79,16,.92); border-color:#7e6329; }

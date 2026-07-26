@@ -5,7 +5,7 @@ import { backendUnavailable } from "@/lib/upstream";
 
 const allowedPrefixes = [
   "auth/request-registration-otp", "auth/verify-otp", "auth/request-password-reset", "auth/reset-password", "auth/change-password",
-  "users", "listings", "favorites", "orders", "exchanges", "reviews", "reports", "admin",
+  "users", "listings", "favorites", "orders", "exchanges", "proposals", "reviews", "reports", "admin",
 ];
 
 function isAllowed(path: string): boolean {
@@ -16,7 +16,7 @@ function isAllowed(path: string): boolean {
 async function proxy(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { path: parts } = await context.params;
   const path = parts.join("/");
-  if (!isAllowed(path)) return NextResponse.json({ detail: "Endpoint is not allowed by the Next.js proxy." }, { status: 403 });
+  if (!isAllowed(path)) return NextResponse.json({ detail: "This action is not available." }, { status: 403 });
 
   try {
     const store = await cookies();

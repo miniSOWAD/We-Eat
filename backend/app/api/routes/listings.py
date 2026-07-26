@@ -47,8 +47,48 @@ def listing_options():
     return (selectinload(Listing.images), selectinload(Listing.owner))
 
 
-def to_card(listing: Listing) -> ListingCard:
-    return ListingCard.model_validate(listing)
+async def proposal_counts(
+    session: AsyncSession, listing_ids: list[UUID]
+) -> dict[UUID, int]:
+    if not listing_ids:
+        return {}
+
+    totals: dict[UUID, int] = {listing_id: 0 for listing_id in listing_ids}
+    order_rows = (
+        await session.execute(
+            select(Order.listing_id, func.count(Order.id))
+            .where(
+                Order.listing_id.in_(listing_ids),
+                Order.status == OrderStatus.REQUESTED,
+            )
+            .group_by(Order.listing_id)
+        )
+    ).all()
+    exchange_rows = (
+        await session.execute(
+            select(ExchangeRequest.listing_id, func.count(ExchangeRequest.id))
+            .where(
+                ExchangeRequest.listing_id.in_(listing_ids),
+                ExchangeRequest.status == ExchangeStatus.PENDING,
+            )
+            .group_by(ExchangeRequest.listing_id)
+        )
+    ).all()
+    for listing_id, count in [*order_rows, *exchange_rows]:
+        totals[listing_id] = totals.get(listing_id, 0) + int(count)
+    return totals
+
+
+def to_card(listing: Listing, proposal_count: int = 0) -> ListingCard:
+    return ListingCard.model_validate(listing).model_copy(
+        update={"proposal_count": proposal_count}
+    )
+
+
+def to_owner_detail(listing: Listing, proposal_count: int = 0) -> ListingOwnerDetail:
+    return ListingOwnerDetail.model_validate(listing).model_copy(
+        update={"proposal_count": proposal_count}
+    )
 
 
 def validate_uploaded_images(images: list, user_id: UUID) -> None:
@@ -102,8 +142,9 @@ async def browse_listings(
             .limit(page_size)
         )
     ).all()
+    counts = await proposal_counts(session, [item.id for item in rows])
     return ListingBrowseResponse(
-        items=[to_card(item) for item in rows],
+        items=[to_card(item, counts.get(item.id, 0)) for item in rows],
         total=total,
         page=page,
         page_size=page_size,
@@ -123,7 +164,8 @@ async def my_listings(
             .order_by(Listing.created_at.desc())
         )
     ).all()
-    return [ListingOwnerDetail.model_validate(row) for row in rows]
+    counts = await proposal_counts(session, [row.id for row in rows])
+    return [to_owner_detail(row, counts.get(row.id, 0)) for row in rows]
 
 
 @router.post("/upload", response_model=UploadResponse, status_code=201)
@@ -175,7 +217,7 @@ async def create_listing(
         .options(*listing_options(), selectinload(Listing.private_details))
     )
     assert listing
-    return ListingOwnerDetail.model_validate(listing)
+    return to_owner_detail(listing, 0)
 
 
 @router.get("/{listing_id}", response_model=ListingDetail)
@@ -204,8 +246,10 @@ async def get_listing(
                 )
             )
         )
+    count = (await proposal_counts(session, [listing.id])).get(listing.id, 0)
     data = ListingDetail.model_validate(listing).model_dump()
     data["is_favorited"] = favorited
+    data["proposal_count"] = count
     return ListingDetail(**data)
 
 
@@ -256,7 +300,8 @@ async def update_listing(
         .options(*listing_options(), selectinload(Listing.private_details))
     )
     assert listing
-    return ListingOwnerDetail.model_validate(listing)
+    count = (await proposal_counts(session, [listing.id])).get(listing.id, 0)
+    return to_owner_detail(listing, count)
 
 
 @router.delete("/{listing_id}", response_model=MessageResponse)

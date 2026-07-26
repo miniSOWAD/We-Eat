@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock3, Leaf, MapPin, PackageCheck, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Clock3, Leaf, MapPin, PackageCheck, ShieldCheck, UsersRound } from "lucide-react";
 import { ListingTypeBadge } from "@/components/listing-card";
 import { ListingActions } from "@/components/listing-actions";
+import { ProposalList } from "@/components/proposal-list";
 import { Comments } from "@/components/comments";
 import { backendFetch, getSession, getToken } from "@/lib/server-api";
-import type { Comment, Listing } from "@/types";
+import type { Comment, Listing, Proposal } from "@/types";
 import styles from "./detail.module.css";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -20,15 +21,24 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 }
 
+function statusLabel(status: Listing["status"]): string {
+  if (status === "RESERVED") return "BID IN PROGRESS";
+  return status;
+}
+
 export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const token = await getToken();
+  const [token, user] = await Promise.all([getToken(), getSession()]);
   const listing = await backendFetch<Listing>(`/listings/${id}`, {}, token).catch(() => null);
   if (!listing) return notFound();
 
-  const user = await getSession();
   let comments: Comment[] = [];
+  let proposals: Proposal[] = [];
+  const own = user?.id === listing.owner.id;
   try { comments = await backendFetch<Comment[]>(`/listings/${id}/comments`); } catch {}
+  if (own) {
+    try { proposals = await backendFetch<Proposal[]>(`/proposals/listing/${id}`, {}, token); } catch {}
+  }
 
   const image = listing.images?.[0]?.secure_url;
   const offer = listing.listing_type === "FREE"
@@ -50,7 +60,10 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
             </div>
 
             <article className={`card ${styles.content}`} data-reveal>
-              <ListingTypeBadge type={listing.listing_type} />
+              <div className={styles.badgeRow}>
+                <ListingTypeBadge type={listing.listing_type} />
+                {listing.status === "RESERVED" && <span className="badge badgeDiscounted">Bid in progress</span>}
+              </div>
               <h1 className={styles.title}>{listing.title}</h1>
               <p className="sectionLead" style={{ maxWidth: "none" }}>{listing.description}</p>
               <div className={styles.infoGrid}>
@@ -67,13 +80,25 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
             <div data-reveal><Comments listingId={listing.id} initialComments={comments} signedIn={Boolean(user)} /></div>
           </section>
 
-          <aside className={`card ${styles.sidebar}`} data-hero-item>
-            <div className={styles.owner}><div className={styles.avatar}>{listing.owner.display_name[0]?.toUpperCase()}</div><div><strong>{listing.owner.display_name}</strong><div className="muted">Community provider</div></div></div>
-            <hr className="divider" />
-            <div className={styles.offer}><strong>{offer}</strong><span className="badge badgeMuted" style={{ width: "fit-content" }}>{listing.status}</span></div>
-            <hr className="divider" />
-            <ListingActions listing={listing} user={user} />
-            <div className={styles.trustNote}><ShieldCheck size={22} /><span>Exact pickup details are shown only through the authorized request workflow after acceptance.</span></div>
+          <aside className={styles.asideStack} data-hero-item>
+            <div className={`card ${styles.sidebar}`}>
+              <div className={styles.owner}>
+                <div className={styles.avatar}>{listing.owner.avatar_url ? <Image src={listing.owner.avatar_url} alt="" fill sizes="50px" /> : listing.owner.display_name.slice(0,2).toUpperCase()}</div>
+                <div><strong>{listing.owner.display_name}</strong><div className="muted">Community provider</div></div>
+              </div>
+              <hr className="divider" />
+              <div className={styles.offer}>
+                <strong>{offer}</strong>
+                <div className={styles.statusLine}>
+                  <span className={`badge ${listing.status === "RESERVED" ? "badgeDiscounted" : "badgeMuted"}`}>{statusLabel(listing.status)}</span>
+                  {!own && listing.status === "ACTIVE" && <span className={styles.proposalCount}><UsersRound size={15} /> {listing.proposal_count} proposal{listing.proposal_count === 1 ? "" : "s"}</span>}
+                </div>
+              </div>
+              <hr className="divider" />
+              <ListingActions listing={listing} user={user} />
+              <div className={styles.trustNote}><ShieldCheck size={22} /><span>Pickup information becomes available only after a proposal is accepted.</span></div>
+            </div>
+            {own && <ProposalList listingId={listing.id} initial={proposals} />}
           </aside>
         </div>
       </div>

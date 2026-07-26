@@ -288,6 +288,8 @@ class Order(TimestampMixin, Base):
     )
     message: Mapped[str | None] = mapped_column(String(500))
     delivery_address: Mapped[str | None] = mapped_column(String(500))
+    scheduled_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    handoff_note: Mapped[str | None] = mapped_column(String(500))
     requester_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     provider_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -327,6 +329,11 @@ class ExchangeRequest(TimestampMixin, Base):
     )
     offered_description: Mapped[str | None] = mapped_column(String(500))
     message: Mapped[str | None] = mapped_column(String(500))
+    fulfillment_method: Mapped[FulfillmentMethod | None] = mapped_column(
+        Enum(FulfillmentMethod, name="fulfillment_method"), nullable=True
+    )
+    scheduled_for: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    handoff_note: Mapped[str | None] = mapped_column(String(500))
     requester_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     provider_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))

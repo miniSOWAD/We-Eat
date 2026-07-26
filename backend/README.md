@@ -1,17 +1,27 @@
-# We Eat Backend v1.2.1
+# We Eat Backend v1.3.0
 
 FastAPI backend for the We Eat food-sharing marketplace.
 
-## v1.2.1 changes
+## v1.3.0 changes
 
-- OTP email delivery now prioritizes standard SMTP and does not require the Brevo HTTP API.
-- Gmail, Outlook, Yahoo and explicit SMTP hosts are supported.
-- Previous-project variable names (`MAIL_SERVER`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM`, `SMTP_KEY`) are accepted.
-- `EMAIL_MODE=auto` selects a fully configured SMTP service first, then the optional Brevo API, otherwise development log mode.
-- Cloudinary accepts either `CLOUDINARY_URL` or the three individual credential variables.
-- Cloudinary configuration errors identify the required cloud environment variables.
-- Admin integration status is available at `GET /api/v1/admin/integrations/status`.
-- Startup logs show whether email and Cloudinary are configured without exposing secrets.
+- Unified private proposal feed for listing owners.
+- Public proposal counts without exposing requester identities or offers.
+- Provider-selected pickup or delivery method and scheduled handover time.
+- Accepted listings enter the existing `RESERVED` state, displayed as **Bid in progress**.
+- Recipients confirm **Received** first; providers cannot confirm **Delivered** before that.
+- Rejected proposals are removed from the owner's active proposal list.
+- Accepted recipients can query their active handovers for the floating frontend dock.
+- New Alembic revision: `20260726_0003_proposal_handoffs.py`.
+
+## Mandatory database update
+
+Before using v1.3.0, run:
+
+```powershell
+alembic upgrade head
+```
+
+FastAPI Cloud users may instead paste `database/20260726_v1_3_proposal_handoffs.sql` into the Neon SQL Editor before redeploying.
 
 ## Important correction about the earlier reference project
 

@@ -1,7 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
-  HandHeart,
   HeartHandshake,
   Leaf,
   ShieldCheck,
@@ -16,7 +16,7 @@ export function SiteFooter() {
       <div className={`container ${styles.top}`}>
         <div className={styles.brandColumn}>
           <Link href="/" className={styles.brand} aria-label="We Eat home">
-            <span className={styles.brandIcon}><HandHeart size={23} /></span>
+            <span className={styles.brandLogo}><Image src="/logo.svg" alt="" width={180} height={48} /></span>
             <span>We Eat</span>
           </Link>
           <p>

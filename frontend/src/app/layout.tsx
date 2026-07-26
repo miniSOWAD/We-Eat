@@ -9,6 +9,12 @@ import { MotionShell } from "@/components/motion-shell";
 export const metadata: Metadata = {
   title: { default: "We Eat — Share food, reduce waste", template: "%s | We Eat" },
   description: "Share, discount, exchange and rescue surplus food in your community.",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 const themeBoot = `(function(){try{var saved=localStorage.getItem('we-eat-theme');var system=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=saved||system;}catch(e){document.documentElement.dataset.theme='light';}})();`;

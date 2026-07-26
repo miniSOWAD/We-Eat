@@ -53,7 +53,7 @@ export function ListingActions({
           className="button buttonPrimary"
           href={`/login?next=/listings/${listing.id}`}
         >
-          Sign in to request
+          Sign in to propose
         </Link>
       </div>
     );
@@ -102,7 +102,7 @@ export function ListingActions({
             message: message.trim() || null,
           },
         });
-        toast.success("Exchange request sent");
+        toast.success("Exchange proposal sent");
         setOffer("");
         setOfferedListingId("");
         setMessage("");
@@ -117,7 +117,7 @@ export function ListingActions({
             delivery_address: method === "DELIVERY" ? address.trim() : null,
           },
         });
-        toast.success("Food request sent");
+        toast.success("Food proposal sent");
         setMessage("");
       }
     } catch (error) {
@@ -217,7 +217,7 @@ export function ListingActions({
             />
           </div>
           <div className="field">
-            <label htmlFor="method">Collection</label>
+            <label htmlFor="method">Your handover preference</label>
             <select
               id="method"
               className="select"
@@ -226,8 +226,8 @@ export function ListingActions({
                 setMethod(event.target.value as "PICKUP" | "DELIVERY")
               }
             >
-              <option value="PICKUP">Pickup</option>
-              <option value="DELIVERY">Delivery</option>
+              <option value="PICKUP">Pickup preferred</option>
+              <option value="DELIVERY">Delivery preferred</option>
             </select>
           </div>
           {method === "DELIVERY" && (
@@ -253,7 +253,7 @@ export function ListingActions({
           className="textarea"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Explain preferred time or relevant details"
+          placeholder="Add details that may help the provider decide"
           maxLength={500}
         />
       </div>
@@ -266,8 +266,8 @@ export function ListingActions({
         {busy
           ? "Sending…"
           : listing.listing_type === "EXCHANGE"
-            ? "Send exchange request"
-            : "Request this food"}
+            ? "Send exchange proposal"
+            : "Send proposal"}
       </button>
       <button className="button buttonGhost" onClick={report} disabled={busy}>
         <ShieldAlert size={17} />

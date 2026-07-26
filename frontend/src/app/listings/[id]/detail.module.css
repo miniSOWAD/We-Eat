@@ -176,3 +176,12 @@
   color: #b9c5da;
   background: #202b3e;
 }
+
+.asideStack { display:grid; align-content:start; gap:18px; }
+.badgeRow { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.statusLine { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; }
+.proposalCount { display:inline-flex; align-items:center; gap:6px; color:var(--ink-soft); font-size:.78rem; font-weight:760; }
+.avatar { position:relative; overflow:hidden; }
+.avatar img { object-fit:cover; }
+@media (max-width:900px){ .asideStack{order:-1}.sidebar{position:static} }
+.asideStack .sidebar { position:static; }

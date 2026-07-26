@@ -11,7 +11,7 @@ from app.db.session import engine
 from app.schemas.common import HealthResponse, ReadinessResponse
 
 router = APIRouter(prefix="/system", tags=["System"])
-VERSION = "1.2.1"
+VERSION = "1.3.0"
 
 
 @router.get("/health", response_model=HealthResponse)

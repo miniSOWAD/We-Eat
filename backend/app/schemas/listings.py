@@ -102,6 +102,7 @@ class ListingCard(ORMModel):
     is_vegetarian: bool
     images: list[ListingImageView] = Field(default_factory=list)
     owner: UserPublic
+    proposal_count: int = 0
     created_at: datetime
 
 

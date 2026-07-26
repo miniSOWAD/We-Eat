@@ -19,7 +19,7 @@ from app.models.models import (
     User,
 )
 from app.schemas.common import MessageResponse
-from app.schemas.transactions import ExchangeCreate, ExchangeView
+from app.schemas.transactions import ExchangeCreate, ExchangeView, HandoffDecision
 
 router = APIRouter(prefix="/exchanges", tags=["Exchanges"])
 
@@ -35,14 +35,61 @@ def exchange_options():
     )
 
 
-async def load_exchange(session: AsyncSession, exchange_id: UUID, *, lock: bool = False) -> ExchangeRequest:
+async def load_exchange(
+    session: AsyncSession, exchange_id: UUID, *, lock: bool = False
+) -> ExchangeRequest:
     query = select(ExchangeRequest).where(ExchangeRequest.id == exchange_id)
     if lock:
         query = query.with_for_update()
     row = await session.scalar(query.options(*exchange_options()))
     if not row:
-        raise HTTPException(status_code=404, detail="Exchange request not found")
+        raise HTTPException(status_code=404, detail="Exchange proposal not found")
     return row
+
+
+async def mark_received(
+    row: ExchangeRequest, user: User, session: AsyncSession
+) -> ExchangeView:
+    if row.requester_id != user.id:
+        raise HTTPException(status_code=403, detail="Only the recipient can confirm receipt")
+    if row.status != ExchangeStatus.ACCEPTED:
+        raise HTTPException(status_code=409, detail="This exchange is not awaiting receipt")
+    if not row.requester_confirmed_at:
+        row.requester_confirmed_at = datetime.now(UTC)
+        await session.commit()
+    return ExchangeView.model_validate(await load_exchange(session, row.id))
+
+
+async def mark_delivered(
+    row: ExchangeRequest, user: User, session: AsyncSession
+) -> ExchangeView:
+    if row.provider_id != user.id:
+        raise HTTPException(status_code=403, detail="Only the provider can mark this exchange delivered")
+    if row.status != ExchangeStatus.ACCEPTED:
+        raise HTTPException(status_code=409, detail="This exchange cannot be completed")
+    if not row.requester_confirmed_at:
+        raise HTTPException(
+            status_code=409,
+            detail="The recipient must confirm receipt before you can mark the exchange delivered",
+        )
+
+    now = datetime.now(UTC)
+    row.provider_confirmed_at = now
+    row.status = ExchangeStatus.COMPLETED
+    row.completed_at = now
+    target = await session.scalar(
+        select(Listing).where(Listing.id == row.listing_id).with_for_update()
+    )
+    if target:
+        target.status = ListingStatus.COMPLETED
+    if row.offered_listing_id:
+        offered = await session.scalar(
+            select(Listing).where(Listing.id == row.offered_listing_id).with_for_update()
+        )
+        if offered:
+            offered.status = ListingStatus.COMPLETED
+    await session.commit()
+    return ExchangeView.model_validate(await load_exchange(session, row.id))
 
 
 @router.get("/mine", response_model=list[ExchangeView])
@@ -101,7 +148,7 @@ async def create_exchange(
         )
     )
     if existing:
-        raise HTTPException(status_code=409, detail="You already have an active exchange request")
+        raise HTTPException(status_code=409, detail="You already have an active proposal")
 
     row = ExchangeRequest(
         listing_id=listing.id,
@@ -119,17 +166,26 @@ async def create_exchange(
 @router.post("/{exchange_id}/accept", response_model=ExchangeView)
 async def accept_exchange(
     exchange_id: UUID,
+    payload: HandoffDecision,
     user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_db),
 ) -> ExchangeView:
     row = await load_exchange(session, exchange_id, lock=True)
     if row.provider_id != user.id:
-        raise HTTPException(status_code=403, detail="Only the provider can accept this exchange")
+        raise HTTPException(status_code=403, detail="Only the provider can accept this proposal")
     if row.status != ExchangeStatus.PENDING:
-        raise HTTPException(status_code=409, detail="Exchange cannot be accepted")
-    target = await session.scalar(select(Listing).where(Listing.id == row.listing_id).with_for_update())
+        raise HTTPException(status_code=409, detail="Proposal cannot be accepted")
+    target = await session.scalar(
+        select(Listing).where(Listing.id == row.listing_id).with_for_update()
+    )
     if not target or target.status != ListingStatus.ACTIVE:
         raise HTTPException(status_code=409, detail="Target listing is unavailable")
+    if target.expires_at <= datetime.now(UTC):
+        target.status = ListingStatus.EXPIRED
+        await session.commit()
+        raise HTTPException(status_code=409, detail="Target listing has expired")
+    if payload.scheduled_for > target.expires_at:
+        raise HTTPException(status_code=400, detail="Handover time must be before the listing expires")
     offered = None
     if row.offered_listing_id:
         offered = await session.scalar(
@@ -137,6 +193,16 @@ async def accept_exchange(
         )
         if not offered or offered.status != ListingStatus.ACTIVE:
             raise HTTPException(status_code=409, detail="Offered listing is unavailable")
+        if offered.expires_at <= datetime.now(UTC):
+            offered.status = ListingStatus.EXPIRED
+            await session.commit()
+            raise HTTPException(status_code=409, detail="Offered listing has expired")
+        if payload.scheduled_for > offered.expires_at:
+            raise HTTPException(status_code=400, detail="Handover time must be before both listings expire")
+
+    row.fulfillment_method = payload.fulfillment_method
+    row.scheduled_for = payload.scheduled_for
+    row.handoff_note = payload.handoff_note
     row.status = ExchangeStatus.ACCEPTED
     row.accepted_at = datetime.now(UTC)
     target.status = ListingStatus.RESERVED
@@ -163,12 +229,30 @@ async def reject_exchange(
 ) -> MessageResponse:
     row = await load_exchange(session, exchange_id, lock=True)
     if row.provider_id != user.id:
-        raise HTTPException(status_code=403, detail="Only the provider can reject this exchange")
+        raise HTTPException(status_code=403, detail="Only the provider can reject this proposal")
     if row.status != ExchangeStatus.PENDING:
-        raise HTTPException(status_code=409, detail="Exchange cannot be rejected")
+        raise HTTPException(status_code=409, detail="Proposal cannot be rejected")
     row.status = ExchangeStatus.REJECTED
     await session.commit()
-    return MessageResponse(message="Exchange rejected")
+    return MessageResponse(message="Proposal rejected")
+
+
+@router.post("/{exchange_id}/received", response_model=ExchangeView)
+async def confirm_received(
+    exchange_id: UUID,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db),
+) -> ExchangeView:
+    return await mark_received(await load_exchange(session, exchange_id, lock=True), user, session)
+
+
+@router.post("/{exchange_id}/delivered", response_model=ExchangeView)
+async def confirm_delivered(
+    exchange_id: UUID,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_db),
+) -> ExchangeView:
+    return await mark_delivered(await load_exchange(session, exchange_id, lock=True), user, session)
 
 
 @router.post("/{exchange_id}/confirm-completion", response_model=ExchangeView)
@@ -178,31 +262,11 @@ async def confirm_exchange_completion(
     session: AsyncSession = Depends(get_db),
 ) -> ExchangeView:
     row = await load_exchange(session, exchange_id, lock=True)
-    if user.id not in (row.requester_id, row.provider_id):
-        raise HTTPException(status_code=403, detail="You are not part of this exchange")
-    if row.status != ExchangeStatus.ACCEPTED:
-        raise HTTPException(status_code=409, detail="Exchange cannot be completed")
-    now = datetime.now(UTC)
     if user.id == row.requester_id:
-        row.requester_confirmed_at = now
-    else:
-        row.provider_confirmed_at = now
-    if row.requester_confirmed_at and row.provider_confirmed_at:
-        row.status = ExchangeStatus.COMPLETED
-        row.completed_at = now
-        target = await session.scalar(
-            select(Listing).where(Listing.id == row.listing_id).with_for_update()
-        )
-        if target:
-            target.status = ListingStatus.COMPLETED
-        if row.offered_listing_id:
-            offered = await session.scalar(
-                select(Listing).where(Listing.id == row.offered_listing_id).with_for_update()
-            )
-            if offered:
-                offered.status = ListingStatus.COMPLETED
-    await session.commit()
-    return ExchangeView.model_validate(await load_exchange(session, exchange_id))
+        return await mark_received(row, user, session)
+    if user.id == row.provider_id:
+        return await mark_delivered(row, user, session)
+    raise HTTPException(status_code=403, detail="You are not part of this exchange")
 
 
 @router.post("/{exchange_id}/cancel", response_model=MessageResponse)
@@ -222,7 +286,11 @@ async def cancel_exchange(
         ids = [row.listing_id]
         if row.offered_listing_id:
             ids.append(row.offered_listing_id)
-        listings = (await session.scalars(select(Listing).where(Listing.id.in_(ids)).with_for_update())).all()
+        listings = (
+            await session.scalars(
+                select(Listing).where(Listing.id.in_(ids)).with_for_update()
+            )
+        ).all()
         for listing in listings:
             if listing.expires_at > datetime.now(UTC):
                 listing.status = ListingStatus.ACTIVE

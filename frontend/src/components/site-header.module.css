@@ -33,3 +33,8 @@
   background: #192438;
   border-color: #35435a;
 }
+
+.logoCrop { position:relative; width:42px; height:42px; display:block; overflow:hidden; border-radius:14px; box-shadow:0 10px 24px rgba(100,137,248,.24); }
+.logoCrop img { position:absolute; top:0; left:0; width:157.5px; height:42px; max-width:none; }
+@media(max-width:800px){ .logoCrop{width:38px;height:38px;border-radius:13px}.logoCrop img{width:142.5px;height:38px} }
+:global(html[data-theme="dark"]) .logoCrop { box-shadow:0 10px 24px rgba(0,0,0,.3); }

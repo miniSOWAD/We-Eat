@@ -50,6 +50,7 @@ export interface Listing {
   created_at: string;
   updated_at?: string;
   is_favorited?: boolean;
+  proposal_count: number;
   private_details?: { pickup_address: string; contact_phone?: string | null; delivery_notes?: string | null; } | null;
 }
 
@@ -60,6 +61,7 @@ export interface Order {
   status: "REQUESTED" | "ACCEPTED" | "REJECTED" | "READY" | "COMPLETED" | "CANCELLED";
   quantity: number; agreed_price: string; fulfillment_method: "PICKUP" | "DELIVERY";
   message?: string | null; delivery_address?: string | null;
+  scheduled_for?: string | null; handoff_note?: string | null;
   requester_confirmed_at?: string | null; provider_confirmed_at?: string | null; created_at: string;
 }
 
@@ -67,7 +69,29 @@ export interface Exchange {
   id: string; listing: Listing; offered_listing?: Listing | null; requester: UserPublic; provider: UserPublic;
   status: "PENDING" | "ACCEPTED" | "REJECTED" | "COMPLETED" | "CANCELLED";
   offered_description?: string | null; message?: string | null;
+  fulfillment_method?: "PICKUP" | "DELIVERY" | null;
+  scheduled_for?: string | null; handoff_note?: string | null;
   requester_confirmed_at?: string | null; provider_confirmed_at?: string | null; created_at: string;
+}
+
+export interface Proposal {
+  kind: "ORDER" | "EXCHANGE";
+  id: string;
+  listing: Listing;
+  requester: UserPublic;
+  status: string;
+  quantity?: number | null;
+  agreed_price?: string | null;
+  offered_listing?: Listing | null;
+  offered_description?: string | null;
+  message?: string | null;
+  delivery_address?: string | null;
+  fulfillment_method?: "PICKUP" | "DELIVERY" | null;
+  scheduled_for?: string | null;
+  handoff_note?: string | null;
+  received_at?: string | null;
+  delivered_at?: string | null;
+  created_at: string;
 }
 
 export interface Favorite { id: string; listing: Listing; created_at: string; }

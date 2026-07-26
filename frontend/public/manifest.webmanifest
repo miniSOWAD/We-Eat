@@ -1,0 +1,17 @@
+{
+  "name": "We Eat",
+  "short_name": "We Eat",
+  "description": "Share and rescue surplus food in your community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8DE",
+  "theme_color": "#8CA9FF",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

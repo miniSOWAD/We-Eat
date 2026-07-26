@@ -180,3 +180,6 @@
     flex-direction: column;
   }
 }
+
+.brandLogo { position:relative; width:44px; height:44px; display:block; overflow:hidden; border-radius:15px; box-shadow:0 12px 30px rgba(140,169,255,.22); }
+.brandLogo img { position:absolute; top:0; left:0; width:165px; height:44px; max-width:none; }

@@ -16,7 +16,7 @@ from app.core.config import settings
 from app.db.session import engine
 from app.schemas.common import HealthResponse, ReadinessResponse
 
-VERSION = "1.2.1"
+VERSION = "1.3.0"
 logger = logging.getLogger("we_eat")
 
 
@@ -25,7 +25,23 @@ async def check_database(*, require_schema: bool) -> bool:
         await connection.execute(text("SELECT 1"))
         if require_schema:
             users_table = await connection.scalar(text("SELECT to_regclass('public.users')"))
-            return bool(users_table)
+            if not users_table:
+                return False
+            required_columns = await connection.scalar(
+                text(
+                    """
+                    SELECT COUNT(*) = 5
+                    FROM information_schema.columns
+                    WHERE table_schema = 'public'
+                      AND (
+                        (table_name = 'orders' AND column_name IN ('scheduled_for', 'handoff_note'))
+                        OR
+                        (table_name = 'exchange_requests' AND column_name IN ('fulfillment_method', 'scheduled_for', 'handoff_note'))
+                      )
+                    """
+                )
+            )
+            return bool(required_columns)
     return True
 
 
@@ -134,7 +150,7 @@ async def readiness() -> ReadinessResponse:
     if not schema_ready:
         return JSONResponse(
             status_code=503,
-            content={"detail": "Database schema is missing. Run: alembic upgrade head"},
+            content={"detail": "Database schema update is required"},
         )  # type: ignore[return-value]
 
     return ReadinessResponse(
