@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -16,8 +15,13 @@ export function SiteFooter() {
       <div className={`container ${styles.top}`}>
         <div className={styles.brandColumn}>
           <Link href="/" className={styles.brand} aria-label="We Eat home">
-            <span className={styles.brandLogo}><Image src="/logo.svg" alt="" width={180} height={48} /></span>
-            <span>We Eat</span>
+            <img
+              className={styles.brandImage}
+              src="/logo.svg?v=131"
+              alt="We Eat"
+              width={180}
+              height={48}
+            />
           </Link>
           <p>
             A local food-sharing marketplace designed to keep safe surplus food

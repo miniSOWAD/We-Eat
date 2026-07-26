@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   description: "Share, discount, exchange and rescue surplus food in your community.",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/logo.svg",
-    shortcut: "/logo.svg",
-    apple: "/logo.svg",
+    icon: [{ url: "/logo.svg?v=131", type: "image/svg+xml" }],
+    shortcut: [{ url: "/logo.svg?v=131", type: "image/svg+xml" }],
+    apple: [{ url: "/logo.svg?v=131", type: "image/svg+xml" }],
   },
 };
 
