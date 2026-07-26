@@ -15,13 +15,16 @@ export function SiteFooter() {
       <div className={`container ${styles.top}`}>
         <div className={styles.brandColumn}>
           <Link href="/" className={styles.brand} aria-label="We Eat home">
-            <img
-              className={styles.brandImage}
-              src="/logo.svg?v=131"
-              alt="We Eat"
-              width={180}
-              height={48}
-            />
+            <span className={styles.logoViewport} aria-hidden="true">
+              <img
+                className={styles.brandImage}
+                src="/logo.svg?v=132"
+                alt=""
+                width={180}
+                height={48}
+              />
+            </span>
+            <span>We Eat</span>
           </Link>
           <p>
             A local food-sharing marketplace designed to keep safe surplus food

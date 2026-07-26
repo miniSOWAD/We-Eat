@@ -35,19 +35,35 @@
 }
 
 
+
+.logoViewport {
+  width: 48px;
+  height: 58px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
 .brandImage {
   display: block;
-  width: 150px;
-  height: 40px;
-  max-width: min(150px, 34vw);
+  width: 180px;
+  height: 58px;
+  max-width: none;
   object-fit: contain;
   object-position: left center;
 }
 
+.brandName {
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 820;
+  letter-spacing: -.035em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 @media (max-width: 800px) {
-  .brandImage {
-    width: 118px;
-    height: 36px;
-    max-width: 30vw;
-  }
+  .logoViewport { width: 40px; height: 40px; flex-basis: 40px; border-radius: 13px; }
+  .brandImage { width: 150px; height: 40px; }
+  .brandName { font-size: 1.08rem; }
 }

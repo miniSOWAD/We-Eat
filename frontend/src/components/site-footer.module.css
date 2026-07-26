@@ -182,11 +182,20 @@
 }
 
 
+
+
+.logoViewport {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  border-radius: 15px;
+}
 .brandImage {
   display: block;
-  width: 160px;
-  height: auto;
-  max-height: 44px;
+  width: 180px;
+  height: 58px;
+  max-width: none;
   object-fit: contain;
   object-position: left center;
 }

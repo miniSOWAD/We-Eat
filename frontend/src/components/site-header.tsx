@@ -15,13 +15,16 @@ export async function SiteHeader() {
         <div className={`container ${styles.inner}`}>
           <div className={styles.brandCluster}>
             <Link className={styles.logo} href="/" aria-label="We Eat home">
-              <img
-                className={styles.brandImage}
-                src="/logo.svg?v=131"
-                alt="We Eat"
-                width={180}
-                height={48}
-              />
+              <span className={styles.logoViewport} aria-hidden="true">
+                <img
+                  className={styles.brandImage}
+                  src="/logo.svg?v=132"
+                  alt=""
+                  width={180}
+                  height={48}
+                />
+              </span>
+              <strong className={styles.brandName}>We Eat</strong>
             </Link>
             <ThemeToggle />
           </div>
