@@ -52,12 +52,12 @@ def to_card(listing: Listing) -> ListingCard:
 
 
 def validate_uploaded_images(images: list, user_id: UUID) -> None:
-    if not settings.cloudinary_cloud_name:
+    if not settings.cloudinary_is_configured:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Cloudinary is not configured",
         )
-    expected_host = f"res.cloudinary.com/{settings.cloudinary_cloud_name}/"
+    expected_host = f"res.cloudinary.com/{settings.effective_cloudinary_cloud_name}/"
     expected_prefix = f"{settings.cloudinary_folder}/listings/{user_id}"
     for image in images:
         if expected_host not in image.secure_url or not image.public_id.startswith(expected_prefix):

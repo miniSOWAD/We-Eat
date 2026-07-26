@@ -8,7 +8,6 @@ from pydantic import BaseModel, Field
 
 from app.models.models import ReportStatus, ReportTargetType
 from app.schemas.common import ORMModel
-from app.schemas.users import UserPublic
 
 
 class ReportCreate(BaseModel):
@@ -52,8 +51,29 @@ class AuditLogView(ORMModel):
 
 class AdminStats(BaseModel):
     users: int
+    moderators: int
+    suspended_users: int
     active_listings: int
     open_reports: int
     completed_orders: int
     completed_exchanges: int
     rescued_items: int
+
+
+class EmailDeliveryStatus(BaseModel):
+    mode: str
+    configured: bool
+    sender: str
+    smtp_host: str | None = None
+    missing_settings: list[str] = Field(default_factory=list)
+
+
+class CloudinaryDeliveryStatus(BaseModel):
+    configured: bool
+    cloud_name: str | None = None
+    configuration_source: str
+
+
+class IntegrationStatus(BaseModel):
+    email: EmailDeliveryStatus
+    cloudinary: CloudinaryDeliveryStatus

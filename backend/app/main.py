@@ -16,7 +16,7 @@ from app.core.config import settings
 from app.db.session import engine
 from app.schemas.common import HealthResponse, ReadinessResponse
 
-VERSION = "1.1.0"
+VERSION = "1.2.1"
 logger = logging.getLogger("we_eat")
 
 
@@ -31,13 +31,20 @@ async def check_database(*, require_schema: bool) -> bool:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    logger.info(
+        "Integration configuration: email_mode=%s email_configured=%s cloudinary_configured=%s cloudinary_source=%s",
+        settings.effective_email_mode,
+        settings.email_is_configured,
+        settings.cloudinary_is_configured,
+        settings.cloudinary_configuration_source,
+    )
     if settings.is_production:
         if any("localhost" in origin for origin in settings.cors_origin_list):
             raise RuntimeError("Production CORS_ORIGINS must contain deployed origins only")
         if "*" in settings.cors_origin_list:
             raise RuntimeError("Wildcard CORS is not allowed in production")
-        if settings.email_mode == "log":
-            raise RuntimeError("Production EMAIL_MODE cannot be log")
+        if not settings.email_is_configured:
+            raise RuntimeError("Production email delivery is not configured")
 
     if settings.check_database_on_startup:
         try:

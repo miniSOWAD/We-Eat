@@ -107,10 +107,12 @@ class User(TimestampMixin, Base):
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     email: Mapped[str] = mapped_column(String(320), unique=True, index=True, nullable=False)
+    username: Mapped[str] = mapped_column(String(30), unique=True, index=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     display_name: Mapped[str] = mapped_column(String(120), nullable=False)
     phone: Mapped[str | None] = mapped_column(String(30))
     avatar_url: Mapped[str | None] = mapped_column(String(1000))
+    avatar_public_id: Mapped[str | None] = mapped_column(String(500))
     bio: Mapped[str | None] = mapped_column(String(500))
     city: Mapped[str | None] = mapped_column(String(100))
     area: Mapped[str | None] = mapped_column(String(100))

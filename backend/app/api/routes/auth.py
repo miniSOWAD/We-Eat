@@ -3,11 +3,12 @@ from __future__ import annotations
 from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
+from app.core.config import settings
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_db
 from app.models.models import OtpPurpose, User, UserStatus
@@ -37,7 +38,12 @@ async def request_registration_otp(
     if exists:
         raise HTTPException(status_code=409, detail="An account already exists with this email")
     await issue_otp(session, email=email, purpose=OtpPurpose.REGISTER)
-    return MessageResponse(message="Verification code sent")
+    message = (
+        "Verification code generated in backend logs because EMAIL_MODE=log"
+        if settings.effective_email_mode == "log"
+        else "Verification code sent"
+    )
+    return MessageResponse(message=message)
 
 
 @router.post("/verify-otp", response_model=MessageResponse)
@@ -61,13 +67,17 @@ async def register(
     session: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
     email = payload.email.lower().strip()
-    exists = await session.scalar(select(User.id).where(User.email == email))
-    if exists:
-        raise HTTPException(status_code=409, detail="An account already exists with this email")
+    username = payload.username.lower().strip()
+    existing = await session.scalar(
+        select(User.id).where(or_(User.email == email, User.username == username))
+    )
+    if existing:
+        raise HTTPException(status_code=409, detail="Email or username is already in use")
 
     await consume_otp(session, email=email, purpose=OtpPurpose.REGISTER, code=payload.otp)
     user = User(
         email=email,
+        username=username,
         password_hash=hash_password(payload.password),
         display_name=payload.display_name.strip(),
         city=payload.city.strip() if payload.city else None,
@@ -79,7 +89,7 @@ async def register(
         await session.commit()
     except IntegrityError as exc:
         await session.rollback()
-        raise HTTPException(status_code=409, detail="An account already exists with this email") from exc
+        raise HTTPException(status_code=409, detail="Email or username is already in use") from exc
 
     await session.refresh(user)
     token = create_access_token(
@@ -95,10 +105,17 @@ async def login(
     payload: LoginRequest,
     session: AsyncSession = Depends(get_db),
 ) -> TokenResponse:
-    email = payload.email.lower().strip()
-    user = await session.scalar(select(User).where(User.email == email))
+    identifier = (payload.identifier or "").lower().strip()
+    user = await session.scalar(
+        select(User).where(
+            or_(
+                func.lower(User.email) == identifier,
+                func.lower(User.username) == identifier,
+            )
+        )
+    )
     if not user or not verify_password(payload.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        raise HTTPException(status_code=401, detail="Invalid username/email or password")
     if user.status == UserStatus.SUSPENDED:
         raise HTTPException(status_code=403, detail="Your account is suspended")
     if user.status != UserStatus.ACTIVE:
@@ -116,7 +133,6 @@ async def login(
 
 @router.post("/logout", response_model=MessageResponse)
 async def logout() -> MessageResponse:
-    # The access token is stateless; the Next.js layer removes the HTTP-only cookie.
     return MessageResponse(message="Signed out")
 
 
@@ -129,7 +145,12 @@ async def request_password_reset(
     user = await session.scalar(select(User).where(User.email == email))
     if user and user.status == UserStatus.ACTIVE:
         await issue_otp(session, email=email, purpose=OtpPurpose.RESET_PASSWORD)
-    return MessageResponse(message="If the account exists, a verification code has been sent")
+    message = (
+        "If the account exists, a code was generated in backend logs because EMAIL_MODE=log"
+        if settings.effective_email_mode == "log"
+        else "If the account exists, a verification code has been sent"
+    )
+    return MessageResponse(message=message)
 
 
 @router.post("/reset-password", response_model=MessageResponse)
