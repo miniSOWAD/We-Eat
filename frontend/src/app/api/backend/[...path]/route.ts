@@ -1,20 +1,11 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@/lib/env";
+import { backendUnavailable } from "@/lib/upstream";
 
 const allowedPrefixes = [
-  "auth/request-registration-otp",
-  "auth/request-password-reset",
-  "auth/reset-password",
-  "auth/change-password",
-  "users",
-  "listings",
-  "favorites",
-  "orders",
-  "exchanges",
-  "reviews",
-  "reports",
-  "admin",
+  "auth/request-registration-otp", "auth/verify-otp", "auth/request-password-reset", "auth/reset-password", "auth/change-password",
+  "users", "listings", "favorites", "orders", "exchanges", "reviews", "reports", "admin",
 ];
 
 function isAllowed(path: string): boolean {
@@ -25,30 +16,22 @@ function isAllowed(path: string): boolean {
 async function proxy(request: NextRequest, context: { params: Promise<{ path: string[] }> }) {
   const { path: parts } = await context.params;
   const path = parts.join("/");
-  if (!isAllowed(path)) return NextResponse.json({ detail: "Endpoint is not allowed" }, { status: 403 });
+  if (!isAllowed(path)) return NextResponse.json({ detail: "Endpoint is not allowed by the Next.js proxy." }, { status: 403 });
 
-  const store = await cookies();
-  const token = store.get(env.cookieName)?.value;
-  const headers = new Headers();
-  const contentType = request.headers.get("content-type");
-  if (contentType) headers.set("content-type", contentType);
-  headers.set("accept", "application/json");
-  if (token) headers.set("authorization", `Bearer ${token}`);
-
-  const method = request.method;
-  const body = method === "GET" || method === "HEAD" ? undefined : await request.arrayBuffer();
-  const upstream = await fetch(`${env.backendUrl}/api/v1/${path}${request.nextUrl.search}`, {
-    method,
-    headers,
-    body,
-    cache: "no-store",
-    redirect: "manual",
-  });
-  const responseBody = await upstream.arrayBuffer();
-  return new NextResponse(responseBody, {
-    status: upstream.status,
-    headers: { "content-type": upstream.headers.get("content-type") ?? "application/json" },
-  });
+  try {
+    const store = await cookies();
+    const token = store.get(env.cookieName)?.value;
+    const headers = new Headers();
+    const contentType = request.headers.get("content-type");
+    if (contentType) headers.set("content-type", contentType);
+    headers.set("accept", "application/json");
+    if (token) headers.set("authorization", `Bearer ${token}`);
+    const method = request.method;
+    const body = method === "GET" || method === "HEAD" ? undefined : await request.arrayBuffer();
+    const upstream = await fetch(`${env.backendUrl}/api/v1/${path}${request.nextUrl.search}`, { method, headers, body, cache: "no-store", redirect: "manual" });
+    const responseBody = await upstream.arrayBuffer();
+    return new NextResponse(responseBody, { status: upstream.status, headers: { "content-type": upstream.headers.get("content-type") ?? "application/json", "x-upstream-status": String(upstream.status) } });
+  } catch (error) { return backendUnavailable(error); }
 }
 
 export const GET = proxy;
