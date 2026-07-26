@@ -65,15 +65,15 @@ Root-level aliases are also available at `/health` and `/ready`.
 
 ## Orders
 
-| Method | Path | Access |
-|---|---|---|
-| GET | `/orders/mine` | User |
-| POST | `/orders` | User |
-| POST | `/orders/{order_id}/accept` | Provider |
-| POST | `/orders/{order_id}/reject` | Provider |
-| POST | `/orders/{order_id}/ready` | Provider |
+|Method| Path                                    | Access            |
+|------|-----------------------------------------|-------------------|
+| GET  | `/orders/mine`                          | User              |
+| POST | `/orders`                               | User              |
+| POST | `/orders/{order_id}/accept`             | Provider          |
+| POST | `/orders/{order_id}/reject`             | Provider          |
+| POST | `/orders/{order_id}/ready`              | Provider          |
 | POST | `/orders/{order_id}/confirm-completion` | Transaction party |
-| POST | `/orders/{order_id}/cancel` | Transaction party |
+| POST | `/orders/{order_id}/cancel`             | Transaction party |
 
 ## Exchanges
 
